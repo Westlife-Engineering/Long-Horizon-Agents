@@ -90,7 +90,7 @@ Harness 与 Optimization 的子方向都保留在各自 Overview 的页内导航
 | S050 | [[wiki/papers/Agent-R\|Agent-R]] | 完成摄入，应用未测；迭代SFT及采树重放、训练拼接、在线恢复三阶段的代码证据与边界 |
 | S051 | [[wiki/papers/Search-R1\|Search-R1]] | 完成摄入，应用未测；在线搜索状态、终局EM与检索token损失屏蔽 |
 | S052 | [[wiki/papers/ToolRL\|ToolRL]] | 完成摄入，应用未测；标准调用的细粒度奖励与带历史单步训练边界 |
-| S053 | [[wiki/papers/GiGPO\|GiGPO]] | 完成摄入，应用未测；重复环境状态分组、折扣回报与两级优势 |
+| S053 | [[wiki/papers/GiGPO\|GiGPO]] | 完成摄入，应用未测；两级优势及分组anchor、策略输入、自包含均值的官方代码证据与版本边界 |
 | S054 | [[wiki/papers/Tree-GRPO\|Tree-GRPO]] | 完成摄入，应用未测；共享前缀采样、树内/跨树优势和预算归因 |
 | S055 | [[wiki/papers/Memory-R1\|Memory-R1]] | 完成摄入，应用未测；分阶段记忆操作/使用学习、回答器依赖与oracle测试边界 |
 | S056 | [[wiki/papers/GKD\|GKD]] | 完成摄入，应用未测；学生前缀上的教师概率监督、散度与文本任务边界 |

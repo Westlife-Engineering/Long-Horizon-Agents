@@ -36,6 +36,10 @@ sources:
   - "[[raw/papers/Search-R1.pdf]]"
   - "[[raw/papers/ToolRL.pdf]]"
   - "[[raw/papers/GiGPO.pdf]]"
+  - "[[raw/papers/GiGPO-code-20bd331/gigpo/core_gigpo.py]]"
+  - "[[raw/papers/GiGPO-code-20bd331/agent_system/environments/env_manager.py]]"
+  - "[[raw/papers/GiGPO-code-20bd331/verl/workers/actor/dp_actor.py]]"
+  - "[[raw/papers/GiGPO-code-20bd331/verl/trainer/ppo/core_algos.py]]"
   - "[[raw/papers/Tree-GRPO.pdf]]"
   - "[[raw/papers/Memory-R1.pdf]]"
   - "[[raw/papers/GKD.pdf]]"
@@ -224,7 +228,9 @@ Search-R1和ToolRL说明“有反馈”仍需分清反馈来自哪里：前者�
 
 GiGPO和Tree-GRPO都从后续结果构造较细信号，却不取得新的逐步正确性oracle。GiGPO在已有rollout中事后聚合相同环境状态；折扣回报让同一成功轨迹中较早绕路与较晚有效动作可被区分，再与episode优势相加。Tree-GRPO主动从共享前缀采新后缀，先为叶轨迹计算树内/跨树优势；共享节点上的梯度贡献把分支结果联系起来。后者的理论是特定二元假设下与step-DPO具有相同梯度结构、权重不同，不能升级为完整算法恒等。[[raw/papers/GiGPO.pdf#page=5|S053 Eq.5–9 · pp.5–6]] [[raw/papers/Tree-GRPO.pdf#page=5|S054 Eq.6–12 · pp.5–6]]
 
-两者有不同前提。GiGPO在ALFWorld/WebShop使用最近两步历史与当前观察，QA保留全历史并采用相似度分组；因此相同观察不必代表完整policy上下文相同。Tree-GRPO使用根到节点的完整历史接续搜索；这不证明外部有副作用环境可恢复到同一状态。前一句关于状态信息的区别是本库推断，跨环境分支条件见 [[wiki/harness/Overview#分支能否撤回，评价能否被信任|Harness分支接口]]。[[raw/papers/GiGPO.pdf#page=18|S053 Appendix E.2 · pp.18–19]] [[raw/papers/Tree-GRPO.pdf#page=4|S054 §3.1 · p.4]]
+两者有不同前提。GiGPO论文在ALFWorld/WebShop使用最近两步历史与当前观察，QA保留全历史并采用相似度分组；因此相同观察不必代表完整policy上下文相同。Tree-GRPO使用根到节点的完整历史接续搜索；这不证明外部有副作用环境可恢复到同一状态。跨环境分支条件见 [[wiki/harness/Overview#分支能否撤回，评价能否被信任|Harness分支接口]]。[[raw/papers/GiGPO.pdf#page=18|S053 Appendix E.2 · pp.18–19]] [[raw/papers/Tree-GRPO.pdf#page=4|S054 §3.1 · p.4]]
+
+**S053公开实现补充：**锁定commit `20bd331`后可确认，分组anchor与加入历史、步数等信息的policy输入分别保存；同轨迹重复访问可同组，step均值包括自身，可选只减均值或再除std，合成优势后才进入actor的clip。它支持“分组条件不等于完整策略上下文”的窄判断；若将排序解释成同一决策条件下的动作差异，还需核对组内相关信息，不能反推历史不同就令算法不成立，或已造成有偏/性能损害。当前公开commit未证明等于论文实验版本；具体代码行、实际组样本缺口和进一步实现边界见 [[wiki/papers/GiGPO#公开实现核查：分组观察与策略输入分别保存|S053唯一页]]。[[raw/papers/GiGPO-code-20bd331/agent_system/environments/env_manager.py|环境管理器 L138–208、390–505]]；[[raw/papers/GiGPO-code-20bd331/gigpo/core_gigpo.py|分组与优势 L153–171、243–384]]；[[raw/papers/GiGPO-code-20bd331/verl/workers/actor/dp_actor.py|actor L365–424]]。
 
 **分开检查采样收益与优势收益。**Tree-GRPO的3B多跳QA消融在名义约4条完整轨迹预算下，链GRPO平均31.8，树仅跨树优势33.8，树内加跨树36.8；小组仅树内优势会collapse。它支持两部分共同作用，不能把总增益全归于精细信用。GiGPO删除episode或step信号均损害所测表现，也不表示任意状态分组都正确。两篇预算口径、匹配误差与具体训练设置留在唯一论文页，不能跨任务排名。[[raw/papers/Tree-GRPO.pdf#page=10|S054 Table4 · p.10]] [[raw/papers/GiGPO.pdf#page=9|S053 §5.4、Fig.4 · p.9]]
 
