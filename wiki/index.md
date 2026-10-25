@@ -4,16 +4,16 @@
 
 ## 当前证据边界
 
-- 已纳入 **70 篇学术来源**：S001 综述及 S002–S070 六十九篇独立论文（64篇核心选读、5篇定向补读）。S001 整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；独立论文的实际正文/附录阅读范围见各论文页，均不表示复现实验。
-- **独立论文（含方法、系统、评测与分析）完成摄入数为 69**。综述中的引用不是本库已验证的证据；第一轮核心 65 个方向名额、64 篇不同论文已完成摄入（O2/O4复用S041）；首轮独立分析及5篇定向补读已完成，进入共同增量上的第二轮修订，不表示整轮研究已经完成。
-- 定向查新补读 S066 TRACE、S067 BRIDGE 已完成原文核读、主题整合和主 Agent 内容/结构验收及摄入收尾；两篇已加入上述完成计数，应用未测。补读预算与理由见 [[wiki/harness/Overview#第一轮查新补读|Harness查新补读]]。
-- 方法论原始资料为 [[raw/articles/llm-wiki|LLM Wiki]]，不计入学术来源数。具体工作规则见 [[AGENTS|Schema]]。
-- 定向补读S068 C3、S069 R-Quest已完成原文核读、主题整合、主Agent内容/结构验收与摄入收尾，已加入上述完成数；范围与理由见 [[wiki/optimization/Overview#第一轮查新补读|Optimization查新补读]]。
-- 定向补读S070 SpecRover已完成原文核读、主题整合、主Agent内容/结构验收及摄入收尾，已计入上述完成数；见 [[wiki/harness/Overview#修复时，测试也可能需要重新核对|Harness · 修复与测试]]。
+- 已纳入 **70篇学术来源**：S001综述及S002–S070六十九篇独立论文（64篇核心选读、5篇定向补读），独立论文均完成摄入。核心65个方向名额中O2/O4复用S041，同篇不重复计数。
+- S001整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；其余论文实际正文、附录及实现读取范围见唯一页，均不表示全文所有附录/实现已审或复现实验。未读综述引用和搜索线索不是直接证据。
+- 第一轮核心阅读、补读、两轮Brainstorm与跨模块综合已完成；保留4张材料问题卡，**未确认新颖研究缺口，未选定最终课题**。内容与结构已验收，Obsidian新页应用验收未完成。
+- 五篇综述外补读为TRACE、BRIDGE、SpecRover、C3、R-Quest，理由与预算见[[wiki/harness/Overview#第一轮查新补读|Harness]]和[[wiki/optimization/Overview#第一轮查新补读|Optimization]]；Agent-R/GiGPO同源代码补充不增加论文数。方法论资料[[raw/articles/llm-wiki|LLM Wiki]]不计学术来源数。
 
 ## 从哪里开始
 
-[[wiki/overview|领域总览]]：用系统耦合、任务层级与证据边界理解整张地图，再选择问题深入。
+[[wiki/overview|领域总览]]：用系统耦合、任务层级与证据边界理解整张地图。
+
+**第一轮研究成果从[[wiki/frontier/Overview#第一轮结果与亲读入口|四个问题与亲读路线]]进入**；模块细节分别见[[wiki/harness/Overview#第一轮Brainstorm结案|Harness讨论结案]]、[[wiki/optimization/Overview#第一轮Brainstorm结案|Optimization讨论结案]]。下面的Foundation仍是基础定义的默认图解入口。
 
 ## Foundation：从图解笔记开始
 
@@ -29,10 +29,10 @@
 | --- | --- | --- |
 | Foundation | [[wiki/foundations/Formalization\|定义、运行循环与理解辨析]] | 从状态—观察—上下文理解 Agent 循环，串起任务依赖、H1–H3、记忆与自我演化，并区分定义、推断和评测代理。 |
 | Evolution | [[wiki/foundations/Evolution\|从 Prompt 到 Runtime]] | 控制对象怎样从单次提示扩展到完整执行轨迹？ |
-| Harness | [[wiki/harness/Overview\|外部运行机制]] | 循环、状态、工具、编排、拦截和验证分别负责什么？ |
-| Optimization | [[wiki/optimization/Overview\|能力内化与训练]] | 架构、数据、训练和经验更新怎样组织成能力发展路线？ |
+| Harness | [[wiki/harness/Overview\|外部运行机制]] | 六类运行机制、原文条件比较，以及记忆使用/修复验证的收窄问题。 |
+| Optimization | [[wiki/optimization/Overview\|能力内化与训练]] | 七类内化路线、信用与监督条件，以及分组/训练保留的收窄问题。 |
 | Application | [[wiki/applications/Overview\|应用与评测]] | 不同环境接口提供什么反馈，评测如何归因？ |
-| Frontier | [[wiki/frontier/Overview\|前沿与待检验问题]] | 作者提出哪些开放方向？本库还有哪些证据与概念缺口？ |
+| Frontier | [[wiki/frontier/Overview\|前沿与待检验问题]] | 第一轮研究结果、跨模块联系、查新范围与亲读路线；另保留作者展望。 |
 
 Harness 与 Optimization 的子方向都保留在各自 Overview 的页内导航中；当前没有空白细分页面。
 
@@ -119,6 +119,6 @@ Harness 与 Optimization 的子方向都保留在各自 Overview 的页内导航
 - [[workflows/autoresearch|Auto Research]]：按方向选文、每篇由同模型 subagent 摄入、共享写入、预算与停止条件；包含 Harness / Optimization 的启动和分工方案。
 - [[workflows/brainstorm|Brainstorm]]：共同证据上的独立分析、互评、查新反证与候选问题状态。
 
-**本轮状态（2026-10-25）：**第一轮 Auto Research 已启动，覆盖 Harness 6 类与 Optimization 7 类一级子方向；核心65个方向名额对应的64篇独立论文已完成原文核读、主题整合与内容/结构验收；Obsidian应用未测，首轮独立分析及5篇定向补读已完成，进入共同增量上的第二轮修订，本轮尚未结束。每方向核心选读约 5 篇，先全局去重，再由同模型 subagent 分批摄入；最多同时 3 个子任务，主 Agent 验收与提交 Git。进度和边界见 [[wiki/overview#第一轮自主研究|第一轮自主研究]]；候选不计已读。
+**本轮状态（2026-10-25）：**R001文献研究完成，应用验收未完成；Harness 6类、Optimization 7类各5个核心名额，去重64篇，另补读5篇。论文由同模型subagent分批读取、整合和收尾，最多3个子任务并行；主Agent调度、交付验收、跨模块综合与本地Git检查点。六份独立首稿后交换，六个角色完成最后第二轮，未另开第三轮。范围及各批提交见[[wiki/overview#第一轮自主研究|第一轮自主研究]]；未实验、未训练、未推送远程，本轮停止。
 
 新论文来了先整合已有页面；新问题形成独立内容时再拆页。自主研究在选定范围内引导后续阅读，不代替用户确定最终研究方向。[[wiki/frontier/Overview#本库的待检验问题|现有问题]] 仍是探索记录，是否追踪取决于后续选文与证据。

@@ -110,3 +110,5 @@ Fig.6将选择后precision与其他工具不筛选地提交所有补丁时的pas
 - 最后对照[[raw/papers/SpecRover.pdf#page=7|§V.A Patch Correctness · p.7]]和[[raw/papers/SpecRover.pdf#page=8|Table II · p.8]]，区分测试通过、人工语义参照、选择后precision与覆盖分母。
 
 已整合到[[wiki/harness/Overview#修复时，测试也可能需要重新核对|Harness · 修复与测试]]，与“选择误差与纠错净收益要分别测量”衔接；索引、补读表与摄入日志已同步，主Agent内容/结构验收通过并计入完成数。Obsidian图表、来源跳转与窄分栏阅读均未实测。
+
+本轮跨模块整合：[[wiki/frontier/Overview#检查结果如何成为训练材料|Frontier · 检查结果如何成为训练材料]]。该处保存与其他已读来源的条件比较，不增加本文的实证支持范围。

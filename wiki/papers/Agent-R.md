@@ -147,3 +147,5 @@ Llama-3.1-8B-Instruct在WebShop、SciWorld、TextCraft三环境共同训练。MC
 >   - SHA-256：`6d2894010454d4986f2ea171bba2f7ffd79648040804e1f51989ffb5a6bb81e5`
 > - [[raw/papers/Agent-R-code-82fcc1c/_metadata/tree.json|_metadata/tree.json]]；[获取URL](https://api.github.com/repos/ByteDance-Seed/Agent-R/git/trees/82fcc1ca7873b460949ed49022146dd988c32e31?recursive=1)
 >   - SHA-256：`e3c70b04094e8e77e249065b2b500ac197fc6fafee6e3275d78289b3790bf7ed`
+
+本轮跨模块整合：[[wiki/frontier/Overview#保存证据与恢复环境是两个条件|Frontier · 保存证据与恢复环境是两个条件]]。该处保存与其他已读来源的条件比较，不增加本文的实证支持范围。

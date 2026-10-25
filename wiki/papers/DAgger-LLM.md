@@ -69,3 +69,5 @@ GRPO在293任务SkyRL-v0子集、8采样/题上训练；与DAgger不同数据、
 已整合到 [[wiki/optimization/Overview#On-Policy Distillation|Optimization · OPD]]；当前已完成摄入，内容与结构已验收。原件存在与哈希已核对；Obsidian渲染、公式及跳转未测（本轮已停用Computer Use）。
 
 返回 [[wiki/index|索引]]。
+
+本轮跨模块整合：[[wiki/frontier/Overview#检查结果如何成为训练材料|Frontier · 检查结果如何成为训练材料]]。该处保存与其他已读来源的条件比较，不增加本文的实证支持范围。

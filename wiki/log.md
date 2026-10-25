@@ -473,3 +473,10 @@
 
 - [[wiki/papers/SpecRover|SpecRover]]：综述外补读规格推断、补丁与测试的双重审查、回归失败重试和候选选择；明确旧测试可因合法需求变化而失效，关闭宽泛“修复＋回归检查”的新颖性提法。主要落点为 [[wiki/harness/Overview#修复时，测试也可能需要重新核对|Harness · 修复与测试]]。
 - 保留验收测试通过、人工语义参照、reviewer选择分母及连续需求回归的不同边界；主Agent内容/结构验收通过，三份Raw哈希匹配；Obsidian应用未测，未审计实现或复现实验。
+
+
+## [2026-10-25] query | 第一轮双模块研究与Brainstorm结案
+
+- 13方向65个核心名额去重64篇，另5篇查新补读；六份独立首稿基于`6644c4c`，补证后六个角色基于`46e3db7`完成第二轮及跨模块核查。保留4张材料问题卡，记录宽泛构思的覆盖/暂缓理由，未确认新颖研究缺口。
+- 主要落点为[[wiki/harness/Overview#第一轮Brainstorm结案|Harness]]、[[wiki/optimization/Overview#第一轮Brainstorm结案|Optimization]]及[[wiki/frontier/Overview#第一轮结果与亲读入口|Frontier]]；后者保存接口联系、16条定向查新范围与短阅读路线，索引/总览同步。
+- 内容与结构检查完成，Raw未改、旧日志仅追加；Obsidian应用验收未完成（用户Escape停止UI后未继续）。本轮文献研究收束，未实验、未训练或推送远程。

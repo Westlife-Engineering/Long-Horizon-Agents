@@ -102,3 +102,5 @@ AgentAsk、MOC、VeriMAP及SILO-BENCH/TeamBench等原文未在本次独立读取
 本页页码从所存PDF第一页计，PDF正文未逐页印出页脚页码。原件以不覆盖方式归档并核对哈希；临时提取、原页渲染与发布页快照位于本轮临时区。
 
 已整合到[[wiki/harness/Overview#从故障分类到选择性交接修复|Harness · 选择性交接修复]]及[[wiki/harness/Overview#选择误差与纠错净收益要分别测量|验证]]，索引同步，主 Agent 内容/结构验收通过，摄入收尾已完成。与[[wiki/papers/TRACE|TRACE]]共同强调局部证据条件与后续使用分离：TRACE控制返回上下文，BRIDGE控制交接消息，两者均不能用局部通过代替全任务成功。
+
+本轮跨模块整合：[[wiki/frontier/Overview#局部通过、终局成功与优化信号分别举证|Frontier · 局部通过、终局成功与优化信号分别举证]]。该处保存与其他已读来源的条件比较，不增加本文的实证支持范围。
