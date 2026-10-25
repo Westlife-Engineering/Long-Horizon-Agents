@@ -403,3 +403,9 @@
 
 - [[wiki/papers/Self-Distillation-Zero|Self-Distillation-Zero]]：区分SRT双损失与冻结教师蒸馏的阶段贡献，保留数学代码任务边界、token偏好与因果信用差异，以及预算/配置口径待核查。主要落点为 [[wiki/optimization/Overview#On-Policy Distillation|Optimization · OPD]]。
 - 内容与结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。
+
+
+## [2026-10-25] query | S050 Agent-R实现核查：采树、拼接与恢复执行
+
+- 为 [[wiki/papers/Agent-R|S050 Agent-R]] 归档官方公开commit `82fcc1c`的源码及元数据补充材料；区分MCTS节点reset/重放、离线训练文本拼接、真实失败前缀后的在线恢复，修订 [[wiki/harness/Overview#分支能否撤回，评价能否被信任|Harness]] 与 [[wiki/optimization/Overview#学到修订行为以后，环境是否能继续|Optimization]] 的旧实现未核读状态，学术来源数不变。
+- 恢复实验入口、底层wait/reset语义与最终训练mask仍有未核验范围，不由训练拼接疑点否定论文恢复结果。主审通过，原始字节与哈希一致，局部结构检查通过；Obsidian应用未测，未执行代码或复现实验。

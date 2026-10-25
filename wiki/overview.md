@@ -81,6 +81,7 @@ flowchart LR
 | Harness · Hooks 与中间件 | S022–S026 | `0e233fa` | 5 篇完成摄入，比较隔离、规则、执行时点与检查记忆；Obsidian 应用未测 |
 | Harness · 验证 | S027–S031 | `71805d5` | 5 篇完成摄入，区分评分、取证、纠错净收益与奖励粒度；Obsidian 应用未测 |
 | Optimization · Agentic RL | S051–S055 | `c3dfead` | 5 篇完成摄入，比较状态分布、搜索采样、反馈与信用单位；Obsidian 应用未测 |
+| Optimization · On-Policy Distillation | S056–S060 | `4a5bd9d` | 5 篇完成摄入，区分token与环境状态、教师信息权限，并独立核查理论边界；Obsidian 应用未测 |
 
 本轮结束条件：各方向选读与综合完成，或相应预算/证据可用性达到边界；保留未完成项与原因。交付知识变化、关键机制差异、关闭与保留的问题、反对证据和建议用户亲读的原文位置。实际已纳入数量与阅读状态以 [[wiki/index|索引]] 为准，选文和待验收工作不升级完成状态。
 

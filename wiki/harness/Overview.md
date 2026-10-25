@@ -30,6 +30,11 @@ sources:
   - "[[raw/papers/Multi-Agent-Failures.pdf]]"
   - "[[raw/papers/Agent-Distillation.pdf]]"
   - "[[raw/papers/Agent-R.pdf]]"
+  - "[[raw/papers/Agent-R-code-82fcc1c/path_collection.py]]"
+  - "[[raw/papers/Agent-R-code-82fcc1c/mcts_utils/llm_server.py]]"
+  - "[[raw/papers/Agent-R-code-82fcc1c/mcts_utils/webshop/mcts_ws.py]]"
+  - "[[raw/papers/Agent-R-code-82fcc1c/mcts_utils/textcraft/mcts_tc.py]]"
+  - "[[raw/papers/Agent-R-code-82fcc1c/mcts_utils/sciworld/mcts_sci.py]]"
   - "[[raw/papers/IsolateGPT.pdf]]"
   - "[[raw/papers/AgentSpec.pdf]]"
   - "[[raw/papers/ShieldAgent.pdf]]"
@@ -75,7 +80,7 @@ Harness 是围绕模型组织执行的机制：安排何时调用模型、带入
 
 ToT 回退的是保存在搜索程序中的部分解；LATS 将这种选择扩展到行动与观察，却明确要求环境可恢复。**本库推断：**重新放入旧历史不等于撤销外部副作用，真实交互若不能重置，就需要另行说明分支怎样评估与提交。ToT 的 24 点和填字实验不能独自支持现实长程任务的恢复能力；LATS 的受控环境也不能替代不可逆任务证据。[[raw/papers/Tree-of-Thoughts.pdf#page=4|S005 · §3–4 · pp.4–5]] [[raw/papers/LATS.pdf#page=14|S006 · Appendix B · p.14]]
 
-训练中的修复也须说明状态接口。[[wiki/papers/Agent-R|S050 Agent-R，已完成摄入，应用未测]]用MCTS构造“坏前缀＋修订信号＋同父好分支后缀”，再以SFT学习恢复；原文明确修订信号本身不改变环境。本库尚未核读拼接后状态一致性、重放和wait/OK处理的实现，应先补这层证据；这不是已经证明方法无法恢复。其特定失败轨迹续做实验与不可逆动作保证是不同主张，详见 [[wiki/optimization/Overview#学到修订行为以后，环境是否能继续|训练与恢复接口]]。[[raw/papers/Agent-R.pdf#page=5|§3.1、Eq.3 · p.5]] [[raw/papers/Agent-R.pdf#page=21|Appendix B · p.21]]
+训练中的修复也须说明状态接口。[[wiki/papers/Agent-R#公开实现核查：三个阶段怎样处理环境状态|S050 Agent-R的公开实现核查]]将三处操作分开：**MCTS采树会reset并重放节点动作；训练样本只拼接坏前缀、修订信号与好后缀文本；恢复函数先真实执行给定失败前缀，再在线续做。** 前者不自动证明训练拼接后的状态一致性，后者也不能被概括为纯文本评测。已核读并归档commit `82fcc1c`；实际恢复实验入口与底层AgentGym的wait/reset语义仍未确认，不能保证任意不可逆状态都可恢复。代码行定位见唯一论文页，训练接口见 [[wiki/optimization/Overview#学到修订行为以后，环境是否能继续|训练与恢复接口]]。原文拼接定义与修订信号边界见 [[raw/papers/Agent-R.pdf#page=5|§3.1、Eq.3 · p.5]]、[[raw/papers/Agent-R.pdf#page=21|Appendix B · p.21]]。
 
 **执行前模拟提供另一种分支方式（S039，已完成摄入，应用未测）：**[[wiki/papers/WebDreamer|WebDreamer]] 用世界模型预测候选动作后的页面变化、由 LLM 评分，只执行选中动作，再用真实新观察重新规划。它不需要为每个候选实际回退网站，但也不保证模拟正确或操作安全；主实验模拟 H=1，更深模拟反而受到不可用动作幻觉影响。Dreamer-7B 的训练对象是变化描述，score 仍由 GPT-4o 提供，详见 [[wiki/optimization/Overview#生成了什么，真实执行到了哪里|数据与环境]]。[[raw/papers/WebDreamer.pdf#page=4|S039 §3.2 · pp.4–5]] [[raw/papers/WebDreamer.pdf#page=8|§5.1 · p.8]]
 

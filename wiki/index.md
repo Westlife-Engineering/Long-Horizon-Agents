@@ -86,7 +86,7 @@ Harness 与 Optimization 的子方向都保留在各自 Overview 的页内导航
 | S047 | [[wiki/papers/AgentTuning\|AgentTuning]] | 完成摄入，应用未测；固定教师轨迹与通用对话混合、能力保留与分布边界 |
 | S048 | [[wiki/papers/ATLAS\|ATLAS]] | 完成摄入，应用未测；完整历史上的关键步骤监督、语义选择与成本条件 |
 | S049 | [[wiki/papers/Agent-Distillation\|Agent Distillation]] | 完成摄入，应用未测；教师前缀、离线工具蒸馏与测试时动作筛选 |
-| S050 | [[wiki/papers/Agent-R\|Agent-R]] | 完成摄入，应用未测；当前actor再采样、修复SFT与环境状态一致性待核查 |
+| S050 | [[wiki/papers/Agent-R\|Agent-R]] | 完成摄入，应用未测；迭代SFT及采树重放、训练拼接、在线恢复三阶段的代码证据与边界 |
 | S051 | [[wiki/papers/Search-R1\|Search-R1]] | 完成摄入，应用未测；在线搜索状态、终局EM与检索token损失屏蔽 |
 | S052 | [[wiki/papers/ToolRL\|ToolRL]] | 完成摄入，应用未测；标准调用的细粒度奖励与带历史单步训练边界 |
 | S053 | [[wiki/papers/GiGPO\|GiGPO]] | 完成摄入，应用未测；重复环境状态分组、折扣回报与两级优势 |

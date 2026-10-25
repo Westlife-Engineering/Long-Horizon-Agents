@@ -27,6 +27,11 @@ sources:
   - "[[raw/papers/ATLAS.pdf]]"
   - "[[raw/papers/Agent-Distillation.pdf]]"
   - "[[raw/papers/Agent-R.pdf]]"
+  - "[[raw/papers/Agent-R-code-82fcc1c/path_collection.py]]"
+  - "[[raw/papers/Agent-R-code-82fcc1c/mcts_utils/llm_server.py]]"
+  - "[[raw/papers/Agent-R-code-82fcc1c/mcts_utils/webshop/mcts_ws.py]]"
+  - "[[raw/papers/Agent-R-code-82fcc1c/mcts_utils/textcraft/mcts_tc.py]]"
+  - "[[raw/papers/Agent-R-code-82fcc1c/mcts_utils/sciworld/mcts_sci.py]]"
   - "[[raw/papers/AgentPRM-Xi.pdf]]"
   - "[[raw/papers/Search-R1.pdf]]"
   - "[[raw/papers/ToolRL.pdf]]"
@@ -169,7 +174,7 @@ AgentTuning的混合训练优于只用agent数据，但13B在held-out上的gener
 
 ### 学到修订行为以后，环境是否能继续
 
-Agent-R的恢复测试让模型从基础Llama失败轨迹的随机截断处继续，最多50轮，直接检查特定失败状态上的后续结果。这比只看一般任务平均分更接近恢复问题；但构造训练数据时把坏前缀接到同父好分支后缀，修订信号本身不改变环境。**本库材料缺口：**拼接后怎样核验环境状态一致性、需要哪些重放或补偿操作，当前未核读实现；应优先检查代码与执行记录，再判断能否成为研究问题。现有材料既不能保证任意不可逆任务恢复，也不能据此断言方法不能恢复。[[raw/papers/Agent-R.pdf#page=5|S050 §3.1、Eq.3–4 · p.5]] [[raw/papers/Agent-R.pdf#page=11|§4.4、Table3 · p.11]] [[raw/papers/Agent-R.pdf#page=21|Appendix B、Eq.10 · p.21]]
+Agent-R的恢复测试让模型从基础Llama失败轨迹的随机截断处继续，最多50轮，检查特定失败状态上的后续结果。[[raw/papers/Agent-R.pdf#page=11|S050 §4.4、Table3 · p.11]] **公开实现核查已缩小材料缺口：**MCTS采树有reset与动作前缀重放；离线训练构造直接拼接坏前缀、修订信号和好分支文本，不在构造函数内执行后缀核验；恢复函数则真实执行传入前缀后在线续做。三者不能互相替代为状态一致性证明。构造数据的loss字段已见，最终训练mask及恢复实验入口尚未完整核验；底层环境服务语义仍未知。固定commit `82fcc1c`的原始快照、行定位和剩余范围见 [[wiki/papers/Agent-R#公开实现核查：三个阶段怎样处理环境状态|唯一论文页]]。因此现有证据既不保证任意不可逆任务恢复，也不支持因训练拼接疑点否定已报告的恢复评测。
 
 这与 [[wiki/harness/Overview#分支能否撤回，评价能否被信任|运行时分支与状态恢复]] 形成接口：SFT提供行动倾向，harness决定哪些动作实际执行、失败后的状态怎样保留/恢复。ATLAS的关键步语义判断、Agent-R的actor判错、SAG的可执行/一致输出也各有误差，不能当作同一种可靠过程标签。当前未形成已查新的研究缺口。
 
