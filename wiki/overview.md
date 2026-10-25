@@ -10,7 +10,7 @@ sources:
 
 长程 Agent 要在许多彼此依赖的决策中持续推进一个目标：行动会改变环境，观察会修正计划，先前的约束与状态还要在后续步骤中保持有效。S001 用这种依赖关系界定“长程”，而不是单看运行时间或 token 数。[[raw/papers/Towards Long-Horizon Agents.pdf#page=7|S001 · §2.1 · pp.7,9]]
 
-本页是对 [[wiki/papers/Towards Long-Horizon Agents|S001 综述]] 的初步组织，尚不是多篇独立论文相互支持的共识。
+本页以 [[wiki/papers/Towards Long-Horizon Agents|S001 综述]] 为导航起点；Harness 与 Optimization 已加入第一轮64篇独立论文的机制比较。下方六视角图仍是综述的组织关系，具体证据支持范围以两个模块及唯一论文页为准，不把全部来源视为支持同一个结论。
 
 ## 一条贯穿全库的主线
 
@@ -55,7 +55,7 @@ flowchart LR
 
 ## 第一轮自主研究
 
-2026-10-25 用户启动，当前为**分批原文核读与整合中**。两个模块已完成综述引用与原始发布页身份初筛：65 个方向名额，去重后 64 篇独立候选，预留 S002–S065；AgentGym-RL 在两个方向复用。候选队列见 [[wiki/harness/Overview#第一轮选读队列|Harness]] 与 [[wiki/optimization/Overview#第一轮选读队列|Optimization]]。目标是建立直接原文支持的机制比较和候选问题，不预先认定研究缺口、不启动实验。
+2026-10-25 用户启动，当前为**核心摄入完成，进入独立 Brainstorm**。两个模块的65个方向名额已完成摄入，去重后64篇独立论文（S002–S065）；AgentGym-RL 在两个方向复用。逐篇选择理由与完成状态见 [[wiki/harness/Overview#第一轮选读队列|Harness]] 与 [[wiki/optimization/Overview#第一轮选读队列|Optimization]]。实际读取范围见唯一论文页，并非每篇所有附录或实现均已读完。目标是建立直接原文支持的机制比较和候选问题，不预先认定研究缺口、不启动实验。
 
 | 范围 | 核心选读 | 定向补读上限 | 组织方式 |
 | --- | --- | --- | --- |
@@ -83,6 +83,7 @@ flowchart LR
 | Optimization · Agentic RL | S051–S055 | `c3dfead` | 5 篇完成摄入，比较状态分布、搜索采样、反馈与信用单位；Obsidian 应用未测 |
 | Optimization · On-Policy Distillation | S056–S060 | `4a5bd9d` | 5 篇完成摄入，区分token与环境状态、教师信息权限，并独立核查理论边界；Obsidian 应用未测 |
 | 跨模块 · 恢复接口核查 | S050 同源代码补充 | `9c71317` | 区分采树重放、训练拼接与在线恢复，固定commit的源码原件已归档；未执行代码 |
+| Optimization · 自我演化 | S061–S065 | `f50ac8d` | 5篇完成摄入，比较任务/轨迹/策略/评分器更新及反馈锚点；Obsidian应用未测 |
 
 本轮结束条件：各方向选读与综合完成，或相应预算/证据可用性达到边界；保留未完成项与原因。交付知识变化、关键机制差异、关闭与保留的问题、反对证据和建议用户亲读的原文位置。实际已纳入数量与阅读状态以 [[wiki/index|索引]] 为准，选文和待验收工作不升级完成状态。
 
