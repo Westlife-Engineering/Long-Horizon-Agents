@@ -241,3 +241,28 @@
 
 - 摄入 [[wiki/papers/DoReMi|DoReMi]] NeurIPS 2023正式版，整合至 [[wiki/optimization/Overview#预训练与中期训练|预训练与中期训练]]；整合小参考/代理模型的excess loss到大模型重采样路线，保留1024长度、跨尺度迁移和额外搜索成本边界。
 - 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S017 固定角色与结构化交接
+
+- 摄入 [[wiki/papers/MetaGPT|MetaGPT]] arXiv v7；把 SOP、共享池、订阅依赖和执行测试反馈整合至编排比较，保留角色/预算混杂与基线提示敏感性。主要落点为 [[wiki/harness/Overview#编排|编排]] 与验证联系。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S018 双账本与动态调度
+
+- 摄入 [[wiki/papers/Magentic-One|Magentic-One]] arXiv v1；整合事实/进展账本、停滞重规划及工具团队分工，区分固定成员、动态调度和跨任务学习。主要落点为 [[wiki/harness/Overview#编排|编排]] 与验证联系。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S019 通信图与提示优化
+
+- 摄入 [[wiki/papers/GPTSwarm|GPTSwarm]] PMLR 会议版；区分边分布学习、节点提示更新和框架展示，明确 GAIA 无节点/边优化，以及填字同题池与 best-state 指标边界。主要落点为 [[wiki/harness/Overview#编排|编排]] 与验证联系。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S020 按结果更新子任务
+
+- 摄入 [[wiki/papers/TDAG|TDAG]] arXiv v2；整合动态任务拆解、定制文档和文本技能，保留分层评分与错误表分母；WebShop/TextCraft 未启用 Agent Generation。主要落点为 [[wiki/harness/Overview#编排|编排]] 与验证联系。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S021 失败分类与因果归因
+
+- 摄入 [[wiki/papers/Multi-Agent-Failures|Multi-Agent-Failures]] NeurIPS 2025 会议版；将职责、信息交接和验证作为诊断轴，保留标注/干预条件与过程标签和终局失败的区别，原文图文计数张力留论文页。主要落点为 [[wiki/harness/Overview#编排|编排]] 与验证联系。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。

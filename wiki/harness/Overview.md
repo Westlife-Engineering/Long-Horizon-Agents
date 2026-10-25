@@ -23,6 +23,11 @@ sources:
   - "[[raw/papers/MCPMark.pdf]]"
   - "[[raw/papers/SWE-Gym.pdf]]"
   - "[[raw/papers/WebDreamer.pdf]]"
+  - "[[raw/papers/MetaGPT.pdf]]"
+  - "[[raw/papers/Magentic-One.pdf]]"
+  - "[[raw/papers/GPTSwarm.pdf]]"
+  - "[[raw/papers/TDAG.pdf]]"
+  - "[[raw/papers/Multi-Agent-Failures.pdf]]"
 ---
 
 # Harness：外部运行机制
@@ -137,7 +142,40 @@ MCPMark 的 127 个任务、38 个初始状态覆盖五类服务；GitHub 案例
 
 编排把工作分配到多个执行循环：拆分任务和角色，决定协调拓扑，调整路由/协调策略，再通过协议交换消息与产物。这是工作组织问题；不能由“用了多个 Agent”直接推出能力提升。[[raw/papers/Towards Long-Horizon Agents.pdf#page=29|S001 · §4.4 · Fig.9 · p.29]]
 
-细分导航：Decomposition and Roles；Coordination Topologies；Orchestration Optimization；Agent Protocols。后续需要核查角色分工、通信、重复劳动与验证对端到端表现的影响。
+细分导航：Decomposition and Roles；Coordination Topologies；Orchestration Optimization；Agent Protocols。第一轮 S017–S021 已完成摄入与本节整合，内容与结构验收通过；Obsidian 应用未测。这里比较运行机制和证据边界，不把不同任务的分数排成优劣。
+
+### 谁负责分工，交接时保留什么
+
+**本库比较轴：**团队成员是否固定、执行顺序是否固定、信息怎样流动，是三个不同问题。固定成员可以动态调度；生成新执行者也不意味着新的模型参数；通信图被学习也不等于每次行动都在重新规划。
+
+| 分工与控制责任 | 共享或传递的状态 | 反馈后改变什么 | 直接证据 |
+| --- | --- | --- | --- |
+| MetaGPT：预定义专业角色按 SOP 协作 | PRD、架构/接口、任务列表、代码等进入共享 message pool，按角色订阅，依赖满足后行动 | 工程师依据执行测试和历史修复代码；主流程仍由既定 SOP 组织 | [[wiki/papers/MetaGPT\|S017 MetaGPT]]；[[raw/papers/MetaGPT.pdf#page=4\|§3、Fig.2 · pp.4–6]] |
+| Magentic-One：Orchestrator 选择固定工具团队中的执行者 | Task Ledger 区分事实、待查/待推导信息、猜测和计划；Progress Ledger 保存完成/进展判断及下一指令 | 每步调整执行者与指令；停滞超过阈值后更新计划并重置 Agent 上下文 | [[wiki/papers/Magentic-One\|S018 Magentic-One]]；[[raw/papers/Magentic-One.pdf#page=5\|§4.1、Fig.2 · pp.5–7]] |
+| TDAG：MainAgent 拆任务，Generator 定制当前执行者 | 子任务与前序结果进入执行；定制工具文档和检索到的文本技能提供上下文 | 前序结果更新后续子任务；成功判定后的经验总结更新技能库 | [[wiki/papers/TDAG\|S020 TDAG]]；[[raw/papers/TDAG.pdf#page=5\|§4、Algorithm1 · pp.5–7]] |
+| GPTSwarm：Agent 是操作子图，团队是组合 DAG | 节点沿边接收前驱输出；节点历史可用于提示改进 | 用任务 utility 学习 Agent 间边分布，或优化节点提示；固定图执行按拓扑依赖进行 | [[wiki/papers/GPTSwarm\|S019 GPTSwarm]]；[[raw/papers/GPTSwarm.pdf#page=2\|§2、Algorithms1–3 · pp.2–4]] |
+
+这组比较修正了“固定与动态”过粗的分类：Magentic-One 团队固定但路由与计划可变，TDAG 同时定制执行者上下文，GPTSwarm 则把通信边分布作为学习对象。上述主要改变发生在外部控制、提示与状态，不能仅因使用 REINFORCE 就归为基础 LLM 权重训练。[[raw/papers/Magentic-One.pdf#page=19|S018 §6.2 · p.19]] [[raw/papers/TDAG.pdf#page=6|S020 §4.2 · p.6]] [[raw/papers/GPTSwarm.pdf#page=4|S019 §§2.3–2.4 · p.4]]
+
+与 [[wiki/harness/Overview#上下文与记忆|记忆]] 相接时，还要检查状态的有效期：Magentic-One 明确丢弃任务间经验；TDAG 保留文本技能，但作者承认环境不能保证技能正确。本库尚未确认 TDAG 测试遍历时技能库的初始化、重置与顺序，不能据“有库”直接推定独立任务上的迁移收益。**本库推断：**清除 Agent 上下文与撤销外部动作也不同，重规划后的状态一致性须另有证据。[[raw/papers/Magentic-One.pdf#page=6|S018 §4.1 · p.6]] [[raw/papers/Magentic-One.pdf#page=19|§6.2 · p.19]] [[raw/papers/TDAG.pdf#page=6|S020 §4.2 · pp.6–7]] [[raw/papers/TDAG.pdf#page=12|Appendix B · p.12]]
+
+### 整体系统有效，是否知道哪项编排起了作用
+
+四篇方法论文支持的作用范围不同，需要保留消融究竟移除了什么。
+
+- **角色增加不等于纯数量效应。**MetaGPT 的角色消融仅对两项任务平均，增加角色时文档、调用与成本也改变。Magentic-One 删除专项 Agent 时同时减少工具能力；把完整协调者换成 GroupChat 又一次移除账本、规划、进展追踪、循环检测和明确指令。因此可以说这些组合在相应实验中有帮助，不能把收益单独归给 Agent 数量或某一本账本。[[raw/papers/MetaGPT.pdf#page=9|S017 §4.4、Table3 · p.9]] [[raw/papers/Magentic-One.pdf#page=12|S018 §5.3、Fig.3 · pp.12–14]]
+- **框架展示不等于优化组件的证据。**GPTSwarm 的 GAIA 实验明确没有节点或边优化；TDAG 的 WebShop/TextCraft 实验明确不启用 Agent Generation。这些结果分别支持所测框架配置或动态拆解，不能挪用为拓扑学习、动态定制执行者的泛化证明。[[raw/papers/GPTSwarm.pdf#page=7|S019 §3.4 · pp.7–8]] [[raw/papers/TDAG.pdf#page=9|S020 §5.5 · p.9]]
+- **成绩需要对应反馈与终局选择。**GPTSwarm 的填字优化/评估使用同20题，utility 是候选中的 best-state word accuracy；TDAG 的旅行主成绩是分层细粒度评分，非整任务成功率。额外优化、候选搜索和测试反馈的费用与权限必须保留，不能只比较最终一个分数。[[raw/papers/GPTSwarm.pdf#page=5|S019 §3.2 · pp.5–6]] [[raw/papers/GPTSwarm.pdf#page=25|Table11 · p.25]] [[raw/papers/TDAG.pdf#page=4|S020 §3.3 · pp.4–5]]
+
+### 失败发生在设计、交接，还是验收
+
+[[wiki/papers/Multi-Agent-Failures|S021 MAST]] 提供分析反面证据的分类工具：系统设计问题覆盖职责、历史和终止规则；Agent 间错位覆盖信息未传、未用、未澄清和偏离目标；任务验证覆盖过早终止、检查缺失和错误检查。其14类模式来自轨迹归纳，不是14种已隔离的因果机制；标注一致性也不等于根因已被完全识别。[[raw/papers/Multi-Agent-Failures.pdf#page=5|§3、Table2 · pp.5–6]] [[raw/papers/Multi-Agent-Failures.pdf#page=24|Appendix A · pp.24–25]]
+
+**本库推断：**比较交接机制时，可沿“执行者是否掌握关键信息—是否传给协调者—协调者是否采用—最终结果是否被核查”追踪同一事实。MAST 的电话号码登录例子说明，有接口文档和消息通道仍可能漏传决定性约束。这支持细分检查责任，但作者关于 social reasoning 和目标训练的解释仍是观点，不能据单例确立唯一根因。[[raw/papers/Multi-Agent-Failures.pdf#page=6|S021 Fig.3 · p.6]] [[raw/papers/Multi-Agent-Failures.pdf#page=8|§4 FC2 · p.8]]
+
+MAST 的干预案例进一步说明效果有条件：AG2 在不同模型上对拓扑改变的响应不同；ChatDev 的32项 ProgramDev-v0 测试改变验证/终止流程后，任务准确率得到改善，但不是全1642条数据上的统一提升。不同系统在不同任务的失败率不能互排；成功轨迹也会带有失败模式标签，因此标签减少与终局成功要分别检查。原文个别图文计数张力保留在唯一论文页，不据此否定任务结果。[[raw/papers/Multi-Agent-Failures.pdf#page=26|S021 Fig.5 · p.26]] [[raw/papers/Multi-Agent-Failures.pdf#page=33|Appendix H、Table5 · pp.33–35]] [[raw/papers/Multi-Agent-Failures.pdf#page=36|Appendix J.1 · p.36]]
+
+**后续证据需求，尚非已成立研究缺口：**在匹配工具能力、反馈权限和总调用预算后，如何通过受控交接干预区分发送端遗漏、接收端忽略与状态截断？MAST 已为这些现象提供分类，不能只重新命名就称为创新；当前应先确定可操作的比较条件。
 
 ## Hooks 与中间件
 
@@ -154,6 +192,8 @@ Hooks 在运行流程的特定位置介入，让动作继续、阻止动作或�
 **工具方向的直接证据（S016，已完成摄入，应用未测）：**MCPMark 把运行正常结束却未满足任务约束记为隐式失败；这说明缺少异常不能替代结果检查。其程序验收经过环境结果扰动和人工交叉检查，但本库未审查全部 verifier 源码，论文也未证明验证器完备。应把运行时模型 critic、工具异常与最终环境验收分别记录，具体机制与重复运行口径见 [[wiki/harness/Overview#协议接通与任务完成之间还差什么证据|工具方向比较]]。[[raw/papers/MCPMark.pdf#page=8|S016 §4.2、Fig.5 · pp.8–9]] [[raw/papers/MCPMark.pdf#page=15|Appendix A · pp.15–16]]
 
 **可执行标签与学习验证器（S038，已完成摄入，应用未测）：**[[wiki/papers/SWE-Gym|SWE-Gym]] 用真实仓库测试产生轨迹成败标签，再训练 outcome verifier 在候选轨迹间预测和选择。OpenHands 的32B策略/32B验证器在 SWE-Bench Verified 上，16条候选的 Pass@16=42.8%，选出一条的 Best@16=32.0%；前者是覆盖上界，后者才包含选择误差。测试标签仍受测试覆盖约束，verifier又增加预测误差。与 MCPMark 的程序检查区别在于判断如何产生；数据来源、筛选与预算见 [[wiki/optimization/Overview#数据与环境合成|Optimization]]。[[raw/papers/SWE-Gym.pdf#page=4|S038 §3.1 · p.4]] [[raw/papers/SWE-Gym.pdf#page=7|§5.1.1、Fig.3 · p.7]]
+
+**编排中的验证责任（S017–S021 已完成摄入，应用未测）：**MetaGPT 的执行测试反馈、Magentic-One 的“任务完成”自判，以及 MAST 对最终目标检查不足的观察，分别涉及测试、控制和诊断。验证动作存在不代表覆盖用户要求；MAST 也发现成功轨迹可含验证缺陷。具体角色与状态交接见 [[wiki/harness/Overview#失败发生在设计、交接，还是验收|编排诊断]]，不能把模型共识或无运行异常直接当作完成证据。[[raw/papers/MetaGPT.pdf#page=6|S017 §3.3 · p.6]] [[raw/papers/Magentic-One.pdf#page=7|S018 §4.1 · p.7]] [[raw/papers/Multi-Agent-Failures.pdf#page=8|S021 §4 FC3 · p.8]] [[raw/papers/Multi-Agent-Failures.pdf#page=36|Appendix J.1 · p.36]]
 
 ## 后续如何增长
 
@@ -200,11 +240,11 @@ Hooks 在运行流程的特定位置介入，让动作继续、阻止动作或�
 
 | 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
 | --- | --- | --- | --- |
-| S017 · [MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework](https://arxiv.org/abs/2308.00352) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=29\|S001 §§4.4.1；§4.4.4 · p.29,30 · 引文219]] | 作为固定角色和标准流程的代表，与动态生成、中央协调和优化图比较，核查结构收益与角色提示收益如何分离。 | 候选未读 |
-| S018 · [Magentic-One: A Generalist Multi-Agent System for Solving Complex Tasks](https://arxiv.org/abs/2411.04468) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=30\|S001 §§4.4.2 · p.30 · 引文157]] | 选择中央协调者维护进展、重规划和恢复的通用任务系统，比较模块化执行与固定流水线。 | 候选未读 |
-| S019 · [GPTSwarm: Language Agents as Optimizable Graphs](https://proceedings.mlr.press/v235/zhuge24a.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=30\|S001 §§4.4.3 · p.30 · 引文897]] | 选择可优化的节点与连边表示，追问编排优化改变信息流还是基础模型，以及优化成本和泛化条件。 | 候选未读 |
-| S020 · [TDAG: A Multi-Agent Framework based on Dynamic Task Decomposition and Agent Generation](https://arxiv.org/abs/2402.10178) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=29\|S001 §§4.4.1 · p.29 · 引文660]] | 选择动态任务拆解和临时 Agent 生成，对照固定角色组，核查粒度、上下文交接和级联失败。 | 候选未读 |
-| S021 · [Why Do Multi-Agent LLM Systems Fail?](https://papers.nips.cc/paper_files/paper/2025/hash/b1041e52d3be19f0a9bc491657488e4a-Abstract-Datasets_and_Benchmarks_Track.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=29\|S001 §§4.4；§4.4.1 · p.29,30 · 引文48]] | 加入失败分析作为反证视角，核查角色不清、协调错位和验证缺失的证据，避免只收集系统成功故事。 | 候选未读 |
+| S017 · [MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework](https://arxiv.org/abs/2308.00352) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=29\|S001 §§4.4.1；§4.4.4 · p.29,30 · 引文219]] | 作为固定角色和标准流程的代表，与动态生成、中央协调和优化图比较，核查结构收益与角色提示收益如何分离。 | [[wiki/papers/MetaGPT\|完成摄入，应用未测]] |
+| S018 · [Magentic-One: A Generalist Multi-Agent System for Solving Complex Tasks](https://arxiv.org/abs/2411.04468) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=30\|S001 §§4.4.2 · p.30 · 引文157]] | 选择中央协调者维护进展、重规划和恢复的通用任务系统，比较模块化执行与固定流水线。 | [[wiki/papers/Magentic-One\|完成摄入，应用未测]] |
+| S019 · [GPTSwarm: Language Agents as Optimizable Graphs](https://proceedings.mlr.press/v235/zhuge24a.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=30\|S001 §§4.4.3 · p.30 · 引文897]] | 选择可优化的节点与连边表示，追问编排优化改变信息流还是基础模型，以及优化成本和泛化条件。 | [[wiki/papers/GPTSwarm\|完成摄入，应用未测]] |
+| S020 · [TDAG: A Multi-Agent Framework based on Dynamic Task Decomposition and Agent Generation](https://arxiv.org/abs/2402.10178) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=29\|S001 §§4.4.1 · p.29 · 引文660]] | 选择动态任务拆解和临时 Agent 生成，对照固定角色组，核查粒度、上下文交接和级联失败。 | [[wiki/papers/TDAG\|完成摄入，应用未测]] |
+| S021 · [Why Do Multi-Agent LLM Systems Fail?](https://papers.nips.cc/paper_files/paper/2025/hash/b1041e52d3be19f0a9bc491657488e4a-Abstract-Datasets_and_Benchmarks_Track.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=29\|S001 §§4.4；§4.4.1 · p.29,30 · 引文48]] | 加入失败分析作为反证视角，核查角色不清、协调错位和验证缺失的证据，避免只收集系统成功故事。 | [[wiki/papers/Multi-Agent-Failures\|完成摄入，应用未测]] |
 
 ### 选读：Hooks 与中间件
 
