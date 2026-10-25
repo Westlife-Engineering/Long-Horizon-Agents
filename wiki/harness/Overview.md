@@ -1,7 +1,7 @@
 ---
 type: topic
 created: 2026-10-19
-updated: 2026-10-19
+updated: 2026-10-25
 sources:
   - "[[raw/papers/Towards Long-Horizon Agents.pdf]]"
 ---
@@ -53,5 +53,72 @@ Hooks 在运行流程的特定位置介入，让动作继续、阻止动作或�
 ## 后续如何增长
 
 当前六类都是有内容的导航段落，不对应六个空文件夹。新论文进入后，将它实际提供的机制、证据与限制写入相关段落，并链接唯一论文页；当内容需要独立比较时，再拆成如 `Context and Memory.md` 或 `Verification.md` 的页面。
+
+
+
+## 第一轮选读队列
+
+2026-10-25 按用户授权从 S001 引用选读。下表仅登记选择理由与来源 ID 预留，**候选并不代表已读**；论文页在正文核读后建立。相同 ID 在多个方向出现只计一个来源。状态以验收和本轮交付为准。
+
+
+### 选读：循环与工作流
+
+| 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
+| --- | --- | --- | --- |
+| S002 · [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=21\|S001 §§4.1.1 · p.21 · 引文761]] | 以观察—行动交替作为线性控制基线，后续用它区分响应式循环、显式计划与搜索的改变对象。 | 候选未读 |
+| S003 · [ReWOO: Decoupling Reasoning from Observations for Efficient Augmented Language Models](https://arxiv.org/abs/2305.18323) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=21\|S001 §§4.1.2 · p.21 · 引文720]] | 选择推理与工具观察解耦的计划—执行路线，核查它在提前规划、依赖关系和工具失败上的适用前提。 | 候选未读 |
+| S004 · [Toward Generalist Autonomous Research via Hypothesis-Tree Refinement](https://arxiv.org/abs/2606.11926) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=21\|S001 §§4.1.2 · p.21,22 · 引文262]] | 选择持久假设树与协调者—执行者循环，理解长期研究如何保存证据、分支和经验；不把其自主实验设置直接等同于本库文献找 idea。 | 候选未读 |
+| S005 · [Tree of Thoughts: Deliberate Problem Solving with Large Language Models](https://papers.nips.cc/paper_files/paper/2023/hash/271db9922b8d1f4dd7aaef84ed5ac703-Abstract-Conference.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=22\|S001 §§4.1.3 · p.22 · 引文760]] | 作为分支搜索的基础机制，核查生成、评分、回溯与提交的控制责任，并保留静态推理任务到交互任务的外推边界。 | 候选未读 |
+| S006 · [Language Agent Tree Search Unifies Reasoning, Acting, and Planning in Language Models](https://proceedings.mlr.press/v235/zhou24r.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=22\|S001 §§4.1.3；另见 §4.6.3 · p.22,37 · 引文875]] | 与 ToT 对照，追问树搜索怎样结合环境反馈、价值估计与反思，以及评估分支的成本和可回退性。 | 候选未读 |
+
+### 选读：上下文与记忆
+
+| 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
+| --- | --- | --- | --- |
+| S007 · [HiAgent: Hierarchical Working Memory Management for Solving Long-Horizon Agent Tasks with Large Language Model](https://aclanthology.org/2025.acl-long.1575/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=24\|S001 §§4.2.1；Table 3 · p.24,25 · 引文224]] | 以子目标为单位管理工作记忆，与全文摘要和长期存储区分，核查压缩何时发生及任务进度是否被保留。 | 候选未读 |
+| S008 · [MemGPT: Towards LLMs as Operating Systems](https://arxiv.org/abs/2310.08560) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=25\|S001 §§4.2.2；Table 3 · p.25,26 · 引文464]] | 选择分层存储与上下文换页路线，追问谁决定读写、触发中断以及上下文外状态如何重新进入决策。 | 候选未读 |
+| S009 · [A-MEM: Agentic Memory for LLM Agents](https://arxiv.org/abs/2502.12110) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=25\|S001 §§4.2.2；Table 3 · p.25,26 · 引文731]] | 选择动态组织、连接和演化的记忆笔记，比较检索相关性、维护操作与任务执行状态之间的关系。 | 候选未读 |
+| S010 · [ExpeL: LLM Agents Are Experiential Learners](https://arxiv.org/abs/2308.10144) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=25\|S001 §§4.2.2；Table 3 · p.25,26 · 引文853]] | 选择从训练任务轨迹提炼经验但不更新参数的路线，区分事实记忆、经验规律及跨任务复用的证据。 | 候选未读 |
+| S011 · [ReSum: Unlocking Long-Horizon Search Intelligence via Context Summarization](https://arxiv.org/abs/2509.13313) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=24\|S001 §§4.2.1；Table 3 · p.24,25 · 引文693]] | 选择周期性轨迹摘要，比较摘要接口与训练适配；核查训练免费 ReSum 和 ReSum-GRPO 的实验贡献能否分开。 | 候选未读 |
+
+### 选读：工具、MCP 与技能
+
+| 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
+| --- | --- | --- | --- |
+| S012 · [Toolformer: Language Models Can Teach Themselves to Use Tools](https://papers.nips.cc/paper_files/paper/2023/hash/d842425e4bf79ba039352da0f658a906-Abstract-Conference.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=27\|S001 §§4.3.1 · p.27 · 引文523]] | 提供工具调用能力如何被训练的基础参照，区分调用接口、调用选择和参数学习，避免把所有工具提升归因于外部 harness。 | 候选未读 |
+| S013 · [AnyTool: Self-Reflective, Hierarchical Agents for Large-Scale API Calls](https://proceedings.mlr.press/v235/du24h.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=27\|S001 §§4.3.2 · p.27 · 引文140]] | 选择分层工具检索与失败后重新检索，对照固定工具列表；兼顾论文对工具评测协议的质疑。 | 候选未读 |
+| S014 · [Executable Code Actions Elicit Better LLM Agents](https://proceedings.mlr.press/v235/wang24h.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=27\|S001 §§4.3.2 · p.27,28 · 引文656]] | 选择可执行代码作为行动空间，比较一次程序组合多个工具与逐个函数调用；分别核查行动表示和配套微调的收益。 | 候选未读 |
+| S015 · [Voyager: An Open-Ended Embodied Agent with Large Language Models](https://arxiv.org/abs/2305.16291) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=28\|S001 §§4.3.3；另见 §4.2.2 · p.28,25,26 · 引文630]] | 选择可执行技能库的获取、验证与复用，连接工具表面、持久经验与长程探索，并核查其 Minecraft 环境边界。 | 候选未读 |
+| S016 · [MCPMark: A Benchmark for Stress-Testing Realistic and Comprehensive MCP Use](https://arxiv.org/abs/2509.24002) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=27\|S001 §§4.3.1 · p.27 · 引文700]] | 用包含状态改变与程序验收的多步 MCP 任务检查接口能力，防止仅凭单次工具调用成绩判断长期执行能力。 | 候选未读 |
+
+### 选读：编排
+
+| 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
+| --- | --- | --- | --- |
+| S017 · [MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework](https://arxiv.org/abs/2308.00352) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=29\|S001 §§4.4.1；§4.4.4 · p.29,30 · 引文219]] | 作为固定角色和标准流程的代表，与动态生成、中央协调和优化图比较，核查结构收益与角色提示收益如何分离。 | 候选未读 |
+| S018 · [Magentic-One: A Generalist Multi-Agent System for Solving Complex Tasks](https://arxiv.org/abs/2411.04468) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=30\|S001 §§4.4.2 · p.30 · 引文157]] | 选择中央协调者维护进展、重规划和恢复的通用任务系统，比较模块化执行与固定流水线。 | 候选未读 |
+| S019 · [GPTSwarm: Language Agents as Optimizable Graphs](https://proceedings.mlr.press/v235/zhuge24a.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=30\|S001 §§4.4.3 · p.30 · 引文897]] | 选择可优化的节点与连边表示，追问编排优化改变信息流还是基础模型，以及优化成本和泛化条件。 | 候选未读 |
+| S020 · [TDAG: A Multi-Agent Framework based on Dynamic Task Decomposition and Agent Generation](https://arxiv.org/abs/2402.10178) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=29\|S001 §§4.4.1 · p.29 · 引文660]] | 选择动态任务拆解和临时 Agent 生成，对照固定角色组，核查粒度、上下文交接和级联失败。 | 候选未读 |
+| S021 · [Why Do Multi-Agent LLM Systems Fail?](https://papers.nips.cc/paper_files/paper/2025/hash/b1041e52d3be19f0a9bc491657488e4a-Abstract-Datasets_and_Benchmarks_Track.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=29\|S001 §§4.4；§4.4.1 · p.29,30 · 引文48]] | 加入失败分析作为反证视角，核查角色不清、协调错位和验证缺失的证据，避免只收集系统成功故事。 | 候选未读 |
+
+### 选读：Hooks 与中间件
+
+| 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
+| --- | --- | --- | --- |
+| S022 · [IsolateGPT: An Execution Isolation Architecture for LLM-Based Agentic Systems](https://www.ndss-symposium.org/ndss-paper/isolategpt-an-execution-isolation-architecture-for-llm-based-agentic-systems/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=32\|S001 §§4.5.1 · p.32 · 引文698]] | 选择执行隔离的架构路线，核查跨组件消息/工具交互的信任边界，与内容分类型 guardrail 区分。 | 候选未读 |
+| S023 · [AgentSpec: Customizable Runtime Enforcement for Safe and Reliable LLM Agents](https://arxiv.org/abs/2503.18666) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=32\|S001 §§4.5.2 · p.32 · 引文633]] | 选择用户定义 DSL、触发器和谓词约束，区分形式化执行机制的保证与规则本身是否充分。 | 候选未读 |
+| S024 · [ShieldAgent: Shielding Agents via Verifiable Safety Policy Reasoning](https://proceedings.mlr.press/v267/chen25ae.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=33\|S001 §§4.5.2 · p.33 · 引文80]] | 选择政策文档到可验证规则的路线；专门核查编译、规则检索、shielding plan 与执行时判断的分工及保证边界。 | 候选未读 |
+| S025 · [InfrastructureSentinel: Policy Enforced Guardrails for Secure MCP-driven Infrastructure Agents](https://ojs.aaai.org/index.php/AAAI/article/view/41468) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=33\|S001 §§4.5.2 · p.33 · 引文285]] | 选择运行时 guardian LLM 解释自然语言政策的路线，与符号执行和静态编译比较灵活性、控制点与误判。 | 候选未读 |
+| S026 · [AGrail: A Lifelong Agent Guardrail with Effective and Adaptive Safety Detection](https://aclanthology.org/2025.acl-long.399/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=34\|S001 §§4.5.3 · p.34 · 引文408]] | 选择可生成、优化并跨任务复用安全检查的自适应路线，核查更新对象、反馈可靠性和记忆污染边界。 | 候选未读 |
+
+### 选读：验证
+
+| 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
+| --- | --- | --- | --- |
+| S027 · [CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing](https://arxiv.org/abs/2305.11738) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.2；Table 4 · p.35,36 · 引文182]] | 选择借助外部工具反馈的验证—纠正循环，与纯自评区分；核查反馈来源何时提供新增信息。 | 候选未读 |
+| S028 · [AgentPRM: Process Reward Models for LLM Agents via Step-Wise Promise and Progress](https://arxiv.org/abs/2511.08325) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.2；Table 4 · p.35,36 · 引文702]] | 选择按动作离目标距离和增量进展评分的过程奖励模型，核查验证、搜索引导与训练反馈的界限。 | 候选未读 |
+| S029 · [Agent-as-a-Judge: Evaluate Agents with Agents](https://proceedings.mlr.press/v267/zhuge25a.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.2；Table 4 · p.35,36 · 引文898]] | 选择能执行工具和多步判断的评估者，追问评估是否真正检查工作产物与过程证据，以及人与模型一致性的适用条件。 | 候选未读 |
+| S030 · [Can LLMs Correct Themselves? A Benchmark of Self-Correction in LLMs](https://papers.nips.cc/paper_files/paper/2025/hash/ec07904adc847a45f53dceb44078f8f0-Abstract-Datasets_and_Benchmarks_Track.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=36\|S001 §§4.6.2 · p.36 · 引文605]] | 加入自我纠错的条件性与成本分析，核查何种模型/任务有收益，防止把反思次数或重复检查本身当作可靠性证明。 | 候选未读 |
+| S031 · [On the Multi-turn Instruction Following for Conversational Web Agents](https://aclanthology.org/2024.acl-long.477/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.1 · p.35 · 引文118]] | 补充跨多轮用户指令与环境交互的遵循问题，核查此前约束、当前指令和任务状态怎样共同评测，连接记忆与验证。 | 候选未读 |
 
 返回 [[wiki/index|索引]]。
