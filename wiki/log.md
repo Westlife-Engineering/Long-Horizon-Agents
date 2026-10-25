@@ -190,3 +190,29 @@
 
 - 摄入 [[wiki/papers/MCPMark|MCPMark]] arXiv v1，在 [[wiki/harness/Overview#工具、MCP 与技能|工具方向]] 与 [[wiki/harness/Overview#验证|验证]] 区分协议可用、正常终止和最终约束满足，以及 pass@1 / pass@4 / pass^4 的含义。
 - 内容与结构验收通过、Raw 哈希匹配；保留任务与服务器覆盖、版本固定和 verifier 完备性边界。未运行 benchmark 或审查全部验证器源码；Obsidian 应用未测。
+
+
+## [2026-10-25] ingest | S037 TaskCraft：依赖构造与增量核查
+
+- 摄入 [[wiki/papers/TaskCraft|TaskCraft]] arXiv v2，在 [[wiki/optimization/Overview#数据与环境合成|数据与环境合成]] 区分任务依赖扩展、原子执行验证与长链增量语言核查；保留 hop/调用数、筛选模型和实际 SFT 数据范围。
+- 内容与结构验收通过，Raw 哈希匹配；论文内数据规模口径差异已留在论文页。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S038 SWE-Gym：环境标签与学习验证器
+
+- 摄入 [[wiki/papers/SWE-Gym|SWE-Gym]] PMLR 正式版，连接 [[wiki/optimization/Overview#数据与环境合成|可执行环境和成功轨迹]] 与 [[wiki/harness/Overview#验证|verifier 重排]]；区分真实测试标签、预测成功率、候选覆盖和最终选择。
+- 内容与结构验收通过，Raw 哈希匹配；保留半手工环境成本、易题筛选、scaffold 条件及自训练下降。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S039 WebDreamer：状态预测与执行前规划
+
+- 摄入 [[wiki/papers/WebDreamer|WebDreamer]] arXiv v2，在 [[wiki/optimization/Overview#数据与环境合成|数据与环境]] 和 [[wiki/harness/Overview#分支能否撤回，评价能否被信任|分支规划]] 区分真实交互监督、预测的变化描述、模型评分与执行后观察；保留单步模拟及 Dreamer-7B 的组件边界。
+- 内容与结构验收通过，Raw 哈希匹配；未与综述所引 TMLR 正式版逐项对齐，效率与模拟误差限定保留。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S040 TOUCAN：真实返回与合成轨迹筛选
+
+- 摄入 [[wiki/papers/TOUCAN|TOUCAN]] arXiv v1，将真实 MCP 返回、合成任务/用户和模型质量标签整合至 [[wiki/optimization/Overview#数据与环境合成|数据与环境合成]]；区分 1.5M 发布规模与 119.3K 训练子集。
+- 内容与结构验收通过，Raw 哈希匹配；保留服务器准入、失败排除、有限人工一致性及局部任务退步。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S041 AgentGym-RL：在线交互课程与状态分布
+
+- 摄入 [[wiki/papers/AgentGym-RL|AgentGym-RL]] arXiv v1，在 [[wiki/optimization/Overview#交互上限怎样改变在线训练|在线 RL]] 解释渐增 horizon；数据/环境和微调队列复用同一来源，明确它不构成 SFT 课程效果的直接证据。
+- 内容与结构验收通过，Raw 哈希匹配；保留 WebArena 状态修改任务排除、预算口径、Pass@K 与论文内部叙述/表格冲突。Obsidian 应用未测，未复现实验。

@@ -21,6 +21,8 @@ sources:
   - "[[raw/papers/CodeAct.pdf]]"
   - "[[raw/papers/Voyager.pdf]]"
   - "[[raw/papers/MCPMark.pdf]]"
+  - "[[raw/papers/SWE-Gym.pdf]]"
+  - "[[raw/papers/WebDreamer.pdf]]"
 ---
 
 # Harness：外部运行机制
@@ -54,6 +56,8 @@ Harness 是围绕模型组织执行的机制：安排何时调用模型、带入
 ### 分支能否撤回，评价能否被信任
 
 ToT 回退的是保存在搜索程序中的部分解；LATS 将这种选择扩展到行动与观察，却明确要求环境可恢复。**本库推断：**重新放入旧历史不等于撤销外部副作用，真实交互若不能重置，就需要另行说明分支怎样评估与提交。ToT 的 24 点和填字实验不能独自支持现实长程任务的恢复能力；LATS 的受控环境也不能替代不可逆任务证据。[[raw/papers/Tree-of-Thoughts.pdf#page=4|S005 · §3–4 · pp.4–5]] [[raw/papers/LATS.pdf#page=14|S006 · Appendix B · p.14]]
+
+**执行前模拟提供另一种分支方式（S039，已完成摄入，应用未测）：**[[wiki/papers/WebDreamer|WebDreamer]] 用世界模型预测候选动作后的页面变化、由 LLM 评分，只执行选中动作，再用真实新观察重新规划。它不需要为每个候选实际回退网站，但也不保证模拟正确或操作安全；主实验模拟 H=1，更深模拟反而受到不可用动作幻觉影响。Dreamer-7B 的训练对象是变化描述，score 仍由 GPT-4o 提供，详见 [[wiki/optimization/Overview#生成了什么，真实执行到了哪里|数据与环境]]。[[raw/papers/WebDreamer.pdf#page=4|S039 §3.2 · pp.4–5]] [[raw/papers/WebDreamer.pdf#page=8|§5.1 · p.8]]
 
 评价信号同样要分开：ToT 的模型启发式会误剪罕见但正确的填字状态；LATS 的 HotpotQA 在提交答案后有 oracle 告知对错，编程则先用内部合成测试搜索、最后用真正测试集测量。相同的“反思”或“成功”标签，因此不意味着取得了同等质量的依据。对应 [[wiki/harness/Overview#验证|验证]] 中“何时检查、怎样产生判断”的区分。[[raw/papers/Tree-of-Thoughts.pdf#page=8|S005 · §4.3 · p.8]] [[raw/papers/LATS.pdf#page=6|S006 · §5.1–5.2 · pp.6–7]]
 
@@ -148,6 +152,8 @@ Hooks 在运行流程的特定位置介入，让动作继续、阻止动作或�
 细分导航：Assessment Targets；Verification Levels；Verifier Strategies。与 [[wiki/optimization/Overview#Agentic Reinforcement Learning|训练中的信用分配]]、[[wiki/applications/Overview|评测的成功判据]] 相关；运行时检查有效，不自动证明它可作为可靠训练奖励。
 
 **工具方向的直接证据（S016，已完成摄入，应用未测）：**MCPMark 把运行正常结束却未满足任务约束记为隐式失败；这说明缺少异常不能替代结果检查。其程序验收经过环境结果扰动和人工交叉检查，但本库未审查全部 verifier 源码，论文也未证明验证器完备。应把运行时模型 critic、工具异常与最终环境验收分别记录，具体机制与重复运行口径见 [[wiki/harness/Overview#协议接通与任务完成之间还差什么证据|工具方向比较]]。[[raw/papers/MCPMark.pdf#page=8|S016 §4.2、Fig.5 · pp.8–9]] [[raw/papers/MCPMark.pdf#page=15|Appendix A · pp.15–16]]
+
+**可执行标签与学习验证器（S038，已完成摄入，应用未测）：**[[wiki/papers/SWE-Gym|SWE-Gym]] 用真实仓库测试产生轨迹成败标签，再训练 outcome verifier 在候选轨迹间预测和选择。OpenHands 的32B策略/32B验证器在 SWE-Bench Verified 上，16条候选的 Pass@16=42.8%，选出一条的 Best@16=32.0%；前者是覆盖上界，后者才包含选择误差。测试标签仍受测试覆盖约束，verifier又增加预测误差。与 MCPMark 的程序检查区别在于判断如何产生；数据来源、筛选与预算见 [[wiki/optimization/Overview#数据与环境合成|Optimization]]。[[raw/papers/SWE-Gym.pdf#page=4|S038 §3.1 · p.4]] [[raw/papers/SWE-Gym.pdf#page=7|§5.1.1、Fig.3 · p.7]]
 
 ## 后续如何增长
 

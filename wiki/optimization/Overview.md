@@ -13,6 +13,11 @@ sources:
   - "[[raw/papers/Toolformer.pdf]]"
   - "[[raw/papers/Toolformer-supplement.pdf]]"
   - "[[raw/papers/CodeAct.pdf]]"
+  - "[[raw/papers/TaskCraft.pdf]]"
+  - "[[raw/papers/SWE-Gym.pdf]]"
+  - "[[raw/papers/WebDreamer.pdf]]"
+  - "[[raw/papers/TOUCAN.pdf]]"
+  - "[[raw/papers/AgentGym-RL.pdf]]"
 ---
 
 # Optimization：能力内化与训练
@@ -54,7 +59,33 @@ sources:
 
 综述把可训练经验拆成三个耦合对象：任务规定目标和能力压力，环境承载动作与可核查反馈，轨迹记录决策、观察、错误和恢复。记录一串文字动作，不自动等于保留了环境状态变化与验证证据。[[raw/papers/Towards Long-Horizon Agents.pdf#page=40|S001 · §5.2 · p.40]]；[[raw/papers/Towards Long-Horizon Agents.pdf#page=43|§5.2.3 · p.43]]
 
-细分导航：Task Synthesis；Environment Synthesis；Trajectory Synthesis。与 [[wiki/applications/Overview|应用接口和评测]]、[[wiki/frontier/Overview|环境真实性问题]] 相连。
+细分导航：Task Synthesis；Environment Synthesis；Trajectory Synthesis。第一轮 S037–S041 已完成摄入与本节整合，内容与结构验收通过；Obsidian 应用未测。与 [[wiki/applications/Overview|应用接口和评测]]、[[wiki/frontier/Overview|环境真实性问题]] 相连。
+
+### 生成了什么，真实执行到了哪里
+
+**本库比较轴：**先确认被生成的是问题、可执行环境、状态预测还是训练轨迹，再核对标签来源。“真实工具”“可验证任务”和“高质量轨迹”分别描述不同环节，不能相互替代。下表比较机制，不把不同模型与基准的分数排列成优劣。
+
+| 生成或构建对象 | 执行与标签的来源 | 关键限定及原文 |
+| --- | --- | --- |
+| 任务的依赖结构 | TaskCraft 从真实工具内容抽答案，再以深度扩展替换输入索引、以宽度扩展合并子题；原子任务执行，长链主要做增量语言核查 | 设计好的路径不等于最终问题被端到端成功执行；一个 hop 也不等于一次调用。[[wiki/papers/TaskCraft\|S037 TaskCraft]]；[[raw/papers/TaskCraft.pdf#page=3\|§2–3 · pp.3–6]] |
+| 可执行训练环境 | SWE-Gym 将真实 issue、仓库快照、依赖和测试配套；实际运行轨迹的测试成败用于筛选策略数据及训练 verifier | 环境半手工配置；测试标签受测试覆盖限制，学习 verifier 的预测另有误差。[[wiki/papers/SWE-Gym\|S038 SWE-Gym]]；[[raw/papers/SWE-Gym.pdf#page=4\|§3.1 · p.4]]、[[raw/papers/SWE-Gym.pdf#page=7\|§5.1.1 · p.7]] |
+| 动作后的状态变化描述 | WebDreamer 先真实网页随机交互，教师根据前后截图描述变化；Dreamer-7B 学习预测这种描述，测试时用模拟辅助选动作 | 不是完整可执行网页模拟器；主实验模拟 H=1，评分器与环境真实成功反馈不同。[[wiki/papers/WebDreamer\|S039 WebDreamer]]；[[raw/papers/WebDreamer.pdf#page=4\|§3.2–3.3 · pp.4–6]]、[[raw/papers/WebDreamer.pdf#page=8\|§5.1 · p.8]] |
+| 合成任务与工具交互轨迹 | TOUCAN 从 MCP spec 倒推任务，教师真正调用工具，规则检查调用，模型判断完整与简洁；多轮用户由自模拟产生 | 真实返回不自动验证最终副作用；“可验证性”是质量评分维度，不是统一执行 oracle。[[wiki/papers/TOUCAN\|S040 TOUCAN]]；[[raw/papers/TOUCAN.pdf#page=4\|§3.1–3.2 · pp.4–5]]、[[raw/papers/TOUCAN.pdf#page=32\|Appendix D.4 · p.32]] |
+| 当前策略的在线经验 | AgentGym-RL 在独立环境实例中执行当前策略，收集观察和结局反馈，再做 RL；ScalingInter 分阶段提高交互上限 | 真正调用基准环境不等于实机实验；策略、horizon 和重置条件共同决定训练状态分布。[[wiki/papers/AgentGym-RL\|S041 AgentGym-RL]]；[[raw/papers/AgentGym-RL.pdf#page=5\|§3.1、Fig.3 · p.5]]、[[raw/papers/AgentGym-RL.pdf#page=9\|§3.3 · p.9]] |
+
+### 筛选不只改变质量，也改变能学到的状态
+
+TaskCraft 保留特定 Agent 比裸 LLM 答得更好的原子任务；SWE-Gym 训练策略主要使用成功轨迹，并在 MoatlessTools 实验限制每题成功样本数，避免易题占满数据；TOUCAN 排除需凭据/特殊配置的服务器和错误调用轨迹，再按模型标签筛选。这些选择都定义了分布，而非仅从一个不变总体中“去掉噪声”。后一句是本库分析；它提醒后续检查困难状态、替代工具方案和失败恢复经验是否被保留，不表示已测出每种偏差的影响。[[raw/papers/TaskCraft.pdf#page=19|S037 Appendix C.1 · p.19]] [[raw/papers/SWE-Gym.pdf#page=6|S038 §4.3 · p.6]] [[raw/papers/TOUCAN.pdf#page=4|S040 §3.1 · pp.4–5]]
+
+在线 RL 也不是无选择的经验收集。AgentGym-RL 的 WebArena 实验为并行 rollout 排除插入/更新/删除的 Content & Config 任务，使用 372 训练和 50 测试 query；它不支持把结果推广到完整不可逆写入任务。与之对应，WebDreamer 的在线网页规划避免通过真实回退搜索候选，但模拟可能产生不存在的动作；两者解决不同约束，不能合并成“真实环境问题已经解决”。[[raw/papers/AgentGym-RL.pdf#page=32|S041 Appendix B.1 · p.32]] [[raw/papers/WebDreamer.pdf#page=6|S039 §4.1 · p.6]] [[raw/papers/WebDreamer.pdf#page=8|§5.1 · p.8]]
+
+### 从数据量到学习效果，还要保留哪层证据
+
+公开数据规模、实际训练子集和执行预算分别登记：TaskCraft 的 SFT 实验用 3,202 条轨迹；SWE-Gym 的 OpenHands policy 用 491 条成功轨迹；TOUCAN 发布约 1.5M，实验只筛选/重平衡 119.3K。三者都提供具体训练价值的证据，却不构成“更多数据必然更好”的统一实验。SWE-Gym 的一次 OpenHands 自采样再训练还使 Lite 下降，而受限 MoatlessTools 工作流仅小幅改善，说明产生经验的策略与使用经验的方式同样重要。[[raw/papers/TaskCraft.pdf#page=9|S037 §4.4 · p.9]] [[raw/papers/SWE-Gym.pdf#page=5|S038 §4.2–4.3 · pp.5–6]] [[raw/papers/TOUCAN.pdf#page=7|S040 §4.1 · p.7]]
+
+标签需要独立看待：TOUCAN 的任务 judge 与人工对照只有 50 样本、Kimi-K2 Pearson r=0.264；WebDreamer 的 intrinsic evaluation 则通过世界模型加评分器判断正确/偏离动作的排序，平分也算正确。前者不是全数据人工验收，后者不是逐项验证页面转移保真度。原文中的数值口径差异和实验细节留在唯一论文页。[[raw/papers/TOUCAN.pdf#page=20|S040 Appendix C.1、Fig.13 · p.20]] [[raw/papers/WebDreamer.pdf#page=19|S039 Appendix D.1–D.3 · pp.19–20]]
+
+**待检验问题，尚未完成查新：**固定任务、工具版本和总预算后，生成路径是否必要、真实执行是否可达、标签是否准确、筛选后哪些状态缺失，分别能解释多少训练收益？当前五篇将这些问题拆开，尚不能据此宣布研究空白。运行时选择与验证见 [[wiki/harness/Overview#分支能否撤回，评价能否被信任|分支执行]]、[[wiki/harness/Overview#验证|验证]]；参数学习接口见 [[wiki/optimization/Overview#微调|微调]] 和 [[wiki/optimization/Overview#交互上限怎样改变在线训练|在线交互课程]]。
 
 ## 预训练与中期训练
 
@@ -69,6 +100,11 @@ sources:
 细分导航：Instruction Selection and Mixing；Curriculum Learning；Distillation。不要把某篇工作中“小数据有效”的结果推广成普遍规律；后续须核对基础模型、数据选择与训练管线。
 
 **工具调用的训练接口（S012 / S014 已完成摄入，应用未测）：**[[wiki/papers/Toolformer|Toolformer]] 用执行结果对后续 token 预测的帮助筛选调用，再微调模型，学到的对象包括调用时机、工具及参数；这个损失代理没有直接优化长程任务成功或调用成本，也没有链式工具训练。[[wiki/papers/CodeAct|CodeAct]] 则需分开动作表示和模型适应：CodeActInstruct 收集并筛选多轮成功及纠错轨迹，与通用对话混合后训练 CodeActAgent。其通用数据消融和不同基础模型表现说明，不能把收益全部归于“代码”或“纠错”一个因素。两者的运行时执行接口见 [[wiki/harness/Overview#工具、MCP 与技能|工具方向]]；AnyTool / Voyager 的候选池或技能库更新不应计作参数微调。[[raw/papers/Toolformer.pdf#page=3|S012 §2 · pp.3–4]] [[raw/papers/Toolformer.pdf#page=9|§6 · p.9]] [[raw/papers/CodeAct.pdf#page=6|S014 §3、Tables 4–5 · pp.6–8]] [[raw/papers/CodeAct.pdf#page=14|Table A.8 · p.14]]
+
+
+**监督对象与课程范式（S037–S041，已完成摄入，应用未测）：**TaskCraft 用构造的多跳问答轨迹训练策略；SWE-Gym 用实际执行后测试成功的轨迹训练策略，并另外以成功/失败标签训练 verifier；TOUCAN 对真实工具轨迹进行模型质量筛选后做 SFT；WebDreamer 则训练“截图与动作→变化描述”的世界模型组件。它们学的对象不同，不能把共同出现的 fine-tuning 视为同一种 Agent 能力证据。[[raw/papers/TaskCraft.pdf#page=9|S037 §4.4 · p.9]] [[raw/papers/SWE-Gym.pdf#page=5|S038 §4–5 · pp.5–7]] [[raw/papers/TOUCAN.pdf#page=7|S040 §4.1 · p.7]] [[raw/papers/WebDreamer.pdf#page=5|S039 §3.3 · pp.5–6]]
+
+S001 在课程学习小节引用 [[wiki/papers/AgentGym-RL|AgentGym-RL]]；核读原文后须限定：ScalingInter 是**在线 RL 的交互上限课程**，主路线不要求额外任务 SFT，不能充当 SFT 课程有效的直接证据。框架支持 SFT 与方法实际使用 SFT 是不同事实；课程思想的跨范式联系见下节。[[raw/papers/AgentGym-RL.pdf#page=6|S041 §3.2.2 · p.6]] [[raw/papers/AgentGym-RL.pdf#page=9|§3.3 · p.9]]
 
 ## Agentic Reinforcement Learning
 
@@ -88,6 +124,12 @@ Agentic RL 用自身交互反馈优化策略，目标从单次回答扩展为多
 [[wiki/papers/ReSum|ReSum]] 给出一项已核读的跨模块实例：[[wiki/harness/Overview#上下文与记忆|Harness]] 在摘要后把输入重置为“原问题＋摘要”；ReSum-GRPO 则以这些摘要点分段，把最终答案的二值奖励归一化为轨迹级 advantage，广播到该轨迹各段，工具观察不计策略损失。因此运行时状态接口直接决定训练看到的状态和 rollout 结构；广播终局信号不等于识别了每段独立因果贡献。[[raw/papers/ReSum.pdf#page=4|S011 §3.3、Figure 3 · pp.4–5]]
 
 **归因边界：**training-free ReSum 只指现成策略不再训练，默认摘要器 ReSumTool-30B 自身已蒸馏训练。普通 GRPO 与 ReSum-GRPO 虽共享部分超参数，训练工具调用上限却为 40 对 60，且接续改变了可采到的长轨迹；Table 2 的效果不能全部归于 advantage broadcasting。后续比较需同时登记反馈、状态表示、探索机会与预算，而不能仅按算法名排列。[[raw/papers/ReSum.pdf#page=4|S011 §3.2 · p.4]] [[raw/papers/ReSum.pdf#page=15|S011 附录 D.2 · p.15]] [[raw/papers/ReSum.pdf#page=7|S011 Table 2 · p.7]]
+
+### 交互上限怎样改变在线训练
+
+[[wiki/papers/AgentGym-RL|AgentGym-RL]] 的 ScalingInter 先限制每条在线轨迹的最大轮数，再随训练阶段提高上限。它改变可访问的路径和由当前策略采到的状态，区别于只对固定示范排序，也区别于测试时多试几次。Deep Search 的固定5轮/10轮与渐增轮数曲线支持该设定下的稳定性折中；未匹配全部环境调用/token 的结果，不能把收益只归于课程顺序。[[raw/papers/AgentGym-RL.pdf#page=9|S041 §3.3 · p.9]] [[raw/papers/AgentGym-RL.pdf#page=12|§4.2、Fig.7 · p.12]]
+
+这与 ReSum 的比较共同提出一个归因要求：**状态接口、探索机会与更新算法须分别记录。** AgentGym-RL 的主实验在数字环境中按环境训练，作者承认 in-domain 与物理任务边界；其测试 Pass@K 说明候选覆盖，不证明系统能选对一个结果。具体环境筛选见 [[wiki/optimization/Overview#筛选不只改变质量，也改变能学到的状态|数据分布]]，不能用“无需 SFT”消除基础模型预训练与环境配置成本。[[raw/papers/AgentGym-RL.pdf#page=16|S041 §5.1 · pp.16–17]] [[raw/papers/AgentGym-RL.pdf#page=21|§7 · p.21]]
 
 ## On-Policy Distillation
 
@@ -126,11 +168,11 @@ Agentic RL 用自身交互反馈优化策略，目标从单次回答扩展为多
 
 | 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
 | --- | --- | --- | --- |
-| S037 · [TaskCraft: Automated Generation of Agentic Tasks](https://arxiv.org/abs/2506.10055) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=41\|S001 §5.2.1 · p.41 · 引文540]] | 任务依赖链与可验证任务生成；核查增加依赖深度是否区别于单纯增加交互步数。 | 候选未读 |
-| S038 · [Training Software Engineering Agents and Verifiers with SWE-Gym](https://proceedings.mlr.press/v267/pan25g.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=41\|S001 §5.2.1; 5.2.2 · p.41,42 · 引文467]] | 真实仓库、可执行环境与测试的符号环境路线；检查环境可复现性与验证器训练的关系。 | 候选未读 |
-| S039 · [Is Your LLM Secretly a World Model of the Internet? Model-Based Planning for Web Agents](https://arxiv.org/abs/2411.06559) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=42\|S001 §5.2.2 · p.42 · 引文188]] | WebDreamer作为神经环境/世界模型对照；核查想象的状态转移、训练模拟器与真实执行之间的界限。 | 候选未读 |
-| S040 · [TOUCAN: Synthesizing 1.5M Tool-Agentic Data from Real-World MCP Environments](https://arxiv.org/abs/2510.01179) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=43\|S001 §5.2.3 · p.43 · 引文737]] | 真实工具执行轨迹代表；检查多工具轨迹是否保留副作用、观察与质量验证。 | 候选未读 |
-| S041 · [AgentGym-RL: Training LLM Agents for Long-Horizon Decision Making through Multi-Turn Reinforcement Learning](https://arxiv.org/abs/2509.08755) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=43\|S001 §5.2.3 · p.43 · 引文701]] | 策略对齐rollout与horizon调度；与固定教师轨迹比较状态分布差异。 | 候选未读 |
+| S037 · [TaskCraft: Automated Generation of Agentic Tasks](https://arxiv.org/abs/2506.10055) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=41\|S001 §5.2.1 · p.41 · 引文540]] | 任务依赖链与可验证任务生成；核查增加依赖深度是否区别于单纯增加交互步数。 | [[wiki/papers/TaskCraft\|完成摄入，应用未测]] |
+| S038 · [Training Software Engineering Agents and Verifiers with SWE-Gym](https://proceedings.mlr.press/v267/pan25g.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=41\|S001 §5.2.1; 5.2.2 · p.41,42 · 引文467]] | 真实仓库、可执行环境与测试的符号环境路线；检查环境可复现性与验证器训练的关系。 | [[wiki/papers/SWE-Gym\|完成摄入，应用未测]] |
+| S039 · [Is Your LLM Secretly a World Model of the Internet? Model-Based Planning for Web Agents](https://arxiv.org/abs/2411.06559) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=42\|S001 §5.2.2 · p.42 · 引文188]] | WebDreamer作为神经环境/世界模型对照；核查想象的状态转移、训练模拟器与真实执行之间的界限。 | [[wiki/papers/WebDreamer\|完成摄入，应用未测]] |
+| S040 · [TOUCAN: Synthesizing 1.5M Tool-Agentic Data from Real-World MCP Environments](https://arxiv.org/abs/2510.01179) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=43\|S001 §5.2.3 · p.43 · 引文737]] | 真实工具执行轨迹代表；检查多工具轨迹是否保留副作用、观察与质量验证。 | [[wiki/papers/TOUCAN\|完成摄入，应用未测]] |
+| S041 · [AgentGym-RL: Training LLM Agents for Long-Horizon Decision Making through Multi-Turn Reinforcement Learning](https://arxiv.org/abs/2509.08755) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=43\|S001 §5.2.3 · p.43 · 引文701]] | 策略对齐rollout与horizon调度；与固定教师轨迹比较状态分布差异。 | [[wiki/papers/AgentGym-RL\|完成摄入，应用未测]] |
 
 ### 选读：预训练与中期训练
 
@@ -148,7 +190,7 @@ Agentic RL 用自身交互反馈优化策略，目标从单次回答扩展为多
 | --- | --- | --- | --- |
 | S047 · [AgentTuning: Enabling Generalized Agent Abilities for LLMs](https://aclanthology.org/2024.findings-acl.181/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=45\|S001 §5.4.1 · p.45 · 引文794]] | 交互轨迹与通用指令混合代表；核查agent能力和通用能力保留如何同时评估。 | 候选未读 |
 | S048 · [ATLAS: Agent Tuning via Learning Critical Steps](https://aclanthology.org/2025.findings-acl.1299/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=45\|S001 §5.4.1 · p.45 · 引文81]] | 只学习关键决策步骤，与全轨迹模仿形成机制对照；检查关键步骤如何识别及跨环境条件。 | 候选未读 |
-| S041 · [AgentGym-RL: Training LLM Agents for Long-Horizon Decision Making through Multi-Turn Reinforcement Learning](https://arxiv.org/abs/2509.08755) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=46\|S001 §5.4.2 · p.46 · 引文701]] | 复用数据方向同一篇，核查综述放在SFT章节的horizon curriculum论据；原发布摘要明确其为无需SFT的RL框架，不能据章节归类为SFT方法。 | 候选未读 |
+| S041 · [AgentGym-RL: Training LLM Agents for Long-Horizon Decision Making through Multi-Turn Reinforcement Learning](https://arxiv.org/abs/2509.08755) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=46\|S001 §5.4.2 · p.46 · 引文701]] | 复用数据方向同一篇，核查综述放在SFT章节的horizon curriculum论据；原发布摘要明确其为无需SFT的RL框架，不能据章节归类为SFT方法。 | [[wiki/papers/AgentGym-RL\|完成摄入，应用未测]] |
 | S049 · [Distilling LLM Agent into Small Models with Retrieval and Code Tools](https://papers.nips.cc/paper_files/paper/2025/hash/99263f9bf46874e2b8b7f104b5063864-Abstract-Conference.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=46\|S001 §5.4.3 · p.46,47 · 引文269]] | 强教师到小模型的轨迹蒸馏；核查检索、代码行动与推理结构各自转移什么。 | 候选未读 |
 | S050 · [Agent-R: Training Language Model Agents to Reflect via Iterative Self-Training](https://arxiv.org/abs/2501.11425) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=47\|S001 §5.4.3 · p.47 · 引文789]] | 失败定位和纠正轨迹的自训练；比较离线修复监督、运行时反思与在线策略更新的区别。 | 候选未读 |
 
