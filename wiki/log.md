@@ -216,3 +216,28 @@
 
 - 摄入 [[wiki/papers/AgentGym-RL|AgentGym-RL]] arXiv v1，在 [[wiki/optimization/Overview#交互上限怎样改变在线训练|在线 RL]] 解释渐增 horizon；数据/环境和微调队列复用同一来源，明确它不构成 SFT 课程效果的直接证据。
 - 内容与结构验收通过，Raw 哈希匹配；保留 WebArena 状态修改任务排除、预算口径、Pass@K 与论文内部叙述/表格冲突。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S042 DeepSeek-V3：组合配方与分阶段归因
+
+- 摄入 [[wiki/papers/DeepSeek-V3|DeepSeek-V3]] arXiv v2，整合至 [[wiki/optimization/Overview#预训练与中期训练|预训练与中期训练]]；区分MTP训练目标、YaRN扩窗、后训练与Agentless工程评测；保留小规模消融及正式训练成本边界。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S043 YaRN：位置延展与有效上下文
+
+- 摄入 [[wiki/papers/YaRN|YaRN]] arXiv v3，整合至 [[wiki/optimization/Overview#预训练与中期训练|预训练与中期训练]]；解释分段频率与attention scaling，保留PPL/passkey适用范围；记录v3与S001会议引文的版本边界和PI公式方向不一致。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S044 ProLong：以SFT后下游表现选择训练配方
+
+- 摄入 [[wiki/papers/ProLong|ProLong]] ACL 2025正式版，整合至 [[wiki/optimization/Overview#预训练与中期训练|预训练与中期训练]]；整合长短数据混合、训练长度与SFT阶段依赖，区分最终配方和消融初始化；同token对照不等于同算力。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S045 Qwen2-VL：多模态表示与组合Agent证据
+
+- 摄入 [[wiki/papers/Qwen2-VL|Qwen2-VL]] arXiv v2，整合至 [[wiki/optimization/Overview#预训练与中期训练|预训练与中期训练]]；连接动态视觉token、M-RoPE与Qwen-Agent多轮实验，区分动作匹配、整任务成功以及高层动作/SAM条件。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S046 DoReMi：代理损失与域采样比例
+
+- 摄入 [[wiki/papers/DoReMi|DoReMi]] NeurIPS 2023正式版，整合至 [[wiki/optimization/Overview#预训练与中期训练|预训练与中期训练]]；整合小参考/代理模型的excess loss到大模型重采样路线，保留1024长度、跨尺度迁移和额外搜索成本边界。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。

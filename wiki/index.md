@@ -4,8 +4,8 @@
 
 ## 当前证据边界
 
-- 已纳入 **26 篇学术来源**：S001 综述及 S002–S016、S032–S041 二十五篇独立论文。S001 整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；独立论文的实际正文/附录阅读范围见各论文页，均不表示复现实验。
-- **独立方法/实验论文完成摄入数为 25**。综述中的引用不是本库已验证的证据；第一轮已选定 65 个方向名额、64 篇不同候选，正在分批核读，候选与待验收论文不计完成摄入。
+- 已纳入 **31 篇学术来源**：S001 综述及 S002–S016、S032–S046 三十篇独立论文。S001 整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；独立论文的实际正文/附录阅读范围见各论文页，均不表示复现实验。
+- **独立方法/实验论文完成摄入数为 30**。综述中的引用不是本库已验证的证据；第一轮已选定 65 个方向名额、64 篇不同候选，正在分批核读，候选与待验收论文不计完成摄入。
 - 方法论原始资料为 [[raw/articles/llm-wiki|LLM Wiki]]，不计入学术来源数。具体工作规则见 [[AGENTS|Schema]]。
 
 ## 从哪里开始
@@ -58,12 +58,17 @@ Harness 与 Optimization 的子方向都保留在各自 Overview 的页内导航
 | S034 | [[wiki/papers/Kimi-Linear\|Kimi Linear]] | 完成摄入，应用未测；KDA/MLA 混合与训练版本、缓存和吞吐条件 |
 | S035 | [[wiki/papers/GQA\|GQA]] | 完成摄入，应用未测；KV 头共享、解码成本与时间历史压缩的区别 |
 | S036 | [[wiki/papers/Lost-in-the-Middle\|Lost in the Middle]] | 完成摄入，应用未测；位置稳健性、检索召回与上下文使用的区别 |
-
 | S037 | [[wiki/papers/TaskCraft\|TaskCraft]] | 完成摄入，应用未测；依赖结构生成、增量语言核查与端到端执行的区别 |
 | S038 | [[wiki/papers/SWE-Gym\|SWE-Gym]] | 完成摄入，应用未测；可执行仓库、测试标签、成功轨迹筛选与 verifier 重排 |
 | S039 | [[wiki/papers/WebDreamer\|WebDreamer]] | 完成摄入，应用未测；真实交互监督的状态预测、执行前模拟与评分边界 |
 | S040 | [[wiki/papers/TOUCAN\|TOUCAN]] | 完成摄入，应用未测；MCP 真实返回、合成用户/任务与质量筛选分布 |
 | S041 | [[wiki/papers/AgentGym-RL\|AgentGym-RL]] | 完成摄入，应用未测；在线 RL 的交互课程、环境重置与训练状态分布 |
+
+| S042 | [[wiki/papers/DeepSeek-V3\|DeepSeek-V3]] | 完成摄入，应用未测；组合配方、MTP与扩窗，以及后训练工程结果的归因层次 |
+| S043 | [[wiki/papers/YaRN\|YaRN]] | 完成摄入，应用未测；频率分段与温度扩窗，PPL/passkey证据和版本边界 |
+| S044 | [[wiki/papers/ProLong\|ProLong]] | 完成摄入，应用未测；SFT后长任务评测、长短数据混合与训练长度条件 |
+| S045 | [[wiki/papers/Qwen2-VL\|Qwen2-VL]] | 完成摄入，应用未测；动态视觉token、M-RoPE与Qwen-Agent多轮系统证据 |
+| S046 | [[wiki/papers/DoReMi\|DoReMi]] | 完成摄入，应用未测；小模型excess loss优化域采样，跨尺度迁移和预算口径 |
 
 ## 维护入口
 
