@@ -47,6 +47,6 @@ Harness 与 Optimization 的子方向都保留在各自 Overview 的页内导航
 - [[workflows/autoresearch|Auto Research]]：按方向选文、每篇由同模型 subagent 摄入、共享写入、预算与停止条件；包含 Harness / Optimization 的启动和分工方案。
 - [[workflows/brainstorm|Brainstorm]]：共同证据上的独立分析、互评、查新反证与候选问题状态。
 
-**本轮状态（2026-10-25）：**按用户决定，先完成规则与启动方案，下一轮开始读论文。Harness / Optimization 可以按现有一级子方向分批探索，每方向约 5 篇；尚未启动论文摄入或后台自动运行。
+**本轮状态（2026-10-25）：**第一轮 Auto Research 已启动，覆盖 Harness 6 类与 Optimization 7 类一级子方向，正在核对综述引用与选文。每方向核心选读约 5 篇，先全局去重，再由同模型 subagent 分批摄入；最多同时 3 个子任务，主 Agent 验收与提交 Git。进度和边界见 [[wiki/overview#第一轮自主研究|第一轮自主研究]]；候选不计已读。
 
 新论文来了先整合已有页面；新问题形成独立内容时再拆页。自主研究在选定范围内引导后续阅读，不代替用户确定最终研究方向。[[wiki/frontier/Overview#本库的待检验问题|现有问题]] 仍是探索记录，是否追踪取决于后续选文与证据。

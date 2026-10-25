@@ -85,3 +85,8 @@
 - 新增 [[workflows/autoresearch|Auto Research]] 与 [[workflows/brainstorm|Brainstorm]]，增强 [[workflows/ingest|Ingest]] 的机制、前提、证据与知识变化分析，同步 Query、Lint、规则入口及索引；用于文献驱动的 idea 探索，不强制生成研究缺口。
 - 按用户要求，每篇论文交同模型 subagent 完成摄入和整合，主 Agent 调度并验收；共享文件串行写入，Harness / Optimization 各自阅读与讨论并保留跨模块核查。本轮仅完成规则和启动方案，下一轮才开始从综述引用按选定子方向约 5 篇选读。
 - 两个同模型 subagent 已独立审查协议；修正验收后记完成日志、跨模块共用两轮上限等流程边界。链接/表格与 Raw 完整性检查通过，来源数未变。Obsidian 控制接口未能读取最小化窗口，本轮应用渲染与跳转未验收。
+
+## [2026-10-25] schema | 第一轮研究的 Git 检查点与并发约定
+
+- 用户启动 Harness / Optimization 全部一级子方向的第一轮研究，并授权主 Agent 在必要节点提交 Git；已将单一提交者、差异检查、批次验收及不自动推送写入规则。启动规则提交为 `ab4a632`。
+- 本轮实际并发上限 4（含主 Agent），按最多 3 个同模型子任务分批派发；所有临时材料限当前项目的 `.research-tmp/` 并排除 Git，遵守用户不改动其他文件夹的要求。范围与预算见 [[wiki/overview#第一轮自主研究|第一轮约定]]；本条仅记录已完成的调度规则调整，论文摄入仍在进行前的选文阶段。
