@@ -115,3 +115,28 @@
 
 - 摄入 [[wiki/papers/ReSum|ReSum]] v3，连接 [[wiki/harness/Overview#上下文与记忆|运行时摘要接续]] 与 [[wiki/optimization/Overview#摘要接续怎样进入策略训练|分段轨迹训练]]；区分策略 training-free 与已训练摘要器，保留 GRPO 40 次、ReSum-GRPO 60 次训练调用预算及仅成功轨迹的成本口径。
 - 内容与结构检查通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。候选归因问题保留为待核查，未宣布研究缺口。
+
+## [2026-10-25] ingest | S032 Longformer：显式 token 的稀疏访问
+
+- 摄入 [[wiki/papers/Longformer|Longformer]] v2，整合至 [[wiki/optimization/Overview#架构基础|架构基础]]，区分局部/全局连接、预训练适配与文档任务证据；保留任务指定全局位置、组合消融和 HotpotQA 过滤条件。
+- 内容与结构检查通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S033 Mamba：输入相关的压缩状态
+
+- 摄入 [[wiki/papers/Mamba|Mamba]] v2，将选择性状态更新与硬件 scan 整合至 [[wiki/optimization/Overview#架构基础|架构基础]]；分开合成关联、DNA/音频百万长度与语言质量证据，保留变 batch 吞吐及未训练 6.9B 的边界。
+- 内容与结构检查通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验，不将架构结果视为长期 Agent 成功证据。
+
+## [2026-10-25] ingest | S034 Kimi Linear：压缩与全局访问的混合
+
+- 摄入 [[wiki/papers/Kimi-Linear|Kimi Linear]] v2，将 KDA / MLA 分层混合整合至 [[wiki/optimization/Overview#架构基础|架构基础]]；区分有限状态层与整模型缓存、1.4T/128k 与 5.7T/1M 结果，以及固定 batch 和扩大 batch 的效率口径。
+- 内容与结构检查通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验；端到端计时硬件与完整 batch 配置未确认。
+
+## [2026-10-25] ingest | S035 GQA：KV 头共享与解码成本
+
+- 摄入 [[wiki/papers/GQA|GQA]] 会议正式版本，在 [[wiki/optimization/Overview#架构基础|架构基础]] 区分头维度共享与时间历史压缩；保留 T5、uptraining 与部署配置，记录计时图表单位不一致，不抄录绝对速度承诺。
+- 内容与结构检查通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S036 Lost in the Middle：上下文使用的行为边界
+
+- 摄入 [[wiki/papers/Lost-in-the-Middle|Lost in the Middle]]，连接 [[wiki/optimization/Overview#架构基础|有效上下文]] 与 [[wiki/harness/Overview#上下文与记忆|检索及编排]]；保留位置效应的任务/模型例外，区分检索召回、合成 KV 检索和语义 QA。
+- 内容与结构检查通过，Raw 哈希匹配；本地为 arXiv v3，未与综述所引 TACL 版本逐项对齐；Obsidian 应用未测，未复现实验。
