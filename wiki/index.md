@@ -4,8 +4,8 @@
 
 ## 当前证据边界
 
-- 已纳入 **40 篇学术来源**：S001 综述及 S002–S021、S032–S050 三十九篇独立论文。S001 整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；独立论文的实际正文/附录阅读范围见各论文页，均不表示复现实验。
-- **独立论文（含方法、系统、评测与分析）完成摄入数为 39**。综述中的引用不是本库已验证的证据；第一轮已选定 65 个方向名额、64 篇不同候选，正在分批核读，候选与待验收论文不计完成摄入。
+- 已纳入 **45 篇学术来源**：S001 综述及 S002–S026、S032–S050 四十四篇独立论文。S001 整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；独立论文的实际正文/附录阅读范围见各论文页，均不表示复现实验。
+- **独立论文（含方法、系统、评测与分析）完成摄入数为 44**。综述中的引用不是本库已验证的证据；第一轮已选定 65 个方向名额、64 篇不同候选，正在分批核读，候选与待验收论文不计完成摄入。
 - 方法论原始资料为 [[raw/articles/llm-wiki|LLM Wiki]]，不计入学术来源数。具体工作规则见 [[AGENTS|Schema]]。
 
 ## 从哪里开始
@@ -58,6 +58,11 @@ Harness 与 Optimization 的子方向都保留在各自 Overview 的页内导航
 | S019 | [[wiki/papers/GPTSwarm\|GPTSwarm]] | 完成摄入，应用未测；可学习通信图与节点提示，分开优化和框架展示证据 |
 | S020 | [[wiki/papers/TDAG\|TDAG]] | 完成摄入，应用未测；按结果调整子任务、定制执行者与文本技能可靠性 |
 | S021 | [[wiki/papers/Multi-Agent-Failures\|Multi-Agent-Failures]] | 完成摄入，应用未测；失败模式分类、标注与干预，区分过程缺陷和因果归因 |
+| S022 | [[wiki/papers/IsolateGPT\|IsolateGPT]] | 完成摄入，应用未测；跨应用执行/记忆隔离、权限交接与人工警告边界 |
+| S023 | [[wiki/papers/AgentSpec\|AgentSpec]] | 完成摄入，应用未测；事件–谓词–处置 DSL、规则充分性与正常任务误拒 |
+| S024 | [[wiki/papers/ShieldAgent\|ShieldAgent]] | 完成摄入，应用未测；政策规则电路与在线模型判断，修订全静态分类理解 |
+| S025 | [[wiki/papers/InfrastructureSentinel\|InfrastructureSentinel]] | 完成摄入，应用未测；输入/计划/执行/审计四处治理与初步实验报告边界 |
+| S026 | [[wiki/papers/AGrail\|AGrail]] | 完成摄入，应用未测；可演化检查清单、跨任务记忆与条件评测口径 |
 | S032 | [[wiki/papers/Longformer\|Longformer]] | 完成摄入，应用未测；显式 token 的局部/全局稀疏访问 |
 | S033 | [[wiki/papers/Mamba\|Mamba]] | 完成摄入，应用未测；输入相关的有限递归状态与长度/吞吐证据边界 |
 | S034 | [[wiki/papers/Kimi-Linear\|Kimi Linear]] | 完成摄入，应用未测；KDA/MLA 混合与训练版本、缓存和吞吐条件 |

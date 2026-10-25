@@ -287,3 +287,29 @@
 
 - 摄入 [[wiki/papers/Agent-R|Agent-R]] arXiv v3，在 [[wiki/optimization/Overview#学到修订行为以后，环境是否能继续|修复监督]] 及 [[wiki/harness/Overview#分支能否撤回，评价能否被信任|运行恢复]] 解释MCTS再采样、actor判错与修复SFT；保留恢复评测条件和阈值/目标符号疑点。
 - 拼接后的环境状态一致性保留为优先核读实现的材料缺口，未判定方法不能恢复。内容与结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S022 IsolateGPT：隔离、授权与警告边界
+
+- 摄入 [[wiki/papers/IsolateGPT|IsolateGPT]] NDSS 2025 正式版，在 [[wiki/harness/Overview#Hooks 与中间件|Hooks 与中间件]] 区分跨应用隔离、可信中介和用户授权；保留单应用内部攻击范围、警告率非自动阻断率及人工等待未计成本的边界。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S023 AgentSpec：规则触发与处置责任
+
+- 摄入 [[wiki/papers/AgentSpec|AgentSpec]] arXiv v3，将事件–谓词–处置机制整合到 [[wiki/harness/Overview#规则来源与执行权是两条轴|Hooks 比较]]；分开程序执行、人工/LLM 处置与自动规则生成，保留正常任务误拒和有限场景证据。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S024 ShieldAgent：规则编译与在线判断
+
+- 摄入 [[wiki/papers/ShieldAgent|ShieldAgent]] arXiv v2；在 [[wiki/harness/Overview#规则来源与执行权是两条轴|Hooks 比较]] 并列 S001 静态分类与原文在线计划、赋值及验证代码生成，区分规则形成时间与执行期模型依赖。
+- 保留概率规则模型、条件政策遵从率和数据报告不一致；未与 PMLR 版本逐项对齐。内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S025 InfrastructureSentinel：四处检查与状态新鲜度
+
+- 摄入 [[wiki/papers/InfrastructureSentinel|InfrastructureSentinel]] AAAI/IAAI 2026 正式版，在 [[wiki/harness/Overview#检查通过后，环境和规则还会变化吗|Hooks 状态比较]] 区分输入、计划、执行前再检查与事后审计；检测结果仅为下界，配置、样本量和消融不足，按初步证据保留。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S026 AGrail：可演化检查清单与条件评测
+
+- 摄入 [[wiki/papers/AGrail|AGrail]] ACL 2025 正式版，将可增删检查清单、动作键记忆与模型/工具判断整合到 [[wiki/harness/Overview#Hooks 与中间件|Hooks 与中间件]]；区分记忆更新与参数训练、冻结与测试时适应，以及筛选样本后的条件效用与端到端成功。
+- 保留表文数字差异与有限迁移证据，不将清单相似度趋稳写成终身安全保证。内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
