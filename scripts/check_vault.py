@@ -110,6 +110,11 @@ def main() -> int:
         migration["raw"].extend(manifest.get("raw", []))
         migration["pages"].extend(manifest.get("pages", []))
         migration["anchors"].update(manifest.get("anchors", {}))
+        if manifest.get("log_prefix"):
+            prefix = manifest["log_prefix"]
+            original = (ROOT / "wiki/log.md").read_bytes()[:prefix["bytes"]]
+            if hashlib.sha256(original).hexdigest() != prefix["sha256"]:
+                errors.append({"check": "historical_log_prefix_changed"})
     anchors = migration.get("anchors", {})
     old_paths = {row["old_path"]: row for row in migration["raw"]}
     old_paths.update({row["old_path"]: row for row in migration["pages"]})

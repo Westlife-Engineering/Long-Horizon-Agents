@@ -12,7 +12,8 @@
       "raw_old": "raw/papers/Towards Long-Horizon Agents.pdf",
       "raw_new": "raw/surveys/Towards Long-Horizon Agents.pdf",
       "sha256": "c62da7e66a4c3f7251ed8b450f51df6500b2f850c7c70853779614e3d780e738",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "survey"
     },
     {
       "source_id": "S002",
@@ -23,7 +24,8 @@
       "raw_old": "raw/papers/ReAct.pdf",
       "raw_new": "raw/papers/harness/workflows/ReAct.pdf",
       "sha256": "f285b0971ae4a790e402fb93966bed3adde2cf0a04977d08b2b40d6ab0cace69",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S003",
@@ -34,7 +36,8 @@
       "raw_old": "raw/papers/ReWOO.pdf",
       "raw_new": "raw/papers/harness/workflows/ReWOO.pdf",
       "sha256": "1847bb42b9efb3a2860ca48edc962ee9c9b7d3e0359887ea596e1b23084de9ff",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S004",
@@ -45,7 +48,8 @@
       "raw_old": "raw/papers/Arbor.pdf",
       "raw_new": "raw/papers/harness/workflows/Arbor.pdf",
       "sha256": "c80931a404f5f0e0adc90d689fbedcc947fa986e4cfe9fa869238c85a7deb276",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S005",
@@ -56,7 +60,8 @@
       "raw_old": "raw/papers/Tree-of-Thoughts.pdf",
       "raw_new": "raw/papers/harness/workflows/Tree-of-Thoughts.pdf",
       "sha256": "6939cadebd84c8cdcc6ff3c2082b75851a86e2ef82008848d0af692f80521fa7",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S006",
@@ -67,7 +72,8 @@
       "raw_old": "raw/papers/LATS.pdf",
       "raw_new": "raw/papers/harness/workflows/LATS.pdf",
       "sha256": "a6b84613eeeaa3beb979ac3e34cbb3575bceb7ccf6050a2c2fc677d5e3a3ab19",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S007",
@@ -78,7 +84,8 @@
       "raw_old": "raw/papers/HiAgent.pdf",
       "raw_new": "raw/papers/harness/memory/HiAgent.pdf",
       "sha256": "879de3ba16e6fb26f5b6b741edc7b5cc6eaae6e78d3dc60875af56442cc899a2",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S008",
@@ -89,7 +96,8 @@
       "raw_old": "raw/papers/MemGPT.pdf",
       "raw_new": "raw/papers/harness/memory/MemGPT.pdf",
       "sha256": "9f674bcff69c86f11c813dcfad613d8841f5f8ed17979e3c4df06a91df7762e0",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S009",
@@ -100,7 +108,8 @@
       "raw_old": "raw/papers/A-MEM.pdf",
       "raw_new": "raw/papers/harness/memory/A-MEM.pdf",
       "sha256": "fec32b521c4a1f793442bf1aeb26139c583078350d1cd4ab8f4eccc54a0694f0",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S010",
@@ -111,7 +120,8 @@
       "raw_old": "raw/papers/ExpeL.pdf",
       "raw_new": "raw/papers/harness/memory/ExpeL.pdf",
       "sha256": "01e533d81fb4a5f91797c073a9b1929acbaa64da45a592b26563ca7d135024f3",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S011",
@@ -124,7 +134,8 @@
       "raw_old": "raw/papers/ReSum.pdf",
       "raw_new": "raw/papers/harness/memory/ReSum.pdf",
       "sha256": "ff58187f496fb96575da3639f6137a6d3a9c1e8b32c810318b703a4d3e0c6e9d",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S012",
@@ -137,7 +148,8 @@
       "raw_old": "raw/papers/Toolformer.pdf",
       "raw_new": "raw/papers/optimization/finetuning/Toolformer.pdf",
       "sha256": "391845b5f4f7f5e7c04a34e5280f031c17a5fbf868f53e1c5af3e25b0179fb1c",
-      "reason": "主要贡献是工具调用自监督数据筛选与参数微调；Harness工具方向保留关联。"
+      "reason": "主要贡献是工具调用自监督数据筛选与参数微调；Harness工具方向保留关联。",
+      "type": "paper"
     },
     {
       "source_id": "S013",
@@ -148,7 +160,8 @@
       "raw_old": "raw/papers/AnyTool.pdf",
       "raw_new": "raw/papers/harness/tools/AnyTool.pdf",
       "sha256": "eca0a23752c2ed8c653191527692b00d4c5446a510c00568740584068dc51686",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S014",
@@ -161,7 +174,8 @@
       "raw_old": "raw/papers/CodeAct.pdf",
       "raw_new": "raw/papers/harness/tools/CodeAct.pdf",
       "sha256": "4ebe01e45888404ddf8f2513dc7935d1cb300a830adaea0b8ac2f1bff66b5519",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S015",
@@ -174,7 +188,8 @@
       "raw_old": "raw/papers/Voyager.pdf",
       "raw_new": "raw/papers/harness/tools/Voyager.pdf",
       "sha256": "769a4e33ddeeb73870849232eece49afe882c2d146362e33917ccb432ba0efb8",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S016",
@@ -187,7 +202,8 @@
       "raw_old": "raw/papers/MCPMark.pdf",
       "raw_new": "raw/papers/harness/tools/MCPMark.pdf",
       "sha256": "69e57b01a7f39daff489dee5807c5f5ab2f16440c66ddfcda4aa11de7b92ac13",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S017",
@@ -200,7 +216,8 @@
       "raw_old": "raw/papers/MetaGPT.pdf",
       "raw_new": "raw/papers/harness/orchestration/MetaGPT.pdf",
       "sha256": "17582e47647fac8eaa3681feade41c8408310c4133acc5c6823565fbe880e1ac",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S018",
@@ -213,7 +230,8 @@
       "raw_old": "raw/papers/Magentic-One.pdf",
       "raw_new": "raw/papers/harness/orchestration/Magentic-One.pdf",
       "sha256": "e6620f66ce54a7460c90c854ac5b4dc26200f6f8d9c3b3f969e26ab8774338e9",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S019",
@@ -226,7 +244,8 @@
       "raw_old": "raw/papers/GPTSwarm.pdf",
       "raw_new": "raw/papers/harness/orchestration/GPTSwarm.pdf",
       "sha256": "63aab69835f124fd1bee714a21433a696c4d8d36da9f7883e0b5b01b836fd6ed",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S020",
@@ -239,7 +258,8 @@
       "raw_old": "raw/papers/TDAG.pdf",
       "raw_new": "raw/papers/harness/orchestration/TDAG.pdf",
       "sha256": "b10ad4f06d4f59acb1e99b02c72b97c6266bf48e375132acee843c3d76bc617b",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S021",
@@ -252,7 +272,8 @@
       "raw_old": "raw/papers/Multi-Agent-Failures.pdf",
       "raw_new": "raw/papers/harness/orchestration/Multi-Agent-Failures.pdf",
       "sha256": "6aff168d6e201217d3f79611f6ad024590a599a03b97ac2aeb0b0b128bac374c",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S022",
@@ -265,7 +286,8 @@
       "raw_old": "raw/papers/IsolateGPT.pdf",
       "raw_new": "raw/papers/harness/hooks/IsolateGPT.pdf",
       "sha256": "98c28e6d68ab378348fb8a1aea311c39533384fd7bdc15a4782a5bbf1ea057c0",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S023",
@@ -278,7 +300,8 @@
       "raw_old": "raw/papers/AgentSpec.pdf",
       "raw_new": "raw/papers/harness/hooks/AgentSpec.pdf",
       "sha256": "a8ef39247392eb49e275768c19aca11a111c997e432225dcbcf74dfbf31abae7",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S024",
@@ -291,7 +314,8 @@
       "raw_old": "raw/papers/ShieldAgent.pdf",
       "raw_new": "raw/papers/harness/hooks/ShieldAgent.pdf",
       "sha256": "9217e40a58e778d19af322bdc60c8acfcc14fc0b9470867933bea699b7707c34",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S025",
@@ -304,7 +328,8 @@
       "raw_old": "raw/papers/InfrastructureSentinel.pdf",
       "raw_new": "raw/papers/harness/hooks/InfrastructureSentinel.pdf",
       "sha256": "d7bf031b23650643d3772069bd1d3058a1e7c8e4fc38baf7e590aa34923a62dd",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S026",
@@ -317,7 +342,8 @@
       "raw_old": "raw/papers/AGrail.pdf",
       "raw_new": "raw/papers/harness/hooks/AGrail.pdf",
       "sha256": "3ca48b21d79e1ff7dd7866ce0489fa6d5afc8d31972022faade1ad432f63b9e7",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S027",
@@ -328,7 +354,8 @@
       "raw_old": "raw/papers/CRITIC.pdf",
       "raw_new": "raw/papers/harness/verification/CRITIC.pdf",
       "sha256": "ed5cbff53c8ff550b72d6abba0d7e4d83c5d214d61d0fafde10cbe4bbfc31a5b",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S028",
@@ -339,7 +366,8 @@
       "raw_old": "raw/papers/AgentPRM-Xi.pdf",
       "raw_new": "raw/papers/harness/verification/AgentPRM-Xi.pdf",
       "sha256": "efb13b8bbf1630cc4c2da65eb594fd1fa249ab20d34472396f2418d962646745",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S029",
@@ -350,7 +378,8 @@
       "raw_old": "raw/papers/Agent-as-a-Judge.pdf",
       "raw_new": "raw/papers/harness/verification/Agent-as-a-Judge.pdf",
       "sha256": "10c479cdc343b9916c3fc994cdedf6fd040462d85ce00a57f2a6654b231bde00",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S030",
@@ -361,7 +390,8 @@
       "raw_old": "raw/papers/CorrectBench.pdf",
       "raw_new": "raw/papers/harness/verification/CorrectBench.pdf",
       "sha256": "50ff5d2a551f26d87133d1fa6fd35980814dd9300537bdefc2fa65e7e2ae6b4a",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S031",
@@ -374,7 +404,8 @@
       "raw_old": "raw/papers/Self-MAP.pdf",
       "raw_new": "raw/papers/harness/verification/Self-MAP.pdf",
       "sha256": "ed109a774e62acb8c37700cbd6e8df6ec0de48937b0043407b532cd1e2b85b91",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S032",
@@ -385,7 +416,8 @@
       "raw_old": "raw/papers/Longformer.pdf",
       "raw_new": "raw/papers/optimization/architecture/Longformer.pdf",
       "sha256": "053756b54e2d3462d4690b3aed489c962f17df7c3531865e47374c4a651f526c",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S033",
@@ -396,7 +428,8 @@
       "raw_old": "raw/papers/Mamba.pdf",
       "raw_new": "raw/papers/optimization/architecture/Mamba.pdf",
       "sha256": "adf70ed1803c85b1899dec3e21f3af0b124411439e8654b840ea65f7b9f52b2e",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S034",
@@ -407,7 +440,8 @@
       "raw_old": "raw/papers/Kimi-Linear.pdf",
       "raw_new": "raw/papers/optimization/architecture/Kimi-Linear.pdf",
       "sha256": "e2e23a449fc9bb27e34e783d20b2e6cd0f1ac67d58efdc0479c03c54db956a17",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S035",
@@ -418,7 +452,8 @@
       "raw_old": "raw/papers/GQA.pdf",
       "raw_new": "raw/papers/optimization/architecture/GQA.pdf",
       "sha256": "c52de1d3339174fbf93b588aa4cc9bf36092c865f2358ece3999de152f57455c",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S036",
@@ -431,7 +466,8 @@
       "raw_old": "raw/papers/Lost-in-the-Middle.pdf",
       "raw_new": "raw/papers/optimization/architecture/Lost-in-the-Middle.pdf",
       "sha256": "653b29619eae2ae4b361d7bdcdc06db4bedcb1b0eabe31814036beca8c1af0b1",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S037",
@@ -444,7 +480,8 @@
       "raw_old": "raw/papers/TaskCraft.pdf",
       "raw_new": "raw/papers/optimization/data-environments/TaskCraft.pdf",
       "sha256": "e73a88da040cb86af752757381cd34c87b6717cdf2b3c24b47b2d1d3d2fb2c85",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S038",
@@ -458,7 +495,8 @@
       "raw_old": "raw/papers/SWE-Gym.pdf",
       "raw_new": "raw/papers/optimization/data-environments/SWE-Gym.pdf",
       "sha256": "5aefa26959cb5230fd054cbe66b33e653ac80bc31df25ce910c2f3c29bcc504e",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S039",
@@ -471,7 +509,8 @@
       "raw_old": "raw/papers/WebDreamer.pdf",
       "raw_new": "raw/papers/optimization/data-environments/WebDreamer.pdf",
       "sha256": "ed7e9cd6629bfb30086153d3b6b02f91e1d576ab8f6d07f0ad5b9b4d9ebdcf33",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S040",
@@ -484,7 +523,8 @@
       "raw_old": "raw/papers/TOUCAN.pdf",
       "raw_new": "raw/papers/optimization/data-environments/TOUCAN.pdf",
       "sha256": "78b90827799a8db9b71af8a47781f65b822b14aaac9b9ef7abb5f16dd5f4ed55",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S041",
@@ -498,7 +538,8 @@
       "raw_old": "raw/papers/AgentGym-RL.pdf",
       "raw_new": "raw/papers/optimization/reinforcement-learning/AgentGym-RL.pdf",
       "sha256": "e869afb36921f859c85d8044cedc3785cfba16e677c5d366ce63f531d73927e5",
-      "reason": "主要贡献是ScalingInter在线RL交互课程；数据/环境与微调队列保留历史选择理由，不据队列把方法归为SFT。"
+      "reason": "主要贡献是ScalingInter在线RL交互课程；数据/环境与微调队列保留历史选择理由，不据队列把方法归为SFT。",
+      "type": "paper"
     },
     {
       "source_id": "S042",
@@ -509,7 +550,8 @@
       "raw_old": "raw/papers/DeepSeek-V3.pdf",
       "raw_new": "raw/papers/optimization/pretraining/DeepSeek-V3.pdf",
       "sha256": "812a3fd645c80725354de9d831a6785503007a60681461407f64e97305fa9330",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S043",
@@ -520,7 +562,8 @@
       "raw_old": "raw/papers/YaRN.pdf",
       "raw_new": "raw/papers/optimization/pretraining/YaRN.pdf",
       "sha256": "e7c0268a796138460c6ba2f67a7cba5bd922c401aea94c1fcd09c4b76b883c85",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S044",
@@ -531,7 +574,8 @@
       "raw_old": "raw/papers/ProLong.pdf",
       "raw_new": "raw/papers/optimization/pretraining/ProLong.pdf",
       "sha256": "6ab4ead61ed0de9366143f1752cb2d95af3b0d45c9b4380d4f5eddb51e4b85bc",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S045",
@@ -542,7 +586,8 @@
       "raw_old": "raw/papers/Qwen2-VL.pdf",
       "raw_new": "raw/papers/optimization/pretraining/Qwen2-VL.pdf",
       "sha256": "30bb0f6c9babf910295d6b7cd34b6f54824236f68782664c3c93fbf4803275d0",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S046",
@@ -553,7 +598,8 @@
       "raw_old": "raw/papers/DoReMi.pdf",
       "raw_new": "raw/papers/optimization/pretraining/DoReMi.pdf",
       "sha256": "6bf62c211048c07b786a2d9146e6ffaf38ef8af744eebdbe5281cdaf827227b4",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S047",
@@ -564,7 +610,8 @@
       "raw_old": "raw/papers/AgentTuning.pdf",
       "raw_new": "raw/papers/optimization/finetuning/AgentTuning.pdf",
       "sha256": "9b1cf0c9016c892802138af94496e9c11f11f7253a9603bc5963abe05e98ca9c",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S048",
@@ -575,7 +622,8 @@
       "raw_old": "raw/papers/ATLAS.pdf",
       "raw_new": "raw/papers/optimization/finetuning/ATLAS.pdf",
       "sha256": "0084960ac81c108054d44fc11ed84beb02d4be086fcb04f99464aa3a374290bf",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S049",
@@ -588,7 +636,8 @@
       "raw_old": "raw/papers/Agent-Distillation.pdf",
       "raw_new": "raw/papers/optimization/finetuning/Agent-Distillation.pdf",
       "sha256": "b5cdc342bbbd0be2aa4b170f314516a6a3e23004ba68565b07d0dc6f4e43f710",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S050",
@@ -601,7 +650,8 @@
       "raw_old": "raw/papers/Agent-R.pdf",
       "raw_new": "raw/papers/optimization/finetuning/Agent-R.pdf",
       "sha256": "9c405f1e6405c84565af3b2d564121c5f37dcff0892edea674cfdc35850d72c1",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S051",
@@ -612,7 +662,8 @@
       "raw_old": "raw/papers/Search-R1.pdf",
       "raw_new": "raw/papers/optimization/reinforcement-learning/Search-R1.pdf",
       "sha256": "524306de91f80d7755c43f8daad11eb463832762ba1debe0f37788bdbb3a6a0d",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S052",
@@ -623,7 +674,8 @@
       "raw_old": "raw/papers/ToolRL.pdf",
       "raw_new": "raw/papers/optimization/reinforcement-learning/ToolRL.pdf",
       "sha256": "419096b066d6f28493033e6f388c5be378d72a079778ef8bfa712627f73a4639",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S053",
@@ -634,7 +686,8 @@
       "raw_old": "raw/papers/GiGPO.pdf",
       "raw_new": "raw/papers/optimization/reinforcement-learning/GiGPO.pdf",
       "sha256": "f6a4d4559c41048be67a0e4a062f9957996fc79e6a80f65fe66f1140fac82dcd",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S054",
@@ -645,7 +698,8 @@
       "raw_old": "raw/papers/Tree-GRPO.pdf",
       "raw_new": "raw/papers/optimization/reinforcement-learning/Tree-GRPO.pdf",
       "sha256": "56b9e6f0f227f3a36868a68ce27e0939beea98749b76be0976ce28e7bb362843",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S055",
@@ -658,7 +712,8 @@
       "raw_old": "raw/papers/Memory-R1.pdf",
       "raw_new": "raw/papers/optimization/reinforcement-learning/Memory-R1.pdf",
       "sha256": "35f4f543501f2e2d1c8cc95503bae81a31b87c550e84c8977380b5ad3985a80e",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S056",
@@ -669,7 +724,8 @@
       "raw_old": "raw/papers/GKD.pdf",
       "raw_new": "raw/papers/optimization/distillation/GKD.pdf",
       "sha256": "a81c71fa0cd15506642092790d854347f030c29ee1d6aa643b55aa51348e6869",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S057",
@@ -680,7 +736,8 @@
       "raw_old": "raw/papers/DAgger-LLM.pdf",
       "raw_new": "raw/papers/optimization/distillation/DAgger-LLM.pdf",
       "sha256": "696b094377ff7c4628854a4d7708ad2935f3fa0938de53eeafb327f8d97ebee4",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S058",
@@ -691,7 +748,8 @@
       "raw_old": "raw/papers/MAD-OPD.pdf",
       "raw_new": "raw/papers/optimization/distillation/MAD-OPD.pdf",
       "sha256": "659e8625e1d6ffd33b36e490cd7e0cb2e828ef0df231be0788e460bea08b4971",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S059",
@@ -704,7 +762,8 @@
       "raw_old": "raw/papers/Pi-Play.pdf",
       "raw_new": "raw/papers/optimization/distillation/Pi-Play.pdf",
       "sha256": "107532d4125a0177229149081d962086f96c23ff71f48c62af96b3c72667d75e",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S060",
@@ -715,7 +774,8 @@
       "raw_old": "raw/papers/Self-Distillation-Zero.pdf",
       "raw_new": "raw/papers/optimization/distillation/Self-Distillation-Zero.pdf",
       "sha256": "d6c91ba9fe38c9011318c5698d67010f7a6fc9f4c70b0f9fb13662d3ac7ea777",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S061",
@@ -726,7 +786,8 @@
       "raw_old": "raw/papers/STaR.pdf",
       "raw_new": "raw/papers/optimization/self-evolution/STaR.pdf",
       "sha256": "15caf0d752dea660cce54a877c0be792c51e5b8484f56fcc467225457b09af79",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S062",
@@ -737,7 +798,8 @@
       "raw_old": "raw/papers/rStar-Math.pdf",
       "raw_new": "raw/papers/optimization/self-evolution/rStar-Math.pdf",
       "sha256": "cc5ba4f6002b4b4d121d3818efd33b888f1ed132a6d5c4ca290f63a40b0cae03",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S063",
@@ -748,7 +810,8 @@
       "raw_old": "raw/papers/R-Zero.pdf",
       "raw_new": "raw/papers/optimization/self-evolution/R-Zero.pdf",
       "sha256": "5e577e627e4d6501544955922257313ca2cd94fbc3c7715cfa0dd200cfe9d139",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S064",
@@ -759,7 +822,8 @@
       "raw_old": "raw/papers/Agent0.pdf",
       "raw_new": "raw/papers/optimization/self-evolution/Agent0.pdf",
       "sha256": "0e7d3eb30168c97f1c50af433fe48326c79dfd14edf326cc1fac14dfa296b52c",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S065",
@@ -770,7 +834,8 @@
       "raw_old": "raw/papers/Environment-Tuning.pdf",
       "raw_new": "raw/papers/optimization/self-evolution/Environment-Tuning.pdf",
       "sha256": "e410eb1f51ca7221b09034d0ae5cf0ad68b0d64c3982aa81b91ec098426c4f02",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S066",
@@ -781,7 +846,8 @@
       "raw_old": "raw/papers/TRACE.pdf",
       "raw_new": "raw/papers/harness/memory/TRACE.pdf",
       "sha256": "a685b0406d8e13945dfe93a1d3b48cfa4fd47cc8245d8cdb599b3087c9b17669",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S067",
@@ -792,7 +858,8 @@
       "raw_old": "raw/papers/BRIDGE.pdf",
       "raw_new": "raw/papers/harness/orchestration/BRIDGE.pdf",
       "sha256": "c756f308e51549a522c0345265e090220f0e12d8948ec9c1ea647a5a6a98025b",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S068",
@@ -803,7 +870,8 @@
       "raw_old": "raw/papers/C3.pdf",
       "raw_new": "raw/papers/optimization/reinforcement-learning/C3.pdf",
       "sha256": "56f98f5470af91ef80fc7e968b8d3e46ca701e490e172016da0c342dfe59f92f",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S069",
@@ -814,7 +882,8 @@
       "raw_old": "raw/papers/R-Quest.pdf",
       "raw_new": "raw/papers/optimization/self-evolution/R-Quest.pdf",
       "sha256": "6fca765f6b0314b6781e6dc60141b5c1caadedc8f685875f374cc310a3469abe",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     },
     {
       "source_id": "S070",
@@ -825,7 +894,8 @@
       "raw_old": "raw/papers/SpecRover.pdf",
       "raw_new": "raw/papers/harness/verification/SpecRover.pdf",
       "sha256": "c7ff57093baa41a22f8c822da76975cf0d03ab24b33004dd0aaf9b05d35ab919",
-      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。"
+      "reason": "按论文主要贡献与现有主题整合用途归类；目录不表示排他归属。",
+      "type": "paper"
     }
   ],
   "raw": [
@@ -2297,6 +2367,30 @@
       "sh": 2,
       "pyc": 1
     },
-    "pdf_review": "72 downloads identical to retained PDFs; two .pdf files contain failed-download HTML, not unique papers."
+    "pdf_review": "72 downloads identical to retained PDFs; two .pdf files contain failed-download HTML, not unique papers.",
+    "migration_files": 11,
+    "migration_bytes": 1147744,
+    "total_files": 833,
+    "total_bytes": 371124478
+  },
+  "result": {
+    "status": "complete",
+    "raw_retained": 92,
+    "raw_deleted": 6,
+    "raw_deleted_bytes": 631573,
+    "source_ids_unchanged": 70,
+    "direction_topics": 13,
+    "question_pages": 2,
+    "migration_commit": "74aab61dc6648f5b5e2add3e1b3d2325778d5260",
+    "hash_and_structure_checks": "passed",
+    "obsidian_checked": "dark theme, normal maximized window: file tree, grouped index, memory table, HiAgent PDF page 3 / printed 32781",
+    "obsidian_unchecked": "narrow split pane, light theme, other direction pages exhaustive rendering",
+    "source_arguments_preserved": true,
+    "nested_placeholder_files_deleted": 2,
+    "nested_placeholder_bytes": 29
+  },
+  "log_prefix": {
+    "bytes": 49716,
+    "sha256": "ed9d3c9bcc56b66b8dcc1700d7625ed107eea86ab54f4ad05feab19b54592f93"
   }
 }
