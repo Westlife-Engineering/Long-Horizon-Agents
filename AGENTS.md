@@ -18,7 +18,7 @@
 
 **保留与清理：**附加文件须有具体证据用途或明确复用对象；不能只因下载过、来自官方或已列入归档表就永久保留。任务验收后清理可再生过程文件；中断只留最小恢复集。执行[[workflows/structure#保留标准与临时文件清理|保留与清理规则]]，已归档辅助材料的精简须先处理引用和追溯记录。
 
-2026-10-25的这次修订只更新规则，历史平铺资料仍待独立整理任务迁移，不能宣称现有目录已符合新结构。创建文件时从Vault根目录解析路径，不把wikilink路径拼到当前笔记目录下制造嵌套副本。
+2026-10-25已按用户独立授权执行分类迁移，旧新路径及精简追溯见[[maintenance/migrations/2026-10-25-directory-migration|迁移记录]]。创建文件时从Vault根目录解析路径，不把wikilink路径拼到当前笔记目录下制造嵌套副本。
 
 不要预建空目录、空概念页或未读论文页。不因目录里存在一份文件就视为已读。不自动初始化 Git、安装 Obsidian 插件或引入数据库；当前用 Markdown、索引和本地搜索即可。
 
@@ -38,7 +38,7 @@
 
 ## 3. 页面 Schema
 
-使用 UTF-8 Markdown；正文默认简体中文，保留英文术语用于检索。内部链接采用包含 Vault 相对路径的 Obsidian wikilink，避免多个 `Overview.md` 的歧义。例如 `[[wiki/harness/Overview|Harness]]`；PDF 证据可用 `[[raw/papers/Towards Long-Horizon Agents.pdf#page=9|S001 · §2.1 · p.9]]`。不要链接尚不存在的页面。
+使用 UTF-8 Markdown；正文默认简体中文，保留英文术语用于检索。内部链接采用包含 Vault 相对路径的 Obsidian wikilink，避免多个 `Overview.md` 的歧义。例如 `[[wiki/harness/Overview|Harness]]`；PDF 证据可用 `[[raw/surveys/Towards Long-Horizon Agents.pdf#page=9|S001 · §2.1 · p.9]]`。不要链接尚不存在的页面。
 
 表格内 wikilink 的别名分隔符须转义为 `\|`；不能只检查目标文件存在而忽略表格渲染。
 

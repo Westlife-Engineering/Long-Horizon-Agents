@@ -71,8 +71,8 @@
 
 | 模块 | 一级子方向及当前知识入口 |
 | --- | --- |
-| Harness（6 类） | [[wiki/harness/Overview#循环与工作流\|循环与工作流]]、[[wiki/harness/Overview#上下文与记忆\|上下文与记忆]]、[[wiki/harness/Overview#工具、MCP 与技能\|工具、MCP 与技能]]、[[wiki/harness/Overview#编排\|编排]]、[[wiki/harness/Overview#Hooks 与中间件\|Hooks 与中间件]]、[[wiki/harness/Overview#验证\|验证]] |
-| Optimization（7 类） | [[wiki/optimization/Overview#架构基础\|架构基础]]、[[wiki/optimization/Overview#数据与环境合成\|数据与环境合成]]、[[wiki/optimization/Overview#预训练与中期训练\|预训练与中期训练]]、[[wiki/optimization/Overview#微调\|微调]]、[[wiki/optimization/Overview#Agentic Reinforcement Learning\|Agentic RL]]、[[wiki/optimization/Overview#On-Policy Distillation\|On-Policy Distillation]]、[[wiki/optimization/Overview#自我演化\|自我演化]] |
+| Harness（6 类） | [[wiki/harness/workflows\|循环与工作流]]、[[wiki/harness/memory\|上下文与记忆]]、[[wiki/harness/tools\|工具、MCP 与技能]]、[[wiki/harness/orchestration\|编排]]、[[wiki/harness/hooks\|Hooks 与中间件]]、[[wiki/harness/verification\|验证]] |
+| Optimization（7 类） | [[wiki/optimization/architecture\|架构基础]]、[[wiki/optimization/data-environments\|数据与环境合成]]、[[wiki/optimization/pretraining\|预训练与中期训练]]、[[wiki/optimization/finetuning\|微调]]、[[wiki/optimization/reinforcement-learning\|Agentic RL]]、[[wiki/optimization/distillation\|On-Policy Distillation]]、[[wiki/optimization/self-evolution\|自我演化]] |
 
 若用户选择全部一级子方向，核心选读为最多 65 个方向名额，去重后的独立论文数可能更少；按默认上限计算最多初筛 156 个方向候选名额，另有最多 26 个定向补读名额，总正文阅读上限最多 91 篇，实际去重后登记。不是一次启动 65 个 Agent，也不是必须读满 91 篇。用户只启动其中一部分时，仅计算对应范围。
 
