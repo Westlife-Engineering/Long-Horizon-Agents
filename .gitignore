@@ -10,3 +10,6 @@ Desktop.ini
 
 # Temporary Office lock files
 ~$*
+
+# Project-local transient material for the authorized research round
+.research-tmp/

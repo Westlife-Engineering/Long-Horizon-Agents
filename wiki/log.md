@@ -79,3 +79,9 @@
 
 - 用户澄清：此前“移除项目”意为移到项目外，而非删除。此前确实执行了直接删除；原目录没有 Git 备份。现使用留存脚本、原生成图及原 PDF，在项目外 `C:/Users/ZENGZX/Desktop/workflow-trial-recovered/lha-group-meeting_20261023/` 重建主要交付；这是恢复重建，不是原目录逐字节还原，缺失范围见该目录 README。
 - 按用户指定的远程仓库初始化本地 Git，设置 `origin` 为 `https://github.com/Westlife-Engineering/Long-Horizon-Agents.git`，本机连接检查通过。忽略 Obsidian 窗口布局等本机状态；恢复目录不纳入本库索引或版本管理。公开远程尚未上传文件。
+
+## [2026-10-25] schema | 接入有边界的自主研究与多 Agent 审查
+
+- 新增 [[workflows/autoresearch|Auto Research]] 与 [[workflows/brainstorm|Brainstorm]]，增强 [[workflows/ingest|Ingest]] 的机制、前提、证据与知识变化分析，同步 Query、Lint、规则入口及索引；用于文献驱动的 idea 探索，不强制生成研究缺口。
+- 按用户要求，每篇论文交同模型 subagent 完成摄入和整合，主 Agent 调度并验收；共享文件串行写入，Harness / Optimization 各自阅读与讨论并保留跨模块核查。本轮仅完成规则和启动方案，下一轮才开始从综述引用按选定子方向约 5 篇选读。
+- 两个同模型 subagent 已独立审查协议；修正验收后记完成日志、跨模块共用两轮上限等流程边界。链接/表格与 Raw 完整性检查通过，来源数未变。Obsidian 控制接口未能读取最小化窗口，本轮应用渲染与跳转未验收。
