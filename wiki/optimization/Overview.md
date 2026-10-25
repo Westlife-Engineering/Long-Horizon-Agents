@@ -33,6 +33,11 @@ sources:
   - "[[raw/papers/GiGPO.pdf]]"
   - "[[raw/papers/Tree-GRPO.pdf]]"
   - "[[raw/papers/Memory-R1.pdf]]"
+  - "[[raw/papers/GKD.pdf]]"
+  - "[[raw/papers/DAgger-LLM.pdf]]"
+  - "[[raw/papers/MAD-OPD.pdf]]"
+  - "[[raw/papers/Pi-Play.pdf]]"
+  - "[[raw/papers/Self-Distillation-Zero.pdf]]"
 ---
 
 # Optimization：能力内化与训练
@@ -236,9 +241,33 @@ Memory-R1把运行时可变记忆接到参数学习：Manager输出编辑操作�
 
 ## On-Policy Distillation
 
-同策略蒸馏（OPD）在学生当前策略实际访问的状态上提供监督，区别于只学习固定专家轨迹。综述再分为教师指导和自我改进式监督；核心阅读问题是“谁产生状态，谁提供纠正信号”。这是一种机制描述，尚不支持 OPD 普遍优于 RL 的结论。[[raw/papers/Towards Long-Horizon Agents.pdf#page=52|S001 · §5.6 · pp.52–53]]
+综述把OPD描述为在学生自己访问的状态上提供教师监督，并分为教师指导与自我改进式监督。核读后需要再问：**“状态”是学生生成的token前缀，还是由学生动作推进的外部环境历史？教师看到了什么额外信息？** 这决定了分布偏移被修正到哪一层，不能只按OPD名称推断已解决长程交互。[[raw/papers/Towards Long-Horizon Agents.pdf#page=52|S001 · §5.6 · pp.52–53]] [[raw/papers/GKD.pdf#page=4|S056 §3.1 · p.4]] [[raw/papers/DAgger-LLM.pdf#page=4|S057 §3.2 · p.4]]
 
-细分导航：Teacher-guided OPD；Self-improving OPD。
+细分导航：Teacher-guided OPD；Self-improving OPD。本轮S056–S060已完成摄入，内容与结构已验收；应用未测。
+
+### 状态由谁产生，教师能看到什么
+
+下表比较信息流与更新对象，不排列不同任务的分数。固定教师指本次学生更新时教师参数不随梯度改变；教师输入仍可逐样本变化。
+
+| 方法 | 采样状态与教师信息权限 | 输出监督与更新对象 |
+| --- | --- | --- |
+| [[wiki/papers/GKD\|S056 GKD]] | 学生生成token前缀，可与固定序列按λ混合；教师看到相同前缀 | 教师token概率，散度可选；固定教师、更新学生，采样停止梯度。RL是另加的可选项。[[raw/papers/GKD.pdf#page=4\|§3.1–3.2 · pp.4–5]] |
+| [[wiki/papers/DAgger-LLM\|S057 DAgger-LLM]] | 教师/学生按轮混合执行，真实环境返回观察；每个访问状态都查询教师动作 | 教师动作文本交叉熵，动作内部前缀也是教师标签；不要求教师logits。固定教师、按批更新学生。[[raw/papers/DAgger-LLM.pdf#page=4\|§3.2、Eqs.8–13 · pp.4–5]] |
+| [[wiki/papers/MAD-OPD\|S058 MAD-OPD]] | 学生采样动作；讨论历史只对教师可见；训练环境历史覆盖需另核查 | 置信度加权各教师散度之和；教师固定，学生更新；agentic用JSD、code用reverse KL是本文配方。[[raw/papers/MAD-OPD.pdf#page=6\|§4.2–4.4 · pp.6–7]] |
+| [[wiki/papers/Pi-Play\|S059 π-Play]] | 学生搜索rollout；教师额外看出题构造路径QCP，examiner还更新题目分布 | 学生GRPO＋KL(学生‖教师)，教师EMA软更新；examiner用难度反馈另更新。[[raw/papers/Pi-Play.pdf#page=4\|§2.2–2.5 · pp.4–5]] |
+| [[wiki/papers/Self-Distillation-Zero\|S060 SD-Zero]] | 学生生成文本解答；教师额外看完整初答及二元验证结果 | 先双损失SRT训练修订者，再用冻结修订者做reverse KL；额外同步教师属于后续迭代实验。[[raw/papers/Self-Distillation-Zero.pdf#page=4\|§2.1–2.2 · p.4]]、[[raw/papers/Self-Distillation-Zero.pdf#page=7\|§3.4 · pp.7–8]] |
+
+DAgger提供本批直接的多轮软件环境证据，但实际教师执行概率最低仍为0.6，不是训练末期纯学生环境分布。MAD-OPD的算法写有在线环境循环，附录训练数据却是ToolACE独立step样本；仅从PDF不能确认整个训练历史都由学生执行后刷新。GKD、SD-Zero主要是文本生成/数学代码推理，不能把自回归长度当成真实环境恢复验证。[[raw/papers/DAgger-LLM.pdf#page=17|S057 F.1–F.2 · pp.17–18]] [[raw/papers/MAD-OPD.pdf#page=12|S058 Algorithm 1、B.3 · pp.12–13]] [[raw/papers/GKD.pdf#page=5|S056 §4 · pp.5–9]] [[raw/papers/Self-Distillation-Zero.pdf#page=5|S060 §3.1 · p.5]]
+
+### 稠密监督来自额外条件，不等于因果信用
+
+教师监督可以是固定专家概率、教师动作文本、讨论条件化概率、出题路径条件化概率或结果条件化修订者。稠密表示每个位置都有优化信号；它仍可能继承教师错误、置信度偏差或合成任务错误。SD-Zero的完整分布KL与样本token的log概率比也不同，后者可正可负；信号集中在少数位置不等于验证器证明了这些位置的因果责任。[[raw/papers/MAD-OPD.pdf#page=6|S058 §4.2–4.3 · p.6]] [[raw/papers/Pi-Play.pdf#page=4|S059 §2.2–2.3 · p.4]] [[raw/papers/Self-Distillation-Zero.pdf#page=8|S060 §4.1 · p.8]]
+
+**本库数学核查，限定S058的普遍理论主张。** MAD-OPD D.3在不相交支持混合与无约束softmax下宣称reverse KL单模态全局最优；但取$p=q=(0.6,0.4)$，KL=0且梯度为0，集中解成本反而为−log0.6>0。故这些假设不足以保证单模态最优或普遍收敛，需额外可行族/优化条件。其固定教师、独立位置logit界与Table 4经验消融分别保留，不升级为参数训练稳定或代码连贯性的普遍定理，完整说明见 [[wiki/papers/MAD-OPD#理论主张的适用前提：本库数学核查|唯一论文页]]。[[raw/papers/MAD-OPD.pdf#page=22|S058 D.3–D.5 · pp.22–23]] [[raw/papers/MAD-OPD.pdf#page=17|Table 4 · p.17]]
+
+### 比较收益之前，先核对分母和成本
+
+本批不支持“OPD普遍优于RL”。DAgger的GRPO基线使用不同任务子集，SWE Verified只评466/500；MAD-OPD用BFCL/LCB选checkpoint，部分交互评测排除执行失败；SD-Zero的大部分增益来自SRT，且采样预算与实现表仍有配置口径差异。π-Play同时使用GRPO和蒸馏，最多5轮训练交互；它的“2–3倍演化效率”不能直接当墙钟加速。具体条件已在各论文页归位。[[raw/papers/DAgger-LLM.pdf#page=6|S057 §4.1 · p.6]] [[raw/papers/MAD-OPD.pdf#page=13|S058 B.6、B.9–B.10 · pp.13–15]] [[raw/papers/Self-Distillation-Zero.pdf#page=19|S060 C.1–C.3 · pp.19–23]] [[raw/papers/Pi-Play.pdf#page=13|S059 B–C.2、Table 11 · pp.13–15]]
 
 ## 自我演化
 
@@ -247,6 +276,12 @@ Memory-R1把运行时可变记忆接到参数学习：Manager输出编辑操作�
 细分导航：Offline Self-evolution；Online Self-evolution；Agent–Environment Co-evolution。这里的范围较窄：外部记忆或技能库的增长，只有被蒸馏、微调、RL 或可训练模块吸收时，才属于该章所说的训练式内化。更广义的外部自我演化见 [[wiki/frontier/Overview|Frontier]]。[[raw/papers/Towards Long-Horizon Agents.pdf#page=55|S001 · §5.7 小结 · p.55]]
 
 [[wiki/papers/Agent-R|S050 Agent-R，已完成摄入，应用未测]]提供已核读的迭代SFT实例：更新actor后重新采集MCTS轨迹，同时提高筛选门槛，再监督学习修复后续。它说明更新目标与经验刷新频率应分开登记；策略、采样数据、门槛和训练量同时变化，不能把结果只归因于“自我反思”。具体恢复条件和实现材料缺口见 [[wiki/optimization/Overview#学到修订行为以后，环境是否能继续|微调的恢复边界]]。[[raw/papers/Agent-R.pdf#page=7|§3.2–4.2 · pp.7–9]]
+
+### OPD与自我演化可以处在同一个循环
+
+**修订S001分类边界。** S001 §5.6用“固定任务/环境、只加密监督”区别OPD与自我演化；这可描述某些单轮训练设置，不能作为互斥论文分类。[[wiki/papers/Pi-Play|S059 π-Play]]在内层学生rollout上做特权蒸馏，外层examiner又随学生能力更新题目课程，教师以EMA跟随学生，且学生保留GRPO终局奖励。因此应分别记录任务分布、学生策略和教师目标的更新频率。[[raw/papers/Towards Long-Horizon Agents.pdf#page=52|S001 §5.6 · p.52]] [[raw/papers/Pi-Play.pdf#page=4|S059 §2.2–2.5 · pp.4–5]]
+
+QCP来自检索支持的出题过程，仅教师可见；“无需外部训练数据”仍依赖预训练模型、Wikipedia和搜索接口，不等于没有外部知识。SD-Zero则展示固定题集上把改进学生同步成下一轮修订教师的另一种循环，尚未因此证明长期任务分布扩展。两者都提供更新对象的具体实例，不能由有限轮次结果宣布持续自我演化已解决。[[raw/papers/Pi-Play.pdf#page=6|S059 §3.1–3.3 · pp.6–7]] [[raw/papers/Self-Distillation-Zero.pdf#page=7|S060 §3.4 · pp.7–8]]
 
 ## 后续整合原则
 
@@ -313,11 +348,11 @@ Memory-R1把运行时可变记忆接到参数学习：Manager输出编辑操作�
 
 | 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
 | --- | --- | --- | --- |
-| S056 · [On-Policy Distillation of Language Models: Learning from Self-Generated Mistakes](https://arxiv.org/abs/2306.13649) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=52\|S001 §5.6 · p.52 · 引文3]] | GKD基础机制：学生生成分布上的教师反馈；核查其任务证据与多轮agent外推边界。 | 候选未读 |
-| S057 · [Revisiting DAgger in the Era of LLM-Agents](https://arxiv.org/abs/2605.12913) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=52\|S001 §5.6.1 · p.52,53 · 引文309]] | turn-level教师/学生插值与逐步监督；直接考察多轮状态分布偏移。 | 候选未读 |
-| S058 · [MAD-OPD: Breaking the Ceiling in On-Policy Distillation via Multi-Agent Debate](https://arxiv.org/abs/2605.01347) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=53\|S001 §5.6.1 · p.53 · 引文635]] | 多教师讨论形成监督，与单教师OPD比较；重点检查教师错误与成本条件。 | 候选未读 |
-| S059 · [π-Play: Multi-Agent Self-Play via Privileged Self-Distillation without External Data](https://arxiv.org/abs/2604.14054) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=53\|S001 §5.6.2 · p.53 · 引文838]] | 训练期特权信息路线；同时核查任务生成/共同演化与综述OPD固定任务边界是否重叠。 | 候选未读 |
-| S060 · [Self-Distillation Zero: Self-Revision Turns Binary Rewards into Dense Supervision](https://arxiv.org/abs/2604.12002) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=53\|S001 §5.6.2 · p.53 · 引文216]] | 环境二元反馈转稠密自监督；区分反馈可得与反馈如何改变token级目标。 | 候选未读 |
+| S056 · [On-Policy Distillation of Language Models: Learning from Self-Generated Mistakes](https://arxiv.org/abs/2306.13649) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=52\|S001 §5.6 · p.52 · 引文3]] | GKD基础机制：学生生成分布上的教师反馈；核查其任务证据与多轮agent外推边界。 | [[wiki/papers/GKD\|完成摄入，应用未测]] |
+| S057 · [Revisiting DAgger in the Era of LLM-Agents](https://arxiv.org/abs/2605.12913) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=52\|S001 §5.6.1 · p.52,53 · 引文309]] | turn-level教师/学生插值与逐步监督；直接考察多轮状态分布偏移。 | [[wiki/papers/DAgger-LLM\|完成摄入，应用未测]] |
+| S058 · [MAD-OPD: Breaking the Ceiling in On-Policy Distillation via Multi-Agent Debate](https://arxiv.org/abs/2605.01347) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=53\|S001 §5.6.1 · p.53 · 引文635]] | 多教师讨论形成监督，与单教师OPD比较；重点检查教师错误与成本条件。 | [[wiki/papers/MAD-OPD\|完成摄入，应用未测]] |
+| S059 · [π-Play: Multi-Agent Self-Play via Privileged Self-Distillation without External Data](https://arxiv.org/abs/2604.14054) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=53\|S001 §5.6.2 · p.53 · 引文838]] | 训练期特权信息路线；同时核查任务生成/共同演化与综述OPD固定任务边界是否重叠。 | [[wiki/papers/Pi-Play\|完成摄入，应用未测]] |
+| S060 · [Self-Distillation Zero: Self-Revision Turns Binary Rewards into Dense Supervision](https://arxiv.org/abs/2604.12002) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=53\|S001 §5.6.2 · p.53 · 引文216]] | 环境二元反馈转稠密自监督；区分反馈可得与反馈如何改变token级目标。 | [[wiki/papers/Self-Distillation-Zero\|完成摄入，应用未测]] |
 
 ### 选读：自我演化
 

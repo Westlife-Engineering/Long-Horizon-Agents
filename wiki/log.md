@@ -373,3 +373,33 @@
 
 - [[wiki/papers/Memory-R1|Memory-R1]]：摄入 ACL 2026 正式版，连接 [[wiki/optimization/Overview#记忆写入和使用也能成为训练接口|记忆训练接口]] 与 [[wiki/harness/Overview#上下文与记忆|Harness 记忆]]；区分运行时编辑与参数更新，保留固定另一组件、训练快照差异及 LongMemEval oracle 评测条件。
 - 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S056 学生前缀上的教师监督
+
+- [[wiki/papers/GKD|GKD]]：建立学生生成前缀、教师概率监督与可选散度的机制基线；保留SFT初始化、文本任务与多轮环境交互的证据距离。主要落点为 [[wiki/optimization/Overview#On-Policy Distillation|Optimization · OPD]]。
+- 内容与结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S057 混合执行与教师动作标签
+
+- [[wiki/papers/DAgger-LLM|DAgger-LLM]]：区分环境执行策略与训练标签；保留教师混合下限0.6、有效提交过滤、466任务分母及GRPO数据子集条件。主要落点为 [[wiki/optimization/Overview#On-Policy Distillation|Optimization · OPD]]。
+- 内容与结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S058 讨论条件化监督与理论前提核查
+
+- [[wiki/papers/MAD-OPD|MAD-OPD]]：整合多教师讨论、置信权重和任务散度消融；本库数学核查指出现有无约束softmax假设不支持单模态普遍最优/收敛，特定logit界与经验结果分开保留。主要落点为 [[wiki/optimization/Overview#On-Policy Distillation|Optimization · OPD]]。
+- 内容与结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S059 QCP监督与课程共同更新
+
+- [[wiki/papers/Pi-Play|Pi-Play]]：整合QCP特权信息、GRPO与EMA教师，连接自我演化并限定S001固定任务的互斥分类；保留搜索语料依赖及5轮训练范围。主要落点为 [[wiki/optimization/Overview#On-Policy Distillation|Optimization · OPD]]。
+- 内容与结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S060 二元结果经修订者转成监督
+
+- [[wiki/papers/Self-Distillation-Zero|Self-Distillation-Zero]]：区分SRT双损失与冻结教师蒸馏的阶段贡献，保留数学代码任务边界、token偏好与因果信用差异，以及预算/配置口径待核查。主要落点为 [[wiki/optimization/Overview#On-Policy Distillation|Optimization · OPD]]。
+- 内容与结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。

@@ -4,8 +4,8 @@
 
 ## 当前证据边界
 
-- 已纳入 **55 篇学术来源**：S001 综述及 S002–S055 五十四篇独立论文。S001 整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；独立论文的实际正文/附录阅读范围见各论文页，均不表示复现实验。
-- **独立论文（含方法、系统、评测与分析）完成摄入数为 54**。综述中的引用不是本库已验证的证据；第一轮已选定 65 个方向名额、64 篇不同候选，正在分批核读，候选与待验收论文不计完成摄入。
+- 已纳入 **60 篇学术来源**：S001 综述及 S002–S060 五十九篇独立论文。S001 整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；独立论文的实际正文/附录阅读范围见各论文页，均不表示复现实验。
+- **独立论文（含方法、系统、评测与分析）完成摄入数为 59**。综述中的引用不是本库已验证的证据；第一轮已选定 65 个方向名额、64 篇不同候选，正在分批核读，候选与待验收论文不计完成摄入。
 - 方法论原始资料为 [[raw/articles/llm-wiki|LLM Wiki]]，不计入学术来源数。具体工作规则见 [[AGENTS|Schema]]。
 
 ## 从哪里开始
@@ -78,24 +78,25 @@ Harness 与 Optimization 的子方向都保留在各自 Overview 的页内导航
 | S039 | [[wiki/papers/WebDreamer\|WebDreamer]] | 完成摄入，应用未测；真实交互监督的状态预测、执行前模拟与评分边界 |
 | S040 | [[wiki/papers/TOUCAN\|TOUCAN]] | 完成摄入，应用未测；MCP 真实返回、合成用户/任务与质量筛选分布 |
 | S041 | [[wiki/papers/AgentGym-RL\|AgentGym-RL]] | 完成摄入，应用未测；在线 RL 的交互课程、环境重置与训练状态分布 |
-
 | S042 | [[wiki/papers/DeepSeek-V3\|DeepSeek-V3]] | 完成摄入，应用未测；组合配方、MTP与扩窗，以及后训练工程结果的归因层次 |
 | S043 | [[wiki/papers/YaRN\|YaRN]] | 完成摄入，应用未测；频率分段与温度扩窗，PPL/passkey证据和版本边界 |
 | S044 | [[wiki/papers/ProLong\|ProLong]] | 完成摄入，应用未测；SFT后长任务评测、长短数据混合与训练长度条件 |
 | S045 | [[wiki/papers/Qwen2-VL\|Qwen2-VL]] | 完成摄入，应用未测；动态视觉token、M-RoPE与Qwen-Agent多轮系统证据 |
 | S046 | [[wiki/papers/DoReMi\|DoReMi]] | 完成摄入，应用未测；小模型excess loss优化域采样，跨尺度迁移和预算口径 |
-
-
 | S047 | [[wiki/papers/AgentTuning\|AgentTuning]] | 完成摄入，应用未测；固定教师轨迹与通用对话混合、能力保留与分布边界 |
 | S048 | [[wiki/papers/ATLAS\|ATLAS]] | 完成摄入，应用未测；完整历史上的关键步骤监督、语义选择与成本条件 |
 | S049 | [[wiki/papers/Agent-Distillation\|Agent Distillation]] | 完成摄入，应用未测；教师前缀、离线工具蒸馏与测试时动作筛选 |
 | S050 | [[wiki/papers/Agent-R\|Agent-R]] | 完成摄入，应用未测；当前actor再采样、修复SFT与环境状态一致性待核查 |
-
 | S051 | [[wiki/papers/Search-R1\|Search-R1]] | 完成摄入，应用未测；在线搜索状态、终局EM与检索token损失屏蔽 |
 | S052 | [[wiki/papers/ToolRL\|ToolRL]] | 完成摄入，应用未测；标准调用的细粒度奖励与带历史单步训练边界 |
 | S053 | [[wiki/papers/GiGPO\|GiGPO]] | 完成摄入，应用未测；重复环境状态分组、折扣回报与两级优势 |
 | S054 | [[wiki/papers/Tree-GRPO\|Tree-GRPO]] | 完成摄入，应用未测；共享前缀采样、树内/跨树优势和预算归因 |
 | S055 | [[wiki/papers/Memory-R1\|Memory-R1]] | 完成摄入，应用未测；分阶段记忆操作/使用学习、回答器依赖与oracle测试边界 |
+| S056 | [[wiki/papers/GKD\|GKD]] | 完成摄入，应用未测；学生前缀上的教师概率监督、散度与文本任务边界 |
+| S057 | [[wiki/papers/DAgger-LLM\|DAgger-LLM]] | 完成摄入，应用未测；混合环境执行与教师动作标签、实际教师比例和评测分母 |
+| S058 | [[wiki/papers/MAD-OPD\|MAD-OPD]] | 完成摄入，应用未测；讨论条件化教师分布、任务消融与理论适用前提核查 |
+| S059 | [[wiki/papers/Pi-Play\|Pi-Play]] | 完成摄入，应用未测；QCP特权蒸馏、GRPO及出题课程共同更新 |
+| S060 | [[wiki/papers/Self-Distillation-Zero\|Self-Distillation-Zero]] | 完成摄入，应用未测；SRT修订者到首次生成的蒸馏、阶段贡献与预算口径 |
 
 ## 维护入口
 
