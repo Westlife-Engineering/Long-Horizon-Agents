@@ -1,0 +1,12 @@
+# Local Obsidian workspace and UI state
+.obsidian/workspace*.json
+.obsidian/cache/
+.trash/
+
+# Operating-system files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Temporary Office lock files
+~$*
