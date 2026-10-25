@@ -165,3 +165,28 @@
 
 - 摄入 [[wiki/papers/LATS|LATS]] PMLR 会议版，在 [[wiki/harness/Overview#循环与工作流|循环与工作流]] 区分环境观察、模型价值、终局奖励回传和失败反思，明确可回退环境与反馈权限。
 - 内容与结构验收通过、Raw 哈希匹配；保留 HotpotQA oracle、搜索后 pass@1、WebShop 平均分/严格成功率及配置待核查项。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S012 Toolformer：调用选择与训练接口
+
+- 摄入 [[wiki/papers/Toolformer|Toolformer]] NeurIPS 正式版主文与独立补充文件，在 [[wiki/harness/Overview#工具、MCP 与技能|工具方向]] 和 [[wiki/optimization/Overview#微调|微调]] 区分调用数据筛选、参数学习与运行时执行。
+- 内容与结构验收通过，两份 Raw 哈希匹配；保留单次调用、无链式工具训练及预测损失代理的边界。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S013 AnyTool：失败驱动的工具发现
+
+- 摄入 [[wiki/papers/AnyTool|AnyTool]] PMLR 正式版，将分类层级、候选 API 池和失败后扩大搜索整合至 [[wiki/harness/Overview#工具、MCP 与技能|工具方向]]；区分检索状态更新与参数训练。
+- 内容与结构验收通过、Raw 哈希匹配；保留成功率分母、GPT-4 判断和未匹配总成本的消融边界。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S014 CodeAct：程序动作与模型适应
+
+- 摄入 [[wiki/papers/CodeAct|CodeAct]] PMLR 正式版，在 [[wiki/harness/Overview#工具、MCP 与技能|工具方向]] 区分代码内组合与下一轮反馈，在 [[wiki/optimization/Overview#微调|微调]] 分开 CodeActInstruct / CodeActAgent 的训练贡献。
+- 内容与结构验收通过、Raw 哈希匹配；保留代码多调用与 JSON/Text 单调用的动作粒度差异，轮数不等于底层调用成本。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S015 Voyager：程序经验与技能复用
+
+- 摄入 [[wiki/papers/Voyager|Voyager]] arXiv v2，将技能检索、代码修复、成功判断和程序入库整合至 [[wiki/harness/Overview#工具、MCP 与技能|工具与技能]]，连接持久经验的保存对象与复用条件。
+- 内容与结构验收通过、Raw 哈希匹配；保留 Minecraft 高层接口、复活设置、新世界保留技能及 critic 误判边界，未与综述所引 TMLR 版本逐项对齐。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S016 MCPMark：状态验收与重复稳定性
+
+- 摄入 [[wiki/papers/MCPMark|MCPMark]] arXiv v1，在 [[wiki/harness/Overview#工具、MCP 与技能|工具方向]] 与 [[wiki/harness/Overview#验证|验证]] 区分协议可用、正常终止和最终约束满足，以及 pass@1 / pass@4 / pass^4 的含义。
+- 内容与结构验收通过、Raw 哈希匹配；保留任务与服务器覆盖、版本固定和 verifier 完备性边界。未运行 benchmark 或审查全部验证器源码；Obsidian 应用未测。
