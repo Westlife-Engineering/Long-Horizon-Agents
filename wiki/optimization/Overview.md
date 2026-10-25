@@ -28,6 +28,11 @@ sources:
   - "[[raw/papers/Agent-Distillation.pdf]]"
   - "[[raw/papers/Agent-R.pdf]]"
   - "[[raw/papers/AgentPRM-Xi.pdf]]"
+  - "[[raw/papers/Search-R1.pdf]]"
+  - "[[raw/papers/ToolRL.pdf]]"
+  - "[[raw/papers/GiGPO.pdf]]"
+  - "[[raw/papers/Tree-GRPO.pdf]]"
+  - "[[raw/papers/Memory-R1.pdf]]"
 ---
 
 # Optimization：能力内化与训练
@@ -185,9 +190,37 @@ Agentic RL 用自身交互反馈优化策略，目标从单次回答扩展为多
 
 表格入口依据 [[raw/papers/Towards Long-Horizon Agents.pdf#page=47|Fig.12]]、[[raw/papers/Towards Long-Horizon Agents.pdf#page=48|§5.5.1]] 与 [[raw/papers/Towards Long-Horizon Agents.pdf#page=50|§5.5.2–5.5.3]]；不是这些子方向有效性的比较。过程奖励与 [[wiki/harness/Overview#验证|运行时验证]] 相关，但需要分别检查判断偏差与优化后的行为。
 
+### 先确认训练中是谁产生状态，谁提供反馈
+
+第一轮S051–S055已完成原文核读、主题整合与内容/结构验收，已计入完成摄入；应用未测。**本库比较轴：**同样使用PPO/GRPO，可能学习当前策略的完整交互，也可能学习固定历史上的单步回复，或学习记忆模块；奖励稠密程度必须与这些条件一起看。
+
+| 决策与训练状态 | 反馈来源和信用单位 | 必须保留的条件 |
+| --- | --- | --- |
+| 当前策略生成搜索词，检索结果追加进历史，再搜索或回答 | Search-R1用最终答案EM；PPO用critic/GAE，GRPO比较同题完整rollout | 检索token是观察，进入上下文但排除策略梯度和GRPO KL；主要为固定Wiki/E5、4动作。[[wiki/papers/Search-R1\|S051]]；[[raw/papers/Search-R1.pdf#page=4\|§3.1–3.4 · pp.4–6]]、[[raw/papers/Search-R1.pdf#page=16\|Appendix B.2 · p.16]] |
+| 给定历史下生成下一步工具调用 | ToolRL按标准调用的工具名、参数名和值给部分匹配分，再合成回复级reward | **训练多步数据拆成带历史单步实例**，需要每步标准调用；不是完整在线轨迹探索。[[wiki/papers/ToolRL\|S052]]；[[raw/papers/ToolRL.pdf#page=4\|§2.3 · p.4]]、[[raw/papers/ToolRL.pdf#page=5\|§3.1 · p.5]] |
+| 同任务、同初态采完整轨迹，再寻找重复环境状态 | GiGPO同时比较整条总回报和同状态后动作的折扣回报 | 不增rollout，依赖重复覆盖与状态匹配；局部优势不是额外过程标签。[[wiki/papers/GiGPO\|S053]]；[[raw/papers/GiGPO.pdf#page=5\|§4.2–4.3 · pp.5–6]] |
+| 从多条初始链随机挑中间节点，共享前缀并扩展后缀 | Tree-GRPO比较叶轨迹在本树和同题全部树中的奖励，利用共享节点形成局部更新贡献 | 同时改变采样相关性、独立探索与优势；只测试搜索工具。[[wiki/papers/Tree-GRPO\|S054]]；[[raw/papers/Tree-GRPO.pdf#page=4\|§3.1–3.2 · pp.4–5]]、[[raw/papers/Tree-GRPO.pdf#page=6\|§4.1 · p.6]] |
+| 新信息与旧记忆决定编辑操作；问题与检索集合决定回答 | Memory-R1以最终QA EM训练Manager或Answer，另一组件固定 | 分阶段训练；预构造记忆与回答器影响信号；**LongMemEval为oracle版**。[[wiki/papers/Memory-R1\|S055]]；[[raw/papers/Memory-R1.pdf#page=4\|§3 · PDF pp.4–5 / 印刷12808–12809]]、[[raw/papers/Memory-R1.pdf#page=14\|Appendix B · PDF p.14 / 印刷12818]] |
+
+Search-R1和ToolRL说明“有反馈”仍需分清反馈来自哪里：前者最终答案可验证，不直接评价每次查询；后者借助标准调用分解部分正确，但没有证据证明所有等效路径都得到相同奖励。ToolRL的BFCL总体提高与Multi Turn仍低可以并存，不能把调用匹配提升等同于长程可靠完成。更长输出也不是更强能力的统一代理：其长度奖励对多数所测小模型降低BFCL。[[raw/papers/Search-R1.pdf#page=6|S051 §3.4 · p.6]] [[raw/papers/ToolRL.pdf#page=4|S052 §2.3 · p.4]] [[raw/papers/ToolRL.pdf#page=6|Table1 · p.6]] [[raw/papers/ToolRL.pdf#page=9|Fig.4 · p.9]]
+
+### 局部比较组从哪里来，决定了什么可被区分
+
+GiGPO和Tree-GRPO都从后续结果构造较细信号，却不取得新的逐步正确性oracle。GiGPO在已有rollout中事后聚合相同环境状态；折扣回报让同一成功轨迹中较早绕路与较晚有效动作可被区分，再与episode优势相加。Tree-GRPO主动从共享前缀采新后缀，先为叶轨迹计算树内/跨树优势；共享节点上的梯度贡献把分支结果联系起来。后者的理论是特定二元假设下与step-DPO具有相同梯度结构、权重不同，不能升级为完整算法恒等。[[raw/papers/GiGPO.pdf#page=5|S053 Eq.5–9 · pp.5–6]] [[raw/papers/Tree-GRPO.pdf#page=5|S054 Eq.6–12 · pp.5–6]]
+
+两者有不同前提。GiGPO在ALFWorld/WebShop使用最近两步历史与当前观察，QA保留全历史并采用相似度分组；因此相同观察不必代表完整policy上下文相同。Tree-GRPO使用根到节点的完整历史接续搜索；这不证明外部有副作用环境可恢复到同一状态。前一句关于状态信息的区别是本库推断，跨环境分支条件见 [[wiki/harness/Overview#分支能否撤回，评价能否被信任|Harness分支接口]]。[[raw/papers/GiGPO.pdf#page=18|S053 Appendix E.2 · pp.18–19]] [[raw/papers/Tree-GRPO.pdf#page=4|S054 §3.1 · p.4]]
+
+**分开检查采样收益与优势收益。**Tree-GRPO的3B多跳QA消融在名义约4条完整轨迹预算下，链GRPO平均31.8，树仅跨树优势33.8，树内加跨树36.8；小组仅树内优势会collapse。它支持两部分共同作用，不能把总增益全归于精细信用。GiGPO删除episode或step信号均损害所测表现，也不表示任意状态分组都正确。两篇预算口径、匹配误差与具体训练设置留在唯一论文页，不能跨任务排名。[[raw/papers/Tree-GRPO.pdf#page=10|S054 Table4 · p.10]] [[raw/papers/GiGPO.pdf#page=9|S053 §5.4、Fig.4 · p.9]]
+
 ### 过程评分怎样进入策略更新
 
 [[wiki/papers/AgentPRM-Xi|S028 AgentPRM-Xi，已完成摄入]] 以环境终局回报与TD/GAE目标训练步骤价值，并约束相邻价值差；这是奖励模型的过程训练。其Qwen2.5-3B在BabyAI/TextCraft上的PPO实验却以**末步PRM预测作为整条轨迹奖励**，不能描述为逐步密集奖励实验。推理阶段另有BoN与beam选择，比较见 [[wiki/harness/Overview#选择误差与纠错净收益要分别测量|Harness · 验证]]。过程评分如何产生、何时用于选择、何时发放训练奖励须分别登记；确定性转移/稀疏奖励假设、bootstrap标签与策略分布条件也不会因接入PPO而消失。[[raw/papers/AgentPRM-Xi.pdf#page=6|§3.2–3.3 · pp.6–8]] [[raw/papers/AgentPRM-Xi.pdf#page=11|§5.2 · p.11]] [[raw/papers/AgentPRM-Xi.pdf#page=22|Appendix C · p.22]]
+
+### 记忆写入和使用也能成为训练接口
+
+Memory-R1把运行时可变记忆接到参数学习：Manager输出编辑操作与内容，Answer从60个检索候选中选择证据并回答；训练Manager时Answer冻结，训练Answer时Manager固定。反馈是最终QA EM，而非每条记忆都获正确性标签。冻结另一方减少训练漂移，但本库推断仍须保留回答器依赖：保存了正确事实，也可能因回答器不会使用而得零；对当前QA有效，也未证明对未知未来问题有效。[[raw/papers/Memory-R1.pdf#page=4|S055 §3 · PDF pp.4–5 / 印刷12808–12809]] [[raw/papers/Memory-R1.pdf#page=18|Appendix E · PDF p.18 / 印刷12822]]
+
+“152训练QA”不包含基础模型、GPT-4o-mini构造记忆、检索和RL反复采样成本。正文和伪代码对临时记忆的24/50turn及重置过程存在待核查差异；跨集LongMemEval是oracle版本，不能写成完整大记忆库端到端检索迁移。与 [[wiki/harness/Overview#上下文与记忆|Harness记忆机制]] 的联系，是明确哪些信息能进入未来决策；与下述ReSum的联系，是运行状态接口与策略适应训练共同决定效果。[[raw/papers/Memory-R1.pdf#page=14|S055 Appendix B.2 · PDF p.14 / 印刷12818]] [[raw/papers/Memory-R1.pdf#page=20|Algorithm5 · PDF p.20 / 印刷12824]]
 
 ### 摘要接续怎样进入策略训练
 
@@ -270,11 +303,11 @@ Agentic RL 用自身交互反馈优化策略，目标从单次回答扩展为多
 
 | 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
 | --- | --- | --- | --- |
-| S051 · [Search-R1: Training LLMs to Reason and Leverage Search Engines with Reinforcement Learning](https://arxiv.org/abs/2503.09516) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=48\|S001 §5.5.1; 5.5.3 · p.48,51 · 引文261]] | 终局奖励与搜索rollout基线；核查搜索、停止与最终正确性之间如何分配学习信号。 | 候选未读 |
-| S052 · [ToolRL: Reward is All Tool Learning Needs](https://papers.nips.cc/paper_files/paper/2025/hash/97c5b2707228e7e3fb67e4ecc2e0e607-Abstract-Conference.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=48\|S001 §5.5.1 · p.48,49 · 引文487]] | 工具选择/参数等奖励分解，与稀疏终局信号对照；检查细粒度奖励对真正任务成功的关系。 | 候选未读 |
-| S053 · [Group-in-Group Policy Optimization for LLM Agent Training](https://arxiv.org/abs/2505.10978) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=50\|S001 §5.5.2 · p.50 · 引文156]] | episode与step分层优势/比较组；核查局部状态对齐如何改变信用分配。 | 候选未读 |
-| S054 · [Tree Search for LLM Agent Reinforcement Learning](https://arxiv.org/abs/2509.21240) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=50\|S001 §5.5.2; 5.5.3 · p.50,51 · 引文250]] | Tree-GRPO树采样与同胞分支比较；检查收益来自采样、信用还是额外预算。 | 候选未读 |
-| S055 · [Memory-R1: Enhancing Large Language Model Agents to Manage and Utilize Memories via Reinforcement Learning](https://aclanthology.org/2026.acl-long.583/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=52\|S001 §5.5.4 · p.52 · 引文743]] | 将记忆管理作为学习对象；连接Harness记忆方向并检查管理器/回答器的归因。 | 候选未读 |
+| S051 · [Search-R1: Training LLMs to Reason and Leverage Search Engines with Reinforcement Learning](https://arxiv.org/abs/2503.09516) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=48\|S001 §5.5.1; 5.5.3 · p.48,51 · 引文261]] | 终局奖励与搜索rollout基线；核查搜索、停止与最终正确性之间如何分配学习信号。 | [[wiki/papers/Search-R1\|完成摄入，应用未测]] |
+| S052 · [ToolRL: Reward is All Tool Learning Needs](https://papers.nips.cc/paper_files/paper/2025/hash/97c5b2707228e7e3fb67e4ecc2e0e607-Abstract-Conference.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=48\|S001 §5.5.1 · p.48,49 · 引文487]] | 工具选择/参数等奖励分解，与稀疏终局信号对照；检查细粒度奖励对真正任务成功的关系。 | [[wiki/papers/ToolRL\|完成摄入，应用未测]] |
+| S053 · [Group-in-Group Policy Optimization for LLM Agent Training](https://arxiv.org/abs/2505.10978) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=50\|S001 §5.5.2 · p.50 · 引文156]] | episode与step分层优势/比较组；核查局部状态对齐如何改变信用分配。 | [[wiki/papers/GiGPO\|完成摄入，应用未测]] |
+| S054 · [Tree Search for LLM Agent Reinforcement Learning](https://arxiv.org/abs/2509.21240) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=50\|S001 §5.5.2; 5.5.3 · p.50,51 · 引文250]] | Tree-GRPO树采样与同胞分支比较；检查收益来自采样、信用还是额外预算。 | [[wiki/papers/Tree-GRPO\|完成摄入，应用未测]] |
+| S055 · [Memory-R1: Enhancing Large Language Model Agents to Manage and Utilize Memories via Reinforcement Learning](https://aclanthology.org/2026.acl-long.583/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=52\|S001 §5.5.4 · p.52 · 引文743]] | 将记忆管理作为学习对象；连接Harness记忆方向并检查管理器/回答器的归因。 | [[wiki/papers/Memory-R1\|完成摄入，应用未测]] |
 
 ### 选读：On-Policy Distillation
 

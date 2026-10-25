@@ -40,6 +40,7 @@ sources:
   - "[[raw/papers/Agent-as-a-Judge.pdf]]"
   - "[[raw/papers/CorrectBench.pdf]]"
   - "[[raw/papers/Self-MAP.pdf]]"
+  - "[[raw/papers/Memory-R1.pdf]]"
 ---
 
 # Harness：外部运行机制
@@ -109,6 +110,8 @@ Arbor 还引入另一种风险边界：事实结果和归纳后的 insight 应�
 **补充诊断证据（S036 已完成摄入，应用未测）：**[[wiki/papers/Lost-in-the-Middle|Lost in the Middle]] 的开放域 QA 实验中，增加文档后检索召回仍增长，reader 准确率却较早饱和；把 query 同时放在数据前后，明显改善合成 KV 检索，却没有同样消除语义 QA 的位置趋势。因此本库需分别问“是否取回”“如何编排”和“是否被模型使用”；这不是对上述五种记忆方法的直接反证，也不证明重排能够普遍修复 Agent。对应 [[wiki/optimization/Overview#架构基础|架构基础]] 的有效上下文边界。[[raw/papers/Lost-in-the-Middle.pdf#page=8|S036 §4.2、Fig.9 · p.8]] [[raw/papers/Lost-in-the-Middle.pdf#page=9|§5、Fig.11 · pp.9–10]]
 
 **跨用户轮次的记忆补充（S031，已完成摄入）：**[[wiki/papers/Self-MAP|Self-MAP]] 按当前指令与动作检索历史，缩减无关DOM，再为已给定历史动作生成rationale，供微调后的规划模型预测下一步。这里的reflection是在加工记忆解释，并非运行时发现错误后重试；positive element与历史动作的信息权限、静态HTML快照和Turn Success Rate边界见 [[wiki/harness/Overview#检查对象决定成功指标|验证对象]]。它补充了省略、指代和任务切换下的记忆使用，不能由“保留旧历史”推断所有旧约束始终有效。[[raw/papers/Self-MAP.pdf#page=5|§4 · PDF pp.5–6 / 印刷8799–8800]] [[raw/papers/Self-MAP.pdf#page=12|Appendix A.2 · PDF p.12 / 印刷8806]]
+
+**学习记忆操作与使用（S055，完成摄入，应用未测）：**[[wiki/papers/Memory-R1|Memory-R1]]让Manager生成ADD/UPDATE/DELETE/NOOP及内容，再让Answer从60个候选中选择证据回答；二者分阶段RL，训练一方时另一方固定。运行时更新记忆不等于实时更新参数，最终QA reward也不逐条验证存储内容。主要证据为对话问答，LongMemEval采用**oracle版本**；因此不能当作完整大记忆库检索或自主执行的可靠性证据。训练快照与反馈依赖见 [[wiki/optimization/Overview#记忆写入和使用也能成为训练接口|Optimization记忆接口]]。[[raw/papers/Memory-R1.pdf#page=4|§3 · PDF pp.4–5 / 印刷12808–12809]] [[raw/papers/Memory-R1.pdf#page=14|Appendix B · PDF p.14 / 印刷12818]]
 
 ### 机制可比较，分数必须留在原条件中
 

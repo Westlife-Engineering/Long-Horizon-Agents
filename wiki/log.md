@@ -343,3 +343,33 @@
 
 - [[wiki/papers/Self-MAP|Self-MAP]]：摄入ACL 2024 MT-Mind2Web/Self-MAP，连接多轮指令与记忆检索、DOM缩减及历史动作rationale；明确静态HTML快照和TSR为Turn，避免归为在线失败纠错器。主要落点为 [[wiki/harness/Overview#上下文与记忆|上下文与记忆]] 与 [[wiki/harness/Overview#检查对象决定成功指标|验证对象]]。
 - 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S051 Search-R1：搜索交互与观察损失屏蔽
+
+- [[wiki/papers/Search-R1|Search-R1]]：摄入 arXiv v5，在 [[wiki/optimization/Overview#先确认训练中是谁产生状态，谁提供反馈|RL 状态与反馈比较]] 区分策略生成的搜索/回答与检索观察；保留终局 EM、检索 token 损失屏蔽、固定 Wiki/E5 和动作预算条件。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S052 ToolRL：细粒度调用奖励与单步训练边界
+
+- [[wiki/papers/ToolRL|ToolRL]]：摄入 NeurIPS 2025 正式版，在 [[wiki/optimization/Overview#先确认训练中是谁产生状态，谁提供反馈|RL 状态与反馈比较]] 解释标准调用匹配奖励；明确多轮数据被拆为带历史单步训练，保留算法对照预算差异和多轮评测边界。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S053 GiGPO：重复状态分组与两级优势
+
+- [[wiki/papers/GiGPO|GiGPO]]：摄入 arXiv v3，在 [[wiki/optimization/Overview#局部比较组从哪里来，决定了什么可被区分|采样与信用分配]] 区分完整轨迹和同状态折扣回报比较；保留重复状态覆盖、匹配和策略上下文差异，不将局部优势当作额外过程标签。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S054 Tree-GRPO：共享前缀采样与树内跨树比较
+
+- [[wiki/papers/Tree-GRPO|Tree-GRPO]]：摄入 arXiv v3，在 [[wiki/optimization/Overview#局部比较组从哪里来，决定了什么可被区分|采样与信用分配]] 区分树采样和优势构造的贡献；保留仅搜索工具的恢复条件、预算记号待复核与理论假设边界。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S055 Memory-R1：分阶段记忆学习与回答器依赖
+
+- [[wiki/papers/Memory-R1|Memory-R1]]：摄入 ACL 2026 正式版，连接 [[wiki/optimization/Overview#记忆写入和使用也能成为训练接口|记忆训练接口]] 与 [[wiki/harness/Overview#上下文与记忆|Harness 记忆]]；区分运行时编辑与参数更新，保留固定另一组件、训练快照差异及 LongMemEval oracle 评测条件。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
