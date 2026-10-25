@@ -467,3 +467,9 @@
 
 - [[wiki/papers/R-Quest|R-Quest]]：综述外补读坏题修复、语义重复、双门控和失稳诊断证据，补充外部模型/人工审核初始化与10%标注回放锚点；主要落点为 [[wiki/optimization/Overview#持续进步是待检验属性，不是循环名称|Optimization · 自我演化]]。
 - 保留模型judge、额外预算、分领域选择checkpoint及十轮数学课程边界；主Agent内容/结构验收通过，Raw哈希匹配；Obsidian应用未测，未审实现代码或复现实验。
+
+
+## [2026-10-25] ingest | S070 SpecRover：补丁、测试与意图的联合核对
+
+- [[wiki/papers/SpecRover|SpecRover]]：综述外补读规格推断、补丁与测试的双重审查、回归失败重试和候选选择；明确旧测试可因合法需求变化而失效，关闭宽泛“修复＋回归检查”的新颖性提法。主要落点为 [[wiki/harness/Overview#修复时，测试也可能需要重新核对|Harness · 修复与测试]]。
+- 保留验收测试通过、人工语义参照、reviewer选择分母及连续需求回归的不同边界；主Agent内容/结构验收通过，三份Raw哈希匹配；Obsidian应用未测，未审计实现或复现实验。
