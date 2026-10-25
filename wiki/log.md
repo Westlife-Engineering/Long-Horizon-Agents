@@ -90,3 +90,28 @@
 
 - 用户启动 Harness / Optimization 全部一级子方向的第一轮研究，并授权主 Agent 在必要节点提交 Git；已将单一提交者、差异检查、批次验收及不自动推送写入规则。启动规则提交为 `ab4a632`。
 - 本轮实际并发上限 4（含主 Agent），按最多 3 个同模型子任务分批派发；所有临时材料限当前项目的 `.research-tmp/` 并排除 Git，遵守用户不改动其他文件夹的要求。范围与预算见 [[wiki/overview#第一轮自主研究|第一轮约定]]；本条仅记录已完成的调度规则调整，论文摄入仍在进行前的选文阶段。
+
+## [2026-10-25] ingest | S007 HiAgent：子目标工作记忆
+
+- 摄入 [[wiki/papers/HiAgent|HiAgent]] 并整合至 [[wiki/harness/Overview#上下文与记忆|上下文与记忆]]，明确当前子目标完整轨迹、已完成子目标摘要与旧轨迹取回的关系；保留 GPT-4、五环境及 30 步预算，未将 Gripper 写成一致提升。
+- 内容与结构检查通过，Raw 哈希匹配；本批论文与主题表达的 Obsidian 应用检查尚未完成，未复现实验。
+
+## [2026-10-25] ingest | S008 MemGPT：分层存储与读写控制
+
+- 摄入 [[wiki/papers/MemGPT|MemGPT]]，在 [[wiki/harness/Overview#上下文与记忆|上下文与记忆]] 区分主上下文、外部存储、自动队列管理与模型函数调用；保留对话/文档检索任务边界，以及基线仅见摘要、系统可查完整历史的条件差异。
+- 内容与结构检查通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S009 A-MEM：记忆组织与演化
+
+- 摄入 [[wiki/papers/A-MEM|A-MEM]]，将新 note 关联及旧 note 元信息演化整合至 [[wiki/harness/Overview#上下文与记忆|上下文与记忆]]；限定 LoCoMo/DialSim 问答证据，记录检索 k 按模型/题型变化及并非所有题型领先。
+- 内容与结构检查通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S010 ExpeL：跨任务经验规则
+
+- 摄入 [[wiki/papers/ExpeL|ExpeL]]，在 [[wiki/harness/Overview#上下文与记忆|上下文与记忆]] 区分原始成功轨迹与归纳规则；澄清无参数更新仍有训练任务、重试反馈与更强归纳模型成本，不把规则投票视为事实证据强度。
+- 内容与结构检查通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S011 ReSum：摘要接续与策略适应
+
+- 摄入 [[wiki/papers/ReSum|ReSum]] v3，连接 [[wiki/harness/Overview#上下文与记忆|运行时摘要接续]] 与 [[wiki/optimization/Overview#摘要接续怎样进入策略训练|分段轨迹训练]]；区分策略 training-free 与已训练摘要器，保留 GRPO 40 次、ReSum-GRPO 60 次训练调用预算及仅成功轨迹的成本口径。
+- 内容与结构检查通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。候选归因问题保留为待核查，未宣布研究缺口。

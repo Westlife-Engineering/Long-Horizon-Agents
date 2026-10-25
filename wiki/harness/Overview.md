@@ -4,6 +4,11 @@ created: 2026-10-19
 updated: 2026-10-25
 sources:
   - "[[raw/papers/Towards Long-Horizon Agents.pdf]]"
+  - "[[raw/papers/HiAgent.pdf]]"
+  - "[[raw/papers/MemGPT.pdf]]"
+  - "[[raw/papers/A-MEM.pdf]]"
+  - "[[raw/papers/ExpeL.pdf]]"
+  - "[[raw/papers/ReSum.pdf]]"
 ---
 
 # Harness：外部运行机制
@@ -24,7 +29,29 @@ Harness 是围绕模型组织执行的机制：安排何时调用模型、带入
 
 当前上下文是这次调用实际可见的状态，持久记忆是能够跨越当前窗口、任务或会话存续的信息。综述用“丢弃、压缩、选择”描述工作上下文的维护，用“写入、维护、检索”描述持久记忆操作。二者区别在存续范围与运行时角色，而不只在文件是否落盘。[[raw/papers/Towards Long-Horizon Agents.pdf#page=23|S001 · §4.2 · Fig.8 · p.23]]
 
-细分导航：Working Context（§4.2.1）；Persistent Memory（§4.2.2）。与 [[wiki/foundations/Formalization#H1–H3 与 C1–C3|C2/C3]] 相关。待核读问题：保留的信息是否改变下一步决策，压缩是否丢失关键约束？
+细分导航：Working Context（§4.2.1）；Persistent Memory（§4.2.2）。与 [[wiki/foundations/Formalization#H1–H3 与 C1–C3|C2/C3]] 相关。第一轮 S007–S011 已完成摄入与主题整合，下面是原论文支持的机制比较；内容与结构已验收，Obsidian 应用未测。
+
+### 先区分保存的对象，再问怎样取回
+
+“有记忆”不足以说明后续行为怎样改变。下面沿两个问题比较：**保存的是执行细节、组织后的信息还是经验规则；这些内容怎样重新进入当前决策。** 这是本库依据原文组织的比较轴，不是论文间的性能排名。
+
+| 保存对象与更新边界 | 重新进入决策的方式 | 可回查的原文 |
+| --- | --- | --- |
+| 当前子目标保留完整行动—观察；完成的子目标改为摘要 | 摘要维持可见进度，需要细节时取回旧轨迹；压缩不等于删除原轨迹 | [[wiki/papers/HiAgent\|HiAgent]]；[[raw/papers/HiAgent.pdf#page=3\|S007 §3 · PDF pp.3–4 / 印刷 pp.32781–32782]] |
+| 超出窗口的消息留在 Recall，其他内容可写入 Archival；主上下文单独维护 | 模型经函数读写，队列管理器自动淘汰；heartbeat 可把多步检索连起来 | [[wiki/papers/MemGPT\|MemGPT]]；[[raw/papers/MemGPT.pdf#page=2\|S008 §2 · pp.2–4]] |
+| 交互成为带关键词、标签、描述和链接的 notes；新 note 可更新旧 note 组织 | 生成的元信息参与向量检索，关联内容再交给回答模型 | [[wiki/papers/A-MEM\|A-MEM]]；[[raw/papers/A-MEM.pdf#page=3\|S009 Figure 2、§3 · pp.3–5]] |
+| 训练任务成败轨迹提炼成可修改的经验规则，成功轨迹另存 | 规则直接加入提示，相似成功轨迹作为示例；无参数更新仍有经验收集阶段 | [[wiki/papers/ExpeL\|ExpeL]]；[[raw/papers/ExpeL.pdf#page=3\|S010 §4、Figure 1 · pp.3–6]] |
+| 接近窗口上限时，把搜索历史压成相关证据摘要 | 以“原问题＋摘要”重置上下文并继续搜索；本文用系统阈值触发 | [[wiki/papers/ReSum\|ReSum]]；[[raw/papers/ReSum.pdf#page=3\|S011 §3.1 · p.3]]、[[raw/papers/ReSum.pdf#page=13\|Algorithm 1 · p.13]] |
+
+这组对照澄清了两种容易混淆的扩展：HiAgent / ReSum 主要让**同一任务继续执行**；ExpeL 主要让**不同任务之间复用经验**。MemGPT / A-MEM 提供可跨当前窗口存续的信息与取回机制，其主实验则偏向对话、文档或合成检索。存续范围、操作方式与实际评测任务需要分别登记，不能用“长期记忆”一个词替代三者。[[raw/papers/HiAgent.pdf#page=4|S007 §4.1 · PDF p.4 / 印刷 p.32782]] [[raw/papers/ExpeL.pdf#page=7|S010 §5 · pp.7–9]] [[raw/papers/MemGPT.pdf#page=5|S008 §3 · pp.5–8]] [[raw/papers/A-MEM.pdf#page=5|S009 §4.1 · pp.5–7]]
+
+### 机制可比较，分数必须留在原条件中
+
+这些来源并不构成同一评测上的五个竞品。HiAgent 使用 GPT-4、五个行动环境、最多 30 步；MemGPT 的召回对照中，普通模型只见历史摘要而系统可搜索完整历史；A-MEM 的主证据是长对话 QA，检索 k 还按模型与题型调整。ExpeL 有训练任务重试和更强模型归纳经验的成本；ReSum 的主要推理比较为固定工具预算下的网页搜索，但默认摘要器本身经过训练。每项提升必须保留这些条件。[[raw/papers/HiAgent.pdf#page=4|S007 §4 · PDF pp.4–5 / 印刷 pp.32782–32783]] [[raw/papers/MemGPT.pdf#page=5|S008 §3.1.1 · p.5]] [[raw/papers/A-MEM.pdf#page=18|S009 Table 8 · p.18]] [[raw/papers/ExpeL.pdf#page=15|S010 Table 4 · p.15]] [[raw/papers/ReSum.pdf#page=4|S011 §3.2、§4.1 · pp.4–5]]
+
+**本库推断：**工作记忆应同时检查“压缩后保留什么”和“丢失后怎样恢复”，持久经验则应检查“生成的解释如何影响以后检索或行动”。HiAgent 的轨迹取回与 MemGPT 的外部历史让恢复通道具体可见；A-MEM 元信息、ExpeL 规则和 ReSum 摘要均包含模型加工后的理解，不能与原始观察自动视为同等可靠。
+
+**待检验问题，尚非已成立研究缺口：**如何区分写入错误、压缩遗漏、检索提前停止和经验规则不适用？如何在匹配探索预算后判断“更好的状态表示”与“更多继续执行机会”的贡献？ReSum 的训练比较正提示这个归因问题：普通 GRPO 训练限 40 次工具调用，ReSum-GRPO 为 60，不能把收益全部归给训练算法的一项变化。详见 [[wiki/optimization/Overview#Agentic Reinforcement Learning|运行状态与策略训练的接口]]。[[raw/papers/ReSum.pdf#page=15|S011 附录 D.2 · p.15]]
 
 ## 工具、MCP 与技能
 
@@ -75,11 +102,11 @@ Hooks 在运行流程的特定位置介入，让动作继续、阻止动作或�
 
 | 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
 | --- | --- | --- | --- |
-| S007 · [HiAgent: Hierarchical Working Memory Management for Solving Long-Horizon Agent Tasks with Large Language Model](https://aclanthology.org/2025.acl-long.1575/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=24\|S001 §§4.2.1；Table 3 · p.24,25 · 引文224]] | 以子目标为单位管理工作记忆，与全文摘要和长期存储区分，核查压缩何时发生及任务进度是否被保留。 | 候选未读 |
-| S008 · [MemGPT: Towards LLMs as Operating Systems](https://arxiv.org/abs/2310.08560) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=25\|S001 §§4.2.2；Table 3 · p.25,26 · 引文464]] | 选择分层存储与上下文换页路线，追问谁决定读写、触发中断以及上下文外状态如何重新进入决策。 | 候选未读 |
-| S009 · [A-MEM: Agentic Memory for LLM Agents](https://arxiv.org/abs/2502.12110) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=25\|S001 §§4.2.2；Table 3 · p.25,26 · 引文731]] | 选择动态组织、连接和演化的记忆笔记，比较检索相关性、维护操作与任务执行状态之间的关系。 | 候选未读 |
-| S010 · [ExpeL: LLM Agents Are Experiential Learners](https://arxiv.org/abs/2308.10144) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=25\|S001 §§4.2.2；Table 3 · p.25,26 · 引文853]] | 选择从训练任务轨迹提炼经验但不更新参数的路线，区分事实记忆、经验规律及跨任务复用的证据。 | 候选未读 |
-| S011 · [ReSum: Unlocking Long-Horizon Search Intelligence via Context Summarization](https://arxiv.org/abs/2509.13313) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=24\|S001 §§4.2.1；Table 3 · p.24,25 · 引文693]] | 选择周期性轨迹摘要，比较摘要接口与训练适配；核查训练免费 ReSum 和 ReSum-GRPO 的实验贡献能否分开。 | 候选未读 |
+| S007 · [HiAgent: Hierarchical Working Memory Management for Solving Long-Horizon Agent Tasks with Large Language Model](https://aclanthology.org/2025.acl-long.1575/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=24\|S001 §§4.2.1；Table 3 · p.24,25 · 引文224]] | 以子目标为单位管理工作记忆，与全文摘要和长期存储区分，核查压缩何时发生及任务进度是否被保留。 | 完成摄入；应用未测 |
+| S008 · [MemGPT: Towards LLMs as Operating Systems](https://arxiv.org/abs/2310.08560) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=25\|S001 §§4.2.2；Table 3 · p.25,26 · 引文464]] | 选择分层存储与上下文换页路线，追问谁决定读写、触发中断以及上下文外状态如何重新进入决策。 | 完成摄入；应用未测 |
+| S009 · [A-MEM: Agentic Memory for LLM Agents](https://arxiv.org/abs/2502.12110) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=25\|S001 §§4.2.2；Table 3 · p.25,26 · 引文731]] | 选择动态组织、连接和演化的记忆笔记，比较检索相关性、维护操作与任务执行状态之间的关系。 | 完成摄入；应用未测 |
+| S010 · [ExpeL: LLM Agents Are Experiential Learners](https://arxiv.org/abs/2308.10144) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=25\|S001 §§4.2.2；Table 3 · p.25,26 · 引文853]] | 选择从训练任务轨迹提炼经验但不更新参数的路线，区分事实记忆、经验规律及跨任务复用的证据。 | 完成摄入；应用未测 |
+| S011 · [ReSum: Unlocking Long-Horizon Search Intelligence via Context Summarization](https://arxiv.org/abs/2509.13313) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=24\|S001 §§4.2.1；Table 3 · p.24,25 · 引文693]] | 选择周期性轨迹摘要，比较摘要接口与训练适配；核查训练免费 ReSum 和 ReSum-GRPO 的实验贡献能否分开。 | 完成摄入；应用未测 |
 
 ### 选读：工具、MCP 与技能
 

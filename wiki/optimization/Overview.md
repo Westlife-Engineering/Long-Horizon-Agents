@@ -4,6 +4,7 @@ created: 2026-10-19
 updated: 2026-10-25
 sources:
   - "[[raw/papers/Towards Long-Horizon Agents.pdf]]"
+  - "[[raw/papers/ReSum.pdf]]"
 ---
 
 # Optimization：能力内化与训练
@@ -50,6 +51,12 @@ Agentic RL 用自身交互反馈优化策略，目标从单次回答扩展为多
 | Interaction Patterns | 层级、多 Agent、记忆学习；决定训练交互的结构 | Fig.12，p.47；§5.5.4 起于 p.51 |
 
 表格入口依据 [[raw/papers/Towards Long-Horizon Agents.pdf#page=47|Fig.12]]、[[raw/papers/Towards Long-Horizon Agents.pdf#page=48|§5.5.1]] 与 [[raw/papers/Towards Long-Horizon Agents.pdf#page=50|§5.5.2–5.5.3]]；不是这些子方向有效性的比较。过程奖励与 [[wiki/harness/Overview#验证|运行时验证]] 相关，但需要分别检查判断偏差与优化后的行为。
+
+### 摘要接续怎样进入策略训练
+
+[[wiki/papers/ReSum|ReSum]] 给出一项已核读的跨模块实例：[[wiki/harness/Overview#上下文与记忆|Harness]] 在摘要后把输入重置为“原问题＋摘要”；ReSum-GRPO 则以这些摘要点分段，把最终答案的二值奖励归一化为轨迹级 advantage，广播到该轨迹各段，工具观察不计策略损失。因此运行时状态接口直接决定训练看到的状态和 rollout 结构；广播终局信号不等于识别了每段独立因果贡献。[[raw/papers/ReSum.pdf#page=4|S011 §3.3、Figure 3 · pp.4–5]]
+
+**归因边界：**training-free ReSum 只指现成策略不再训练，默认摘要器 ReSumTool-30B 自身已蒸馏训练。普通 GRPO 与 ReSum-GRPO 虽共享部分超参数，训练工具调用上限却为 40 对 60，且接续改变了可采到的长轨迹；Table 2 的效果不能全部归于 advantage broadcasting。后续比较需同时登记反馈、状态表示、探索机会与预算，而不能仅按算法名排列。[[raw/papers/ReSum.pdf#page=4|S011 §3.2 · p.4]] [[raw/papers/ReSum.pdf#page=15|S011 附录 D.2 · p.15]] [[raw/papers/ReSum.pdf#page=7|S011 Table 2 · p.7]]
 
 ## On-Policy Distillation
 

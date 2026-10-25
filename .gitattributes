@@ -1,2 +1,3 @@
-# Preserve archived source bytes and recorded SHA-256 hashes.
+# Archived sources must keep their exact original bytes in Git.
 raw/** -text
+*.pdf binary
