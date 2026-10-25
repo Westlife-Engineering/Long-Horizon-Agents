@@ -313,3 +313,33 @@
 
 - 摄入 [[wiki/papers/AGrail|AGrail]] ACL 2025 正式版，将可增删检查清单、动作键记忆与模型/工具判断整合到 [[wiki/harness/Overview#Hooks 与中间件|Hooks 与中间件]]；区分记忆更新与参数训练、冻结与测试时适应，以及筛选样本后的条件效用与端到端成功。
 - 保留表文数字差异与有限迁移证据，不将清单相似度趋稳写成终身安全保证。内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S027 CRITIC：外部证据与纠错净收益
+
+- [[wiki/papers/CRITIC|CRITIC]]：摄入CRITIC arXiv v4，将外部工具证据、模型critique、输出修订与停止分开；保留oracle权限和正确答案误改，与纠错收益共同评估。主要落点为 [[wiki/harness/Overview#选择误差与纠错净收益要分别测量|验证的选择与纠错]]。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S028 AgentPRM-Xi：过程评分与奖励发放粒度
+
+- [[wiki/papers/AgentPRM-Xi|AgentPRM-Xi]]：摄入Xi等AgentPRM arXiv:2511.08325v1，整合promise/progress训练和搜索选择；明确PPO实验使用末步PRM预测作整轨迹奖励。主要落点为 [[wiki/harness/Overview#验证|验证]] 与 [[wiki/optimization/Overview#过程评分怎样进入策略更新|策略更新接口]]。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S029 Agent-as-a-Judge：按需求取证的评估者
+
+- [[wiki/papers/Agent-as-a-Judge|Agent-as-a-Judge]]：摄入ICML 2025会议版，将工作产物取证、需求依赖、整任务成功与人工一致性区分；明确本文未实测评估反馈驱动执行者在线修复。主要落点为 [[wiki/harness/Overview#检查对象决定成功指标|验证对象与指标]]，内部表述差异保留唯一页。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S030 CorrectBench：纠错与误改的双向指标
+
+- [[wiki/papers/CorrectBench|CorrectBench]]：摄入NeurIPS 2025会议版，补充CR/MR及初始准确率下的纠错净收益关系，记录预算与判断口径；样本和表述差异保留唯一页，不提取统一提升量或外推长程恢复。主要落点为 [[wiki/harness/Overview#选择误差与纠错净收益要分别测量|验证的选择与纠错]]。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S031 Self-MAP：跨轮指令与静态记忆规划
+
+- [[wiki/papers/Self-MAP|Self-MAP]]：摄入ACL 2024 MT-Mind2Web/Self-MAP，连接多轮指令与记忆检索、DOM缩减及历史动作rationale；明确静态HTML快照和TSR为Turn，避免归为在线失败纠错器。主要落点为 [[wiki/harness/Overview#上下文与记忆|上下文与记忆]] 与 [[wiki/harness/Overview#检查对象决定成功指标|验证对象]]。
+- 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。

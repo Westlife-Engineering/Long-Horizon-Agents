@@ -35,6 +35,11 @@ sources:
   - "[[raw/papers/ShieldAgent.pdf]]"
   - "[[raw/papers/InfrastructureSentinel.pdf]]"
   - "[[raw/papers/AGrail.pdf]]"
+  - "[[raw/papers/CRITIC.pdf]]"
+  - "[[raw/papers/AgentPRM-Xi.pdf]]"
+  - "[[raw/papers/Agent-as-a-Judge.pdf]]"
+  - "[[raw/papers/CorrectBench.pdf]]"
+  - "[[raw/papers/Self-MAP.pdf]]"
 ---
 
 # Harness：外部运行机制
@@ -102,6 +107,8 @@ Arbor 还引入另一种风险边界：事实结果和归纳后的 insight 应�
 这组对照澄清了两种容易混淆的扩展：HiAgent / ReSum 主要让**同一任务继续执行**；ExpeL 主要让**不同任务之间复用经验**。MemGPT / A-MEM 提供可跨当前窗口存续的信息与取回机制，其主实验则偏向对话、文档或合成检索。存续范围、操作方式与实际评测任务需要分别登记，不能用“长期记忆”一个词替代三者。[[raw/papers/HiAgent.pdf#page=4|S007 §4.1 · PDF p.4 / 印刷 p.32782]] [[raw/papers/ExpeL.pdf#page=7|S010 §5 · pp.7–9]] [[raw/papers/MemGPT.pdf#page=5|S008 §3 · pp.5–8]] [[raw/papers/A-MEM.pdf#page=5|S009 §4.1 · pp.5–7]]
 
 **补充诊断证据（S036 已完成摄入，应用未测）：**[[wiki/papers/Lost-in-the-Middle|Lost in the Middle]] 的开放域 QA 实验中，增加文档后检索召回仍增长，reader 准确率却较早饱和；把 query 同时放在数据前后，明显改善合成 KV 检索，却没有同样消除语义 QA 的位置趋势。因此本库需分别问“是否取回”“如何编排”和“是否被模型使用”；这不是对上述五种记忆方法的直接反证，也不证明重排能够普遍修复 Agent。对应 [[wiki/optimization/Overview#架构基础|架构基础]] 的有效上下文边界。[[raw/papers/Lost-in-the-Middle.pdf#page=8|S036 §4.2、Fig.9 · p.8]] [[raw/papers/Lost-in-the-Middle.pdf#page=9|§5、Fig.11 · pp.9–10]]
+
+**跨用户轮次的记忆补充（S031，已完成摄入）：**[[wiki/papers/Self-MAP|Self-MAP]] 按当前指令与动作检索历史，缩减无关DOM，再为已给定历史动作生成rationale，供微调后的规划模型预测下一步。这里的reflection是在加工记忆解释，并非运行时发现错误后重试；positive element与历史动作的信息权限、静态HTML快照和Turn Success Rate边界见 [[wiki/harness/Overview#检查对象决定成功指标|验证对象]]。它补充了省略、指代和任务切换下的记忆使用，不能由“保留旧历史”推断所有旧约束始终有效。[[raw/papers/Self-MAP.pdf#page=5|§4 · PDF pp.5–6 / 印刷8799–8800]] [[raw/papers/Self-MAP.pdf#page=12|Appendix A.2 · PDF p.12 / 印刷8806]]
 
 ### 机制可比较，分数必须留在原条件中
 
@@ -232,13 +239,41 @@ Hooks 在运行流程的特定位置介入，让动作继续、阻止动作或�
 
 细分导航：Assessment Targets；Verification Levels；Verifier Strategies。与 [[wiki/optimization/Overview#Agentic Reinforcement Learning|训练中的信用分配]]、[[wiki/applications/Overview|评测的成功判据]] 相关；运行时检查有效，不自动证明它可作为可靠训练奖励。
 
-**Hooks 与验证的接口（S022–S026 已完成摄入，应用未测）：**权限警告、程序谓词、模型判断、形式模型内推断和事后审计具有不同证据含义；先确认判断如何产生、动作是否已经执行，再报告允许、阻止、误拒与漏过。具体条件见 [[wiki/harness/Overview#拦住了什么，正常任务还能做多少|Hooks 证据比较]]，不能用一次检查通过替代全任务完成或长期安全。
+本轮 S027–S031 已完成摄入；应用未测。下面按反馈来源、判断对象和判断之后的动作组织原论文证据，不把“验证”视为单一算法。
+
+### 判断依赖什么证据，之后改变什么
+
+| 反馈来源与判断对象 | 怎样形成判断 | 判断后的作用与边界 |
+| --- | --- | --- |
+| 搜索结果、解释器返回、毒性评分；检查当前答案/程序/文本 | CRITIC把工具返回加入模型critique | 重写答案并按规则停止；工具事实、模型解释与修订可分别出错。[[wiki/papers/CRITIC\|S027]]；[[raw/papers/CRITIC.pdf#page=4\|§3、Algorithm 1 · pp.4–5]] |
+| 采样轨迹的环境终局回报；预测行动的promise/progress | AgentPRM用TD/GAE与相邻价值差训练评分模型 | BoN选完整轨迹或beam保留步骤；高分是预测，非无误的完成证明。[[wiki/papers/AgentPRM-Xi\|S028]]；[[raw/papers/AgentPRM-Xi.pdf#page=5\|§3 · pp.5–8]] |
+| 开发工作区、可选执行轨迹；检查每项需求 | Agent-as-a-Judge定位、读取产物，再由模型判定 | 输出需求评估；本文未实测把反馈接回执行者在线修复。[[wiki/papers/Agent-as-a-Judge\|S029]]；[[raw/papers/Agent-as-a-Judge.pdf#page=6\|§4.1 · pp.6–7]]、[[raw/papers/Agent-as-a-Judge.pdf#page=9\|§6 · p.9]] |
 
 **工具方向的直接证据（S016，已完成摄入，应用未测）：**MCPMark 把运行正常结束却未满足任务约束记为隐式失败；这说明缺少异常不能替代结果检查。其程序验收经过环境结果扰动和人工交叉检查，但本库未审查全部 verifier 源码，论文也未证明验证器完备。应把运行时模型 critic、工具异常与最终环境验收分别记录，具体机制与重复运行口径见 [[wiki/harness/Overview#协议接通与任务完成之间还差什么证据|工具方向比较]]。[[raw/papers/MCPMark.pdf#page=8|S016 §4.2、Fig.5 · pp.8–9]] [[raw/papers/MCPMark.pdf#page=15|Appendix A · pp.15–16]]
 
-**可执行标签与学习验证器（S038，已完成摄入，应用未测）：**[[wiki/papers/SWE-Gym|SWE-Gym]] 用真实仓库测试产生轨迹成败标签，再训练 outcome verifier 在候选轨迹间预测和选择。OpenHands 的32B策略/32B验证器在 SWE-Bench Verified 上，16条候选的 Pass@16=42.8%，选出一条的 Best@16=32.0%；前者是覆盖上界，后者才包含选择误差。测试标签仍受测试覆盖约束，verifier又增加预测误差。与 MCPMark 的程序检查区别在于判断如何产生；数据来源、筛选与预算见 [[wiki/optimization/Overview#数据与环境合成|Optimization]]。[[raw/papers/SWE-Gym.pdf#page=4|S038 §3.1 · p.4]] [[raw/papers/SWE-Gym.pdf#page=7|§5.1.1、Fig.3 · p.7]]
+**Hooks 与验证的接口（S022–S026 已完成摄入，应用未测）：**权限警告、程序谓词、模型判断、形式模型内推断和事后审计具有不同证据含义；先确认判断如何产生、动作是否已经执行，再报告允许、阻止、误拒与漏过。具体条件见 [[wiki/harness/Overview#拦住了什么，正常任务还能做多少|Hooks 证据比较]]，不能用一次检查通过替代全任务完成或长期安全。
+
+**本库综合：**先登记可访问的外部信息及标签，再判断模型从中推断了什么，最后记录系统选择、修改或拦截了什么。运行时取证、学习价值预测、程序验收可以互补，但各自的误差不会因模块更多而自动消失。判断可以在结束后评估要求，也可以在步骤间选候选；时间位置不能替代机制身份。
+
+### 检查对象决定成功指标
+
+Agent-as-a-Judge 的DevAI将需求组织成依赖图，独立需求达标、考虑前置条件的达标率、整任务成功分别计分；与人工共识的Alignment Rate又是**评估者**的指标。负例较多时一致率可能偏高，作者因此另用PR曲线。取证准确不等于被评估Agent已完成任务，人工共识也不是绝对真值。[[raw/papers/Agent-as-a-Judge.pdf#page=3|S029 §2.2 · p.3]] [[raw/papers/Agent-as-a-Judge.pdf#page=5|Table 2、§3 · pp.5–6]] [[raw/papers/Agent-as-a-Judge.pdf#page=8|§4.2、Fig.6 · p.8]]
+
+跨轮指令进一步改变评价单位。[[wiki/papers/Self-MAP|S031 MT-Mind2Web/Self-MAP]] 的SSR要求元素与操作同时正确，TSR要求**一轮用户指令内**所有步骤正确；TSR不是整个对话的完成率。它主要贡献离线多轮指令任务和记忆增强规划，不能因被S001归入验证选读就写成独立verifier。静态HTML快照没有实证错误行动改变状态后的恢复；记忆机制见 [[wiki/harness/Overview#上下文与记忆|上下文与记忆]]。[[raw/papers/Self-MAP.pdf#page=6|§5.1 · PDF p.6 / 印刷8800]] [[raw/papers/Self-MAP.pdf#page=9|Limitation · PDF p.9 / 印刷8803]]
 
 **编排中的验证责任（S017–S021 已完成摄入，应用未测）：**MetaGPT 的执行测试反馈、Magentic-One 的“任务完成”自判，以及 MAST 对最终目标检查不足的观察，分别涉及测试、控制和诊断。验证动作存在不代表覆盖用户要求；MAST 也发现成功轨迹可含验证缺陷。具体角色与状态交接见 [[wiki/harness/Overview#失败发生在设计、交接，还是验收|编排诊断]]，不能把模型共识或无运行异常直接当作完成证据。[[raw/papers/MetaGPT.pdf#page=6|S017 §3.3 · p.6]] [[raw/papers/Magentic-One.pdf#page=7|S018 §4.1 · p.7]] [[raw/papers/Multi-Agent-Failures.pdf#page=8|S021 §4 FC3 · p.8]] [[raw/papers/Multi-Agent-Failures.pdf#page=36|Appendix J.1 · p.36]]
+
+### 选择误差与纠错净收益要分别测量
+
+**可执行标签与学习验证器（S038，已完成摄入，应用未测）：**[[wiki/papers/SWE-Gym|SWE-Gym]] 用真实仓库测试产生轨迹成败标签，再训练 outcome verifier 在候选轨迹间预测和选择。OpenHands 的32B策略/32B验证器在 SWE-Bench Verified 上，16条候选的 Pass@16=42.8%，选出一条的 Best@16=32.0%；前者是覆盖上界，后者才包含选择误差。测试标签仍受测试覆盖约束，verifier又增加预测误差。与 MCPMark 的程序检查区别在于判断如何产生；数据来源、筛选与预算见 [[wiki/optimization/Overview#数据与环境合成|Optimization]]。[[raw/papers/SWE-Gym.pdf#page=4|S038 §3.1 · p.4]] [[raw/papers/SWE-Gym.pdf#page=7|§5.1.1、Fig.3 · p.7]]
+
+AgentPRM增加步骤间价值差约束，但**奖励模型训练粒度、搜索选择粒度与RL奖励粒度不同**。其BoN按末步分数选轨迹，beam按步骤保留分支；PPO实验仍以末步PRM预测作整轨迹奖励，详见 [[wiki/optimization/Overview#过程评分怎样进入策略更新|策略更新接口]]。WebShop/TextCraft报成功率而BabyAI报reward，候选数、搜索展开和训练标签采样成本也要分别记账；本文的计算效率不能直接当墙钟加速。[[raw/papers/AgentPRM-Xi.pdf#page=4|S028 §2 · p.4]] [[raw/papers/AgentPRM-Xi.pdf#page=9|§4.1 · pp.9–10]] [[raw/papers/AgentPRM-Xi.pdf#page=22|Appendix C · p.22]]
+
+纠错则要比较同一答案修改前后的双向变化。CRITIC的非oracle分析既发现错误修复，也发现正确答案被误改；星号CRITIC只修正已知错误初答，不能当作部署时拥有的检测能力。[[wiki/papers/CorrectBench|S030 CorrectBench]] 用Correction Rate（初始错误中改对的比例）和Misjudgment Rate（初始正确中误改的比例）把这两侧明确分开。[[raw/papers/CRITIC.pdf#page=5|S027 §4 · p.5]] [[raw/papers/CRITIC.pdf#page=26|Appendix D.2.2、Table 7 · p.26]] [[raw/papers/CorrectBench.pdf#page=8|S030 §4.6、Table 3 · p.8]]
+
+**本库推导：**在同一批样本、相同正确性判据下，若初始准确率为$p$，则$p_{after}=p+(1-p)CR-pMR$。因此只在错误样本上测改对率，不能说明部署后的净收益；停止或追加检查还需算入误改与额外成本。该式是条件分母的算术关系，不是新实验。CorrectBench的样本/表述口径差异保留在唯一页，本库不从中提取统一提升量，也不把作者建议的动态controller写成已验证方法。[[raw/papers/CorrectBench.pdf#page=8|§4.6–4.7 · pp.8–9]] [[raw/papers/CorrectBench.pdf#page=10|§6 · p.10]]
+
+**后续证据需求，尚非已成立研究缺口：**固定反馈权限、原本正确样本比例、可回退性和总预算后，判断新增取证改善的是漏检、选择还是修订；随后再测副作用与完整任务。当前已有工作已覆盖工具增强critique、学习评分与按需求取证，不能仅靠增加反思轮数、评分节点或Agent人数提出创新主张。
 
 ## 后续如何增长
 
@@ -305,10 +340,10 @@ Hooks 在运行流程的特定位置介入，让动作继续、阻止动作或�
 
 | 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
 | --- | --- | --- | --- |
-| S027 · [CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing](https://arxiv.org/abs/2305.11738) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.2；Table 4 · p.35,36 · 引文182]] | 选择借助外部工具反馈的验证—纠正循环，与纯自评区分；核查反馈来源何时提供新增信息。 | 候选未读 |
-| S028 · [AgentPRM: Process Reward Models for LLM Agents via Step-Wise Promise and Progress](https://arxiv.org/abs/2511.08325) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.2；Table 4 · p.35,36 · 引文702]] | 选择按动作离目标距离和增量进展评分的过程奖励模型，核查验证、搜索引导与训练反馈的界限。 | 候选未读 |
-| S029 · [Agent-as-a-Judge: Evaluate Agents with Agents](https://proceedings.mlr.press/v267/zhuge25a.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.2；Table 4 · p.35,36 · 引文898]] | 选择能执行工具和多步判断的评估者，追问评估是否真正检查工作产物与过程证据，以及人与模型一致性的适用条件。 | 候选未读 |
-| S030 · [Can LLMs Correct Themselves? A Benchmark of Self-Correction in LLMs](https://papers.nips.cc/paper_files/paper/2025/hash/ec07904adc847a45f53dceb44078f8f0-Abstract-Datasets_and_Benchmarks_Track.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=36\|S001 §§4.6.2 · p.36 · 引文605]] | 加入自我纠错的条件性与成本分析，核查何种模型/任务有收益，防止把反思次数或重复检查本身当作可靠性证明。 | 候选未读 |
-| S031 · [On the Multi-turn Instruction Following for Conversational Web Agents](https://aclanthology.org/2024.acl-long.477/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.1 · p.35 · 引文118]] | 补充跨多轮用户指令与环境交互的遵循问题，核查此前约束、当前指令和任务状态怎样共同评测，连接记忆与验证。 | 候选未读 |
+| S027 · [CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing](https://arxiv.org/abs/2305.11738) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.2；Table 4 · p.35,36 · 引文182]] | 选择借助外部工具反馈的验证—纠正循环，与纯自评区分；核查反馈来源何时提供新增信息。 | [[wiki/papers/CRITIC\|已完成摄入；应用未测]] |
+| S028 · [AgentPRM: Process Reward Models for LLM Agents via Step-Wise Promise and Progress](https://arxiv.org/abs/2511.08325) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.2；Table 4 · p.35,36 · 引文702]] | 选择按动作离目标距离和增量进展评分的过程奖励模型，核查验证、搜索引导与训练反馈的界限。 | [[wiki/papers/AgentPRM-Xi\|已完成摄入；应用未测]] |
+| S029 · [Agent-as-a-Judge: Evaluate Agents with Agents](https://proceedings.mlr.press/v267/zhuge25a.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.2；Table 4 · p.35,36 · 引文898]] | 选择能执行工具和多步判断的评估者，追问评估是否真正检查工作产物与过程证据，以及人与模型一致性的适用条件。 | [[wiki/papers/Agent-as-a-Judge\|已完成摄入；应用未测]] |
+| S030 · [Can LLMs Correct Themselves? A Benchmark of Self-Correction in LLMs](https://papers.nips.cc/paper_files/paper/2025/hash/ec07904adc847a45f53dceb44078f8f0-Abstract-Datasets_and_Benchmarks_Track.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=36\|S001 §§4.6.2 · p.36 · 引文605]] | 加入自我纠错的条件性与成本分析，核查何种模型/任务有收益，防止把反思次数或重复检查本身当作可靠性证明。 | [[wiki/papers/CorrectBench\|已完成摄入；应用未测]] |
+| S031 · [On the Multi-turn Instruction Following for Conversational Web Agents](https://aclanthology.org/2024.acl-long.477/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.1 · p.35 · 引文118]] | 补充跨多轮用户指令与环境交互的遵循问题，核查此前约束、当前指令和任务状态怎样共同评测，连接记忆与验证。 | [[wiki/papers/Self-MAP\|已完成摄入；应用未测]] |
 
 返回 [[wiki/index|索引]]。

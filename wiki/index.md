@@ -4,8 +4,8 @@
 
 ## 当前证据边界
 
-- 已纳入 **45 篇学术来源**：S001 综述及 S002–S026、S032–S050 四十四篇独立论文。S001 整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；独立论文的实际正文/附录阅读范围见各论文页，均不表示复现实验。
-- **独立论文（含方法、系统、评测与分析）完成摄入数为 44**。综述中的引用不是本库已验证的证据；第一轮已选定 65 个方向名额、64 篇不同候选，正在分批核读，候选与待验收论文不计完成摄入。
+- 已纳入 **50 篇学术来源**：S001 综述及 S002–S050 四十九篇独立论文。S001 整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；独立论文的实际正文/附录阅读范围见各论文页，均不表示复现实验。
+- **独立论文（含方法、系统、评测与分析）完成摄入数为 49**。综述中的引用不是本库已验证的证据；第一轮已选定 65 个方向名额、64 篇不同候选，正在分批核读，候选与待验收论文不计完成摄入。
 - 方法论原始资料为 [[raw/articles/llm-wiki|LLM Wiki]]，不计入学术来源数。具体工作规则见 [[AGENTS|Schema]]。
 
 ## 从哪里开始
@@ -63,6 +63,11 @@ Harness 与 Optimization 的子方向都保留在各自 Overview 的页内导航
 | S024 | [[wiki/papers/ShieldAgent\|ShieldAgent]] | 完成摄入，应用未测；政策规则电路与在线模型判断，修订全静态分类理解 |
 | S025 | [[wiki/papers/InfrastructureSentinel\|InfrastructureSentinel]] | 完成摄入，应用未测；输入/计划/执行/审计四处治理与初步实验报告边界 |
 | S026 | [[wiki/papers/AGrail\|AGrail]] | 完成摄入，应用未测；可演化检查清单、跨任务记忆与条件评测口径 |
+| S027 | [[wiki/papers/CRITIC\|CRITIC]] | 已完成摄入；应用未测；工具反馈、critique、修订与停止，保留oracle和误改边界 |
+| S028 | [[wiki/papers/AgentPRM-Xi\|AgentPRM-Xi]] | 已完成摄入；应用未测；promise/progress评分、搜索选择与末步PPO奖励粒度 |
+| S029 | [[wiki/papers/Agent-as-a-Judge\|Agent-as-a-Judge]] | 已完成摄入；应用未测；按需求读取产物、人工一致性与尚未实测在线修复 |
+| S030 | [[wiki/papers/CorrectBench\|CorrectBench]] | 已完成摄入；应用未测；纠错/误改双向指标、净收益和额外预算口径 |
+| S031 | [[wiki/papers/Self-MAP\|Self-MAP]] | 已完成摄入；应用未测；跨轮指令、静态HTML快照和记忆rationale，TSR为Turn |
 | S032 | [[wiki/papers/Longformer\|Longformer]] | 完成摄入，应用未测；显式 token 的局部/全局稀疏访问 |
 | S033 | [[wiki/papers/Mamba\|Mamba]] | 完成摄入，应用未测；输入相关的有限递归状态与长度/吞吐证据边界 |
 | S034 | [[wiki/papers/Kimi-Linear\|Kimi Linear]] | 完成摄入，应用未测；KDA/MLA 混合与训练版本、缓存和吞吐条件 |

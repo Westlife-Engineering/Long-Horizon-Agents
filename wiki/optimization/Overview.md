@@ -27,6 +27,7 @@ sources:
   - "[[raw/papers/ATLAS.pdf]]"
   - "[[raw/papers/Agent-Distillation.pdf]]"
   - "[[raw/papers/Agent-R.pdf]]"
+  - "[[raw/papers/AgentPRM-Xi.pdf]]"
 ---
 
 # Optimization：能力内化与训练
@@ -183,6 +184,10 @@ Agentic RL 用自身交互反馈优化策略，目标从单次回答扩展为多
 | Interaction Patterns | 层级、多 Agent、记忆学习；决定训练交互的结构 | Fig.12，p.47；§5.5.4 起于 p.51 |
 
 表格入口依据 [[raw/papers/Towards Long-Horizon Agents.pdf#page=47|Fig.12]]、[[raw/papers/Towards Long-Horizon Agents.pdf#page=48|§5.5.1]] 与 [[raw/papers/Towards Long-Horizon Agents.pdf#page=50|§5.5.2–5.5.3]]；不是这些子方向有效性的比较。过程奖励与 [[wiki/harness/Overview#验证|运行时验证]] 相关，但需要分别检查判断偏差与优化后的行为。
+
+### 过程评分怎样进入策略更新
+
+[[wiki/papers/AgentPRM-Xi|S028 AgentPRM-Xi，已完成摄入]] 以环境终局回报与TD/GAE目标训练步骤价值，并约束相邻价值差；这是奖励模型的过程训练。其Qwen2.5-3B在BabyAI/TextCraft上的PPO实验却以**末步PRM预测作为整条轨迹奖励**，不能描述为逐步密集奖励实验。推理阶段另有BoN与beam选择，比较见 [[wiki/harness/Overview#选择误差与纠错净收益要分别测量|Harness · 验证]]。过程评分如何产生、何时用于选择、何时发放训练奖励须分别登记；确定性转移/稀疏奖励假设、bootstrap标签与策略分布条件也不会因接入PPO而消失。[[raw/papers/AgentPRM-Xi.pdf#page=6|§3.2–3.3 · pp.6–8]] [[raw/papers/AgentPRM-Xi.pdf#page=11|§5.2 · p.11]] [[raw/papers/AgentPRM-Xi.pdf#page=22|Appendix C · p.22]]
 
 ### 摘要接续怎样进入策略训练
 
