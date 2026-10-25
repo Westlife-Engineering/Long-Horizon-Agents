@@ -266,3 +266,24 @@
 
 - 摄入 [[wiki/papers/Multi-Agent-Failures|Multi-Agent-Failures]] NeurIPS 2025 会议版；将职责、信息交接和验证作为诊断轴，保留标注/干预条件与过程标签和终局失败的区别，原文图文计数张力留论文页。主要落点为 [[wiki/harness/Overview#编排|编排]] 与验证联系。
 - 内容与结构验收通过，Raw 哈希匹配；Obsidian 应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S047 AgentTuning：轨迹混合与通用能力保留
+
+- 摄入 [[wiki/papers/AgentTuning|AgentTuning]] ACL正式版，在 [[wiki/optimization/Overview#状态由谁产生，哪些输出受到监督|微调比较]] 区分固定教师状态、成功筛选和通用数据混合；保留逐任务退步、Mind2Web单步及调参协议描述差异。
+- 内容与结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。
+
+## [2026-10-25] ingest | S048 ATLAS：关键步骤监督与完整历史
+
+- 摄入 [[wiki/papers/ATLAS|ATLAS]] ACL正式版，将语义步骤选择、loss mask与状态分布整合至 [[wiki/optimization/Overview#微调|微调]]；保留随机步骤对照、选择器依赖、长游戏拆短与总成本边界。
+- 内容与结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。
+
+## [2026-10-25] ingest | S049 Agent Distillation：教师轨迹与测试时动作筛选
+
+- 摄入 [[wiki/papers/Agent-Distillation|Agent Distillation]] NeurIPS正式版，在 [[wiki/optimization/Overview#微调|微调]] 和 [[wiki/harness/Overview#依赖怎样执行，失败以后改哪里|工具执行]] 分开FTP数据改进、离线蒸馏与SAG执行筛选；保留5步任务、固定知识库、计算预算及论文内部未同步边界。
+- 内容与结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。
+
+## [2026-10-25] ingest | S050 Agent-R：迭代修复监督与状态一致性边界
+
+- 摄入 [[wiki/papers/Agent-R|Agent-R]] arXiv v3，在 [[wiki/optimization/Overview#学到修订行为以后，环境是否能继续|修复监督]] 及 [[wiki/harness/Overview#分支能否撤回，评价能否被信任|运行恢复]] 解释MCTS再采样、actor判错与修复SFT；保留恢复评测条件和阈值/目标符号疑点。
+- 拼接后的环境状态一致性保留为优先核读实现的材料缺口，未判定方法不能恢复。内容与结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。

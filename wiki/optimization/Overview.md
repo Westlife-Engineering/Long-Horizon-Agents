@@ -23,6 +23,10 @@ sources:
   - "[[raw/papers/ProLong.pdf]]"
   - "[[raw/papers/Qwen2-VL.pdf]]"
   - "[[raw/papers/DoReMi.pdf]]"
+  - "[[raw/papers/AgentTuning.pdf]]"
+  - "[[raw/papers/ATLAS.pdf]]"
+  - "[[raw/papers/Agent-Distillation.pdf]]"
+  - "[[raw/papers/Agent-R.pdf]]"
 ---
 
 # Optimization：能力内化与训练
@@ -132,7 +136,33 @@ DoReMi用“代理比参考还差多少”的excess loss选择域比例，避免
 
 监督微调（SFT）用整理过的轨迹教授交互方式，例如分解目标、调用工具、解释观察、恢复和终止。综述的三个入口是示范选择与混合、课程学习、蒸馏；其覆盖范围受到监督轨迹分布的限制。[[raw/papers/Towards Long-Horizon Agents.pdf#page=45|S001 · §5.4 · p.45]]；[[raw/papers/Towards Long-Horizon Agents.pdf#page=47|§5.4 小结 · p.47]]
 
-细分导航：Instruction Selection and Mixing；Curriculum Learning；Distillation。不要把某篇工作中“小数据有效”的结果推广成普遍规律；后续须核对基础模型、数据选择与训练管线。
+细分导航：Instruction Selection and Mixing；Curriculum Learning；Distillation。第一轮 S047–S050 已完成摄入与本节整合，内容与结构验收通过；S041复用已完成来源，不重复计数。Obsidian应用未测。
+
+### 状态由谁产生，哪些输出受到监督
+
+**本库比较轴：**“用了SFT”只说明更新目标，不能单独说明数据是固定教师生成，还是当前策略重新采集。再问模型学习全部输出、部分关键步骤，还是错误后的修订后缀，才看清这些训练方法的差别。以下比较机制和成立条件，不跨任务排列分数。
+
+| 状态与数据来源 | 参数更新实际学习什么 | 必须保留的边界 |
+| --- | --- | --- |
+| AgentTuning：教师在六类任务中交互，筛选后固定为AgentInstruct，与通用对话混合 | 模型输出的监督最大似然；通用对话帮助维持能力 | 主要覆盖教师访问状态；Mind2Web是teacher-forced单步；混合不保证每项通用指标无损。[[wiki/papers/AgentTuning\|S047]]；[[raw/papers/AgentTuning.pdf#page=4\|§2.1–2.2 · PDF pp.4–5 / 印刷 pp.3056–3057]] |
+| ATLAS：既有专家轨迹，由GPT-4o按计划/观察/动作/纠错语义选步骤 | 完整轨迹仍输入，仅选中的thought/action计loss | 至多30%指步骤监督覆盖，不是总输入或总成本；选择不直接产生学生失败状态。[[wiki/papers/ATLAS\|S048]]；[[raw/papers/ATLAS.pdf#page=4\|§3.2–3.3 · PDF p.4 / 印刷 p.25337]] |
+| Agent Distillation：教师在检索/代码环境生成并按答案筛选轨迹，FTP改变教师首个thought前缀 | 学生监督学习thought/action，环境观察不计loss | 固定教师状态；SAG是额外测试时采样与执行筛选，不能归入训练收益。[[wiki/papers/Agent-Distillation\|S049]]；[[raw/papers/Agent-Distillation.pdf#page=4\|§4、Eq.4–5、Fig.3 · pp.4–5]] |
+| Agent-R：每轮当前actor用MCTS采集好坏分支，再判错并构造修复轨迹 | 好轨迹＋修复信号/后续的SFT，混入通用对话；下轮重新采集 | 当前策略采样不自动等于RL或逐步OPD；树搜索、筛选与拼接都改变训练分布。[[wiki/papers/Agent-R\|S050]]；[[raw/papers/Agent-R.pdf#page=6\|§3.1–3.2 · pp.6–7]] |
+| AgentGym-RL：当前策略在环境内在线rollout，逐阶段增大交互上限 | 根据环境reward做RL参数更新 | 主路线无需额外任务SFT；它是本方向的跨范式课程对照。[[wiki/papers/AgentGym-RL\|S041，复用]]；[[raw/papers/AgentGym-RL.pdf#page=9\|§3.3 · p.9]] |
+
+### 减少模仿，改善泛化，还是降低成本
+
+AgentTuning的混合训练优于只用agent数据，但13B在held-out上的general-only分数还略高于混合；通用任务也有退步。因此它支持在训练中检查通用能力保留，不能证明每种规模都从agent示范获得独立泛化收益。ATLAS把干预移到监督位置；它相对完整轨迹的held-in收益更明显，held-out上关键30%与随机30%平均仅38.36对38.04，缺少该差值置信区间。两者共同提醒：**数据选择机制、同骨干消融和逐任务结果比“泛化更强”的总称更有信息。** [[raw/papers/AgentTuning.pdf#page=6|S047 Tables3–4 · PDF pp.6–7 / 印刷 pp.3058–3059]] [[raw/papers/ATLAS.pdf#page=7|S048 Table3 · PDF p.7 / 印刷 p.25340]]
+
+同样不能由“小数据”或“小模型”直接推出总成本优势。ATLAS保留完整输入并需强模型选择；Agent Distillation的SAG默认每步采8个动作再执行筛选。后者最多5步、固定Wikipedia 2018与数学代码任务，模型变小的结果包含外部工具和额外推理预算。训练token、选择/教师成本、环境执行次数和测试时延应分别记录。[[raw/papers/ATLAS.pdf#page=4|S048 §3.2 · PDF p.4 / 印刷 p.25337]] [[raw/papers/ATLAS.pdf#page=14|Appendix B.1 · PDF p.14 / 印刷 p.25347]] [[raw/papers/Agent-Distillation.pdf#page=6|S049 §5 · p.6]]
+
+### 学到修订行为以后，环境是否能继续
+
+Agent-R的恢复测试让模型从基础Llama失败轨迹的随机截断处继续，最多50轮，直接检查特定失败状态上的后续结果。这比只看一般任务平均分更接近恢复问题；但构造训练数据时把坏前缀接到同父好分支后缀，修订信号本身不改变环境。**本库材料缺口：**拼接后怎样核验环境状态一致性、需要哪些重放或补偿操作，当前未核读实现；应优先检查代码与执行记录，再判断能否成为研究问题。现有材料既不能保证任意不可逆任务恢复，也不能据此断言方法不能恢复。[[raw/papers/Agent-R.pdf#page=5|S050 §3.1、Eq.3–4 · p.5]] [[raw/papers/Agent-R.pdf#page=11|§4.4、Table3 · p.11]] [[raw/papers/Agent-R.pdf#page=21|Appendix B、Eq.10 · p.21]]
+
+这与 [[wiki/harness/Overview#分支能否撤回，评价能否被信任|运行时分支与状态恢复]] 形成接口：SFT提供行动倾向，harness决定哪些动作实际执行、失败后的状态怎样保留/恢复。ATLAS的关键步语义判断、Agent-R的actor判错、SAG的可执行/一致输出也各有误差，不能当作同一种可靠过程标签。当前未形成已查新的研究缺口。
+
+### 与已有工具和数据路线的联系
 
 **工具调用的训练接口（S012 / S014 已完成摄入，应用未测）：**[[wiki/papers/Toolformer|Toolformer]] 用执行结果对后续 token 预测的帮助筛选调用，再微调模型，学到的对象包括调用时机、工具及参数；这个损失代理没有直接优化长程任务成功或调用成本，也没有链式工具训练。[[wiki/papers/CodeAct|CodeAct]] 则需分开动作表示和模型适应：CodeActInstruct 收集并筛选多轮成功及纠错轨迹，与通用对话混合后训练 CodeActAgent。其通用数据消融和不同基础模型表现说明，不能把收益全部归于“代码”或“纠错”一个因素。两者的运行时执行接口见 [[wiki/harness/Overview#工具、MCP 与技能|工具方向]]；AnyTool / Voyager 的候选池或技能库更新不应计作参数微调。[[raw/papers/Toolformer.pdf#page=3|S012 §2 · pp.3–4]] [[raw/papers/Toolformer.pdf#page=9|§6 · p.9]] [[raw/papers/CodeAct.pdf#page=6|S014 §3、Tables 4–5 · pp.6–8]] [[raw/papers/CodeAct.pdf#page=14|Table A.8 · p.14]]
 
@@ -177,6 +207,8 @@ Agentic RL 用自身交互反馈优化策略，目标从单次回答扩展为多
 本章讨论的训练式自我演化把生成经验、筛选反馈和策略更新接成循环，并可能更新任务或环境分布。作者区分离线生成—筛选—训练、在线交互更新、Agent—环境共同演化。[[raw/papers/Towards Long-Horizon Agents.pdf#page=54|S001 · §5.7 · Fig.13 · pp.54–55]]
 
 细分导航：Offline Self-evolution；Online Self-evolution；Agent–Environment Co-evolution。这里的范围较窄：外部记忆或技能库的增长，只有被蒸馏、微调、RL 或可训练模块吸收时，才属于该章所说的训练式内化。更广义的外部自我演化见 [[wiki/frontier/Overview|Frontier]]。[[raw/papers/Towards Long-Horizon Agents.pdf#page=55|S001 · §5.7 小结 · p.55]]
+
+[[wiki/papers/Agent-R|S050 Agent-R，已完成摄入，应用未测]]提供已核读的迭代SFT实例：更新actor后重新采集MCTS轨迹，同时提高筛选门槛，再监督学习修复后续。它说明更新目标与经验刷新频率应分开登记；策略、采样数据、门槛和训练量同时变化，不能把结果只归因于“自我反思”。具体恢复条件和实现材料缺口见 [[wiki/optimization/Overview#学到修订行为以后，环境是否能继续|微调的恢复边界]]。[[raw/papers/Agent-R.pdf#page=7|§3.2–4.2 · pp.7–9]]
 
 ## 后续整合原则
 
@@ -223,11 +255,11 @@ Agentic RL 用自身交互反馈优化策略，目标从单次回答扩展为多
 
 | 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
 | --- | --- | --- | --- |
-| S047 · [AgentTuning: Enabling Generalized Agent Abilities for LLMs](https://aclanthology.org/2024.findings-acl.181/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=45\|S001 §5.4.1 · p.45 · 引文794]] | 交互轨迹与通用指令混合代表；核查agent能力和通用能力保留如何同时评估。 | 候选未读 |
-| S048 · [ATLAS: Agent Tuning via Learning Critical Steps](https://aclanthology.org/2025.findings-acl.1299/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=45\|S001 §5.4.1 · p.45 · 引文81]] | 只学习关键决策步骤，与全轨迹模仿形成机制对照；检查关键步骤如何识别及跨环境条件。 | 候选未读 |
+| S047 · [AgentTuning: Enabling Generalized Agent Abilities for LLMs](https://aclanthology.org/2024.findings-acl.181/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=45\|S001 §5.4.1 · p.45 · 引文794]] | 交互轨迹与通用指令混合代表；核查agent能力和通用能力保留如何同时评估。 | [[wiki/papers/AgentTuning\|完成摄入，应用未测]] |
+| S048 · [ATLAS: Agent Tuning via Learning Critical Steps](https://aclanthology.org/2025.findings-acl.1299/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=45\|S001 §5.4.1 · p.45 · 引文81]] | 只学习关键决策步骤，与全轨迹模仿形成机制对照；检查关键步骤如何识别及跨环境条件。 | [[wiki/papers/ATLAS\|完成摄入，应用未测]] |
 | S041 · [AgentGym-RL: Training LLM Agents for Long-Horizon Decision Making through Multi-Turn Reinforcement Learning](https://arxiv.org/abs/2509.08755) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=46\|S001 §5.4.2 · p.46 · 引文701]] | 复用数据方向同一篇，核查综述放在SFT章节的horizon curriculum论据；原发布摘要明确其为无需SFT的RL框架，不能据章节归类为SFT方法。 | [[wiki/papers/AgentGym-RL\|完成摄入，应用未测]] |
-| S049 · [Distilling LLM Agent into Small Models with Retrieval and Code Tools](https://papers.nips.cc/paper_files/paper/2025/hash/99263f9bf46874e2b8b7f104b5063864-Abstract-Conference.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=46\|S001 §5.4.3 · p.46,47 · 引文269]] | 强教师到小模型的轨迹蒸馏；核查检索、代码行动与推理结构各自转移什么。 | 候选未读 |
-| S050 · [Agent-R: Training Language Model Agents to Reflect via Iterative Self-Training](https://arxiv.org/abs/2501.11425) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=47\|S001 §5.4.3 · p.47 · 引文789]] | 失败定位和纠正轨迹的自训练；比较离线修复监督、运行时反思与在线策略更新的区别。 | 候选未读 |
+| S049 · [Distilling LLM Agent into Small Models with Retrieval and Code Tools](https://papers.nips.cc/paper_files/paper/2025/hash/99263f9bf46874e2b8b7f104b5063864-Abstract-Conference.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=46\|S001 §5.4.3 · p.46,47 · 引文269]] | 强教师到小模型的轨迹蒸馏；核查检索、代码行动与推理结构各自转移什么。 | [[wiki/papers/Agent-Distillation\|完成摄入，应用未测]] |
+| S050 · [Agent-R: Training Language Model Agents to Reflect via Iterative Self-Training](https://arxiv.org/abs/2501.11425) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=47\|S001 §5.4.3 · p.47 · 引文789]] | 失败定位和纠正轨迹的自训练；比较离线修复监督、运行时反思与在线策略更新的区别。 | [[wiki/papers/Agent-R\|完成摄入，应用未测]] |
 
 ### 选读：Agentic Reinforcement Learning
 
