@@ -456,3 +456,14 @@
 
 - 沿论文官方链接归档固定commit `20bd331`的8个代码/配置及2份API元数据，归S053不增来源；[[wiki/papers/GiGPO#公开实现核查：分组观察与策略输入分别保存|唯一页]]与[[wiki/optimization/Overview#局部比较组从哪里来，决定了什么可被区分|Optimization]]同步anchor与完整policy输入分离、自包含均值/重复访问及标准化/clip位置。
 - 结论限定当前公开实现，未确认论文实验版本，不把历史不同写成算法不成立或已证性能损害；原件哈希一致，结构检查通过（其他补读页待索引单列），Obsidian应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S068 C3：可重放状态与反事实信用
+
+- [[wiki/papers/C3|C3]]：综述外补读trace状态的恢复/重采样条件、独立接续参照与有限预算可靠性，区别消息替换与Agent删除、冻结估计器诊断与策略训练；主要落点为 [[wiki/optimization/Overview#局部比较组从哪里来，决定了什么可被区分|Optimization · 局部信用比较]]。
+- 保留文本数学工作流及采样/归一化归因边界；主Agent内容/结构验收通过，Raw哈希匹配；Obsidian应用未测，未审实现代码或复现实验。
+
+## [2026-10-25] ingest | S069 R-Quest：题目质量反馈与自演化失稳
+
+- [[wiki/papers/R-Quest|R-Quest]]：综述外补读坏题修复、语义重复、双门控和失稳诊断证据，补充外部模型/人工审核初始化与10%标注回放锚点；主要落点为 [[wiki/optimization/Overview#持续进步是待检验属性，不是循环名称|Optimization · 自我演化]]。
+- 保留模型judge、额外预算、分领域选择checkpoint及十轮数学课程边界；主Agent内容/结构验收通过，Raw哈希匹配；Obsidian应用未测，未审实现代码或复现实验。

@@ -53,6 +53,8 @@ sources:
   - "[[raw/papers/R-Zero.pdf]]"
   - "[[raw/papers/Agent0.pdf]]"
   - "[[raw/papers/Environment-Tuning.pdf]]"
+  - "[[raw/papers/C3.pdf]]"
+  - "[[raw/papers/R-Quest.pdf]]"
 ---
 
 # Optimization：能力内化与训练
@@ -234,6 +236,10 @@ GiGPO和Tree-GRPO都从后续结果构造较细信号，却不取得新的逐步
 
 **分开检查采样收益与优势收益。**Tree-GRPO的3B多跳QA消融在名义约4条完整轨迹预算下，链GRPO平均31.8，树仅跨树优势33.8，树内加跨树36.8；小组仅树内优势会collapse。它支持两部分共同作用，不能把总增益全归于精细信用。GiGPO删除episode或step信号均损害所测表现，也不表示任意状态分组都正确。两篇预算口径、匹配误差与具体训练设置留在唯一论文页，不能跨任务排名。[[raw/papers/Tree-GRPO.pdf#page=10|S054 Table4 · p.10]] [[raw/papers/GiGPO.pdf#page=9|S053 §5.4、Fig.4 · p.9]]
 
+**同一前缀的反事实何时能成为参照？**综述外补读[[wiki/papers/C3|S068 C3]]把条件写得更明确：恢复记录前缀后注入替代消息，所得后续消息/奖励分布须等于恢复完整真实状态后的分布。因果相关变量必须能记录并恢复，或按给定前缀的正确条件分布重采样；未恢复的外部副作用、记忆或路由属于隐藏状态，不受保证。满足条件后，冻结本轮行为策略，采独立替代消息并分别继续到终局，再减去其他替代的平均回报，才得到作者所定义的消息级优势估计；非自适应接续次数也是无偏前提。[[raw/papers/C3.pdf#page=4|S068 §2.3–2.4、Eq.2 · pp.4–5]] [[raw/papers/C3.pdf#page=16|A.2 · p.16]]
+
+这与GiGPO事后聚合同观察、Tree-GRPO共享前缀采样是不同的比较条件。C3还用不共享rollout的独立接续作参照，检验信用排序；但其2–10决策点诊断主要是冻结数学工作流的**开头决策点**，同每点预算下10点链可靠性仍约0.01。无偏不等于有限预算下排序可靠，也不验证GiGPO组内历史差异已造成损害。训练另有2/3角色数学任务，共享前缀与优势同时变化，MAPPO基线还有长度归一化差异，不能将总收益只归于信用估计。[[raw/papers/C3.pdf#page=7|Table1 · p.7]] [[raw/papers/C3.pdf#page=26|B.5 · p.26]] [[raw/papers/C3.pdf#page=28|B.7 · pp.28–29]] [[raw/papers/C3.pdf#page=23|B.2–B.4 · pp.23–25]]
+
 ### 过程评分怎样进入策略更新
 
 [[wiki/papers/AgentPRM-Xi|S028 AgentPRM-Xi，已完成摄入]] 以环境终局回报与TD/GAE目标训练步骤价值，并约束相邻价值差；这是奖励模型的过程训练。其Qwen2.5-3B在BabyAI/TextCraft上的PPO实验却以**末步PRM预测作为整条轨迹奖励**，不能描述为逐步密集奖励实验。推理阶段另有BoN与beam选择，比较见 [[wiki/harness/Overview#选择误差与纠错净收益要分别测量|Harness · 验证]]。过程评分如何产生、何时用于选择、何时发放训练奖励须分别登记；确定性转移/稀疏奖励假设、bootstrap标签与策略分布条件也不会因接入PPO而消失。[[raw/papers/AgentPRM-Xi.pdf#page=6|§3.2–3.3 · pp.6–8]] [[raw/papers/AgentPRM-Xi.pdf#page=11|§5.2 · p.11]] [[raw/papers/AgentPRM-Xi.pdf#page=22|Appendix C · p.22]]
@@ -303,6 +309,7 @@ DAgger提供本批直接的多轮软件环境证据，但实际教师执行概�
 | [[wiki/papers/R-Zero\|S063 R-Zero]] | 交替更新Challenger和Solver，任务分布随能力变化 | Solver多数票生成伪标签；一致率用于难度和过滤；无独立训练真值。[[raw/papers/R-Zero.pdf#page=3\|§2.2–2.4 · pp.3–4]] |
 | [[wiki/papers/Agent0\|S064 Agent0]] | 更新课程Agent及工具executor；ADPO依一致率调整更新 | 代码返回值提供外部计算反馈，最终训练标签仍是多数票；出题还奖励工具调用。[[raw/papers/Agent0.pdf#page=4\|§3.2–3.3 · pp.4–6]] |
 | [[wiki/papers/Environment-Tuning\|S065 Environment-Tuning]] | 人工四阶段切换数据、反馈和奖励，同时更新agent；半自动改写错误提示 | 任务目标状态/期望返回值；人工提示样例；反馈Judge可见参考调用。[[raw/papers/Environment-Tuning.pdf#page=5\|§3.2–3.4 · pp.5–6]]、[[raw/papers/Environment-Tuning.pdf#page=17\|附录B–C · pp.17–19]] |
+| [[wiki/papers/R-Quest\|S069 R-Quest，完成摄入]] | 用有效性和批内任务新颖度反馈更新Questioner，再用筛选后的众数伪标签训练Solver | 外部模型与人工复核初始化；每轮10%标注数据回放；循环内Solver判有效、冻结base判新颖。后续不新增强模型调用，不等于没有外部监督。[[raw/papers/R-Quest.pdf#page=14\|A.1–A.2 · pp.14–16]]、[[raw/papers/R-Quest.pdf#page=19\|C.2 · p.19]] |
 
 **本库综合：**零新增训练题不等于零知识，自己生成轨迹不等于没有外部监督。STaR保留真实答案；rStar-Math摘要的“without distillation from superior models”必须和其大模型启动、合成题依赖一起理解。R-Zero撤去题库标签以后，匹配伪标签只证明自一致，不能当作真值正确；Agent0的Python反馈改善计算条件，但没有自动把众数变成独立oracle。[[raw/papers/STaR.pdf#page=3|§3.1 · pp.3–4]] [[raw/papers/rStar-Math.pdf#page=5|§3.3 · p.5]] [[raw/papers/R-Zero.pdf#page=4|§2.3–2.4 · p.4]] [[raw/papers/Agent0.pdf#page=5|§3.3.1 · p.5]]
 
@@ -324,7 +331,11 @@ Environment-Tuning提供真实有状态API训练的另一轴：先让报错透�
 
 R-Zero原文已经观察到多轮后性能回落；以外部模型作诊断参考时，伪标签质量也随迭代下降，但作者没有证明噪声是唯一原因。STaR的多数票标签消融明显弱于真实答案版本，而Agent0仅报告三轮收益；这些证据共同要求把**任务多样性、伪标签可靠性、外部成绩和计算预算**分开监测。不能用一致率提高、题目变难或工具次数变多替代真实能力改善。[[raw/papers/R-Zero.pdf#page=7|S063 §4.2–4.4、Figure 3 · pp.7–9]] [[raw/papers/R-Zero.pdf#page=17|附录E · pp.17–18]] [[raw/papers/STaR-supplement.pdf#page=15|S061 H.1 · PDF p.15 / 印刷p.28]] [[raw/papers/Agent0.pdf#page=8|S064 Figure 4、Table 5 · pp.8–9]]
 
-**当前问题状态：**“自生成即无监督”“代码执行通过即过程正确”“有限轮收益即持续演化”可作为已澄清的概念误解关闭。更具体的候选诊断问题是：当任务越来越难时，怎样区分能力边界推进、标签恶化与任务分布收缩？现有材料已有失稳分析和不确定性加权，尚未在匹配预算、外部真值与长程环境条件下形成充分比较；这是本库的证据缺口，未经进一步查新，不认定为新颖研究缺口。Environment-Tuning的validation/test隔离、Agent0的筛选阈值及各文表文差异保留在唯一论文页，不用不一致数字作结论。
+定向补读[[wiki/papers/R-Quest|S069 R-Quest]]进一步把诊断推进到**题目是否有效、是否反复训练同一练习模式**：它比较保留无效题与替换为修复题的匹配训练，分析BLEU把同类题拆散，并给出有效性/新颖度门控消融。因而坏题和任务重复已有直接研究证据，不能只因原R-Zero未充分分离原因便视为未研究。K从8增至16虽进一步降低题型集中度，数学表现反而下降，说明最低重复率不等于最好课程。[[raw/papers/R-Quest.pdf#page=3|§2.2、Fig.3–4 · pp.3–4]] [[raw/papers/R-Quest.pdf#page=7|Table3、§4.3 · pp.7–9]]
+
+其结论仍依赖具体信息来源与预算。validity标签把“无法可靠判断”也映射为INVALID，外部模型诊断不是全体题目的人工真值；初始化与10%标注回放持续提供锚点。每轮同候选题数之外，另有9次有效性回复、过关后10次求解和K次比较，未构成完整同计算量对照。五轮表格按领域分别选最佳checkpoint，十轮改善只在Qwen3-4B数学课程中验证；初始化、回放与门控的完整等预算归因仍未解决。[[raw/papers/R-Quest.pdf#page=14|A.2 · p.14]] [[raw/papers/R-Quest.pdf#page=19|C.2–D · pp.19–20]] [[raw/papers/R-Quest.pdf#page=5|§4.1–4.2、Fig.5 · pp.5–7]]
+
+**当前证据边界：**“自生成即无监督”“代码执行通过即过程正确”“有限轮收益即持续演化”仍是需避免的概念误解。现有材料已经提供失稳诊断与干预，尚未在匹配完整预算、独立真值和长程环境条件下形成充分比较；具体问题状态在共同补充证据的第二轮审查后统一整理。Environment-Tuning的validation/test隔离、Agent0的筛选阈值及各文表文差异保留在唯一论文页，不用不一致数字作结论。
 
 ## 后续整合原则
 
@@ -406,5 +417,14 @@ R-Zero原文已经观察到多轮后性能回落；以外部模型作诊断参�
 | S063 · [R-Zero: Self-Evolving Reasoning LLM from Zero Data](https://arxiv.org/abs/2508.05004) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=55\|S001 §5.7.2 · p.55 · 引文233]] | challenger—solver自举任务分布；与固定任务上的自训练做边界对照。 | [[wiki/papers/R-Zero\|完成摄入，应用未测]] |
 | S064 · [Agent0: Unleashing Self-Evolving Agents from Zero Data via Tool-Integrated Reasoning](https://arxiv.org/abs/2511.16043) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=55\|S001 §5.7.2 · p.55 · 引文704]] | 课程Agent与工具执行者共同演化，比较纯推理任务生成和带工具交互。 | [[wiki/papers/Agent0\|完成摄入，应用未测]] |
 | S065 · [Don't Just Fine-tune the Agent, Tune the Environment](https://arxiv.org/abs/2510.10197) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=55\|S001 §5.7.3 · p.55 · 引文401]] | 把环境/任务难度作为更新对象；核查与只更新策略或收集更多轨迹的区别。 | [[wiki/papers/Environment-Tuning\|完成摄入，应用未测]] |
+
+## 第一轮查新补读
+
+以下为2026-10-25 Brainstorm定向检索选定的综述外来源，不补造S001引用。预算按一级方向计，候选或待验收不计完成摄入；应用未测。
+
+| 来源 | 方向与补读预算 | 选择理由 | 状态 |
+| --- | --- | --- | --- |
+| [[wiki/papers/C3\|S068 C3]] · [原始版本](https://arxiv.org/abs/2603.06859v4) | O5 Agentic RL，已使用1/2 | 核对可执行反事实信用、trace状态条件、独立参照和预算可靠性，限定局部分组的比较条件。 | 完成摄入，应用未测 |
+| [[wiki/papers/R-Quest\|S069 R-Quest]] · [原始版本](https://arxiv.org/abs/2610.04299v2) | O7 自我演化，已使用1/2 | 核对坏题、语义重复及失稳干预的已有覆盖，保留外部监督锚点与成本。 | 完成摄入，应用未测 |
 
 返回 [[wiki/index|索引]]。

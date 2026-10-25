@@ -48,6 +48,7 @@ sources:
   - "[[raw/papers/Memory-R1.pdf]]"
   - "[[raw/papers/TRACE.pdf]]"
   - "[[raw/papers/BRIDGE.pdf]]"
+  - "[[raw/papers/C3.pdf]]"
 ---
 
 # Harness：外部运行机制
@@ -79,6 +80,8 @@ Harness 是围绕模型组织执行的机制：安排何时调用模型、带入
 由此可以更具体地问“失败后怎样改”：ReAct 可改变下一动作；ReWOO 让已有结构接收实际变量值，但作者的未知位置例子说明结构本身未必可提前确定；Arbor 则在实验结束后修订下一批假设。**本库推断：**先判断新信息只是补齐参数，还是会改变应执行的操作，才有依据选择反馈时点。这个问题尚是比较框架，不是已查新的研究缺口。[[raw/papers/ReAct.pdf#page=3|S002 · §2 · pp.3–4]] [[raw/papers/ReWOO.pdf#page=8|S003 · §4 · pp.8–9]] [[raw/papers/Arbor.pdf#page=7|S004 · §4.3 · pp.7–8]]
 
 ### 分支能否撤回，评价能否被信任
+
+反事实信用的综述外补读[[wiki/papers/C3|S068 C3]]给出更严格的恢复条件：对每个替代消息，记录前缀恢复后的后续分布必须与真实完整状态干预相同；工具副作用、记忆和路由须能恢复，或按正确条件分布重采样。仅保留文字历史不满足这个条件。它在文本数学团队中构造满足条件的系统，不能直接保证任意外部工具环境；信用估计与预算证据统一见 [[wiki/optimization/Overview#局部比较组从哪里来，决定了什么可被区分|Optimization局部比较组]]。[[raw/papers/C3.pdf#page=4|§2.3、Eq.2 · p.4]] [[raw/papers/C3.pdf#page=8|§6 · p.8]]
 
 ToT 回退的是保存在搜索程序中的部分解；LATS 将这种选择扩展到行动与观察，却明确要求环境可恢复。**本库推断：**重新放入旧历史不等于撤销外部副作用，真实交互若不能重置，就需要另行说明分支怎样评估与提交。ToT 的 24 点和填字实验不能独自支持现实长程任务的恢复能力；LATS 的受控环境也不能替代不可逆任务证据。[[raw/papers/Tree-of-Thoughts.pdf#page=4|S005 · §3–4 · pp.4–5]] [[raw/papers/LATS.pdf#page=14|S006 · Appendix B · p.14]]
 
