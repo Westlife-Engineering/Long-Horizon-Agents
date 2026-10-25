@@ -439,3 +439,14 @@
 
 - [[wiki/papers/Environment-Tuning|Environment-Tuning]]：明确人工四阶段课程、半自动提示和真值权限，区别于自主环境生成；保留撤除提示后的迁移条件及validation/test隔离待核查。主要落点为 [[wiki/optimization/Overview#自我演化|Optimization · 自我演化]]。
 - 内容与结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。
+
+
+## [2026-10-25] ingest | S066 TRACE：返回时记忆准入与使用边界
+
+- [[wiki/papers/TRACE|TRACE]]：综述外补读返回时的隐式失效、权限/来源检查及义务覆盖，明确来源真实、当前准入与后续使用各有条件；主要落点为 [[wiki/harness/Overview#来源真实、当前准入与后续使用是三个条件|Harness · 记忆准入]]。
+- 保留问答与准入指标差异、派生评测分母、预算和时段解释边界；主 Agent 内容/结构验收通过，Raw哈希匹配；Obsidian应用未测，未复现实验。
+
+## [2026-10-25] ingest | S067 BRIDGE：选择性交接修复与局部提交边界
+
+- [[wiki/papers/BRIDGE|BRIDGE]]：综述外补读依赖图、成对故障续跑和经验门控，明确受控交接修复已有直接覆盖；主要落点为 [[wiki/harness/Overview#从故障分类到选择性交接修复|Harness · 编排]]。
+- 保留本地图/未发消息回滚、局部验证与最终任务区分，以及成本和实现表述冲突；主 Agent 内容/结构验收通过，Raw哈希匹配；Obsidian应用未测，未审计代码或复现实验。

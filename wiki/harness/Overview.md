@@ -46,6 +46,8 @@ sources:
   - "[[raw/papers/CorrectBench.pdf]]"
   - "[[raw/papers/Self-MAP.pdf]]"
   - "[[raw/papers/Memory-R1.pdf]]"
+  - "[[raw/papers/TRACE.pdf]]"
+  - "[[raw/papers/BRIDGE.pdf]]"
 ---
 
 # Harness：外部运行机制
@@ -117,6 +119,18 @@ Arbor 还引入另一种风险边界：事实结果和归纳后的 insight 应�
 **跨用户轮次的记忆补充（S031，已完成摄入）：**[[wiki/papers/Self-MAP|Self-MAP]] 按当前指令与动作检索历史，缩减无关DOM，再为已给定历史动作生成rationale，供微调后的规划模型预测下一步。这里的reflection是在加工记忆解释，并非运行时发现错误后重试；positive element与历史动作的信息权限、静态HTML快照和Turn Success Rate边界见 [[wiki/harness/Overview#检查对象决定成功指标|验证对象]]。它补充了省略、指代和任务切换下的记忆使用，不能由“保留旧历史”推断所有旧约束始终有效。[[raw/papers/Self-MAP.pdf#page=5|§4 · PDF pp.5–6 / 印刷8799–8800]] [[raw/papers/Self-MAP.pdf#page=12|Appendix A.2 · PDF p.12 / 印刷8806]]
 
 **学习记忆操作与使用（S055，完成摄入，应用未测）：**[[wiki/papers/Memory-R1|Memory-R1]]让Manager生成ADD/UPDATE/DELETE/NOOP及内容，再让Answer从60个候选中选择证据回答；二者分阶段RL，训练一方时另一方固定。运行时更新记忆不等于实时更新参数，最终QA reward也不逐条验证存储内容。主要证据为对话问答，LongMemEval采用**oracle版本**；因此不能当作完整大记忆库检索或自主执行的可靠性证据。训练快照与反馈依赖见 [[wiki/optimization/Overview#记忆写入和使用也能成为训练接口|Optimization记忆接口]]。[[raw/papers/Memory-R1.pdf#page=4|§3 · PDF pp.4–5 / 印刷12808–12809]] [[raw/papers/Memory-R1.pdf#page=14|Appendix B · PDF p.14 / 印刷12818]]
+
+### 来源真实、当前准入与后续使用是三个条件
+
+HiAgent的旧轨迹取回回答“历史细节是否可见”，Self-MAP的历史使用回答“怎样解释当前指令”；团队在执行者缺席期间改变状态以后，还需要判断旧记录现在是否适用。综述外补读[[wiki/papers/TRACE|S066 TRACE]]专门处理这个返回边界：合并离开检查点与缺席更新，应用显式撤销并用模型扫描/核验隐式失效，再逐项检查权限、时效、任务适用性与来源，按预算选择覆盖当前义务的证据。私人经验只有其绑定来源仍在Return View中时才能重新进入上下文。**这已直接覆盖“相关且真实的旧记忆仍可能过期”的机制问题。**已完成摄入，应用未测。[[raw/papers/TRACE.pdf#page=3|S066 §2–3 · pp.3–5]] [[raw/papers/TRACE.pdf#page=19|Appendix C.3–C.4 · p.19]]
+
+| 条件 | 它能说明什么 | 仍不能说明什么 |
+| --- | --- | --- |
+| 来源可追溯 | 记录绑定哪次观察或确认 | 观察为真、记录仍有效；被取消的订房确认仍有真实来源。[[raw/papers/TRACE.pdf#page=18\|C.1 · p.18]] |
+| 当前准入通过 | 在本次身份、任务、状态与义务条件下，记录可进入受控返回视图 | 所有隐式失效都被识别、信息已经被正确使用；scanner/verifier仍会漏检。[[raw/papers/TRACE.pdf#page=18\|C.2–C.4 · pp.18–19]] |
+| 后续回答或行动满足要求 | 需要另行观察任务结果 | 不能由签名、来源齐全或局部覆盖直接推出。TRACE有准入正确但回答未采用新约束的失败案例。[[raw/papers/TRACE.pdf#page=24\|C.8 · p.24]] |
+
+TRACE的证据也限定了比较口径：STALE中的VIA映射为把更新用于新问题的IPA问答probe，ManBench-Return中的VIA才直接测候选是否进入视图；后者筛选初始答案正确的episode，Old-Stale还要求多数活跃Agent答对。它不是现实外部操作的完成率。Memora没有一致领先，CUPMem子集比较更准确也更贵；精确预算、分母及准入/使用错误见唯一论文页，不能据统一指标名汇总成通用可靠性。[[raw/papers/TRACE.pdf#page=25|D.1–D.5 · pp.25–27]] [[raw/papers/TRACE.pdf#page=7|Table2 · p.7]] [[raw/papers/TRACE.pdf#page=31|Table7 · p.31]]
 
 ### 机制可比较，分数必须留在原条件中
 
@@ -201,7 +215,13 @@ MCPMark 的 127 个任务、38 个初始状态覆盖五类服务；GitHub 案例
 
 MAST 的干预案例进一步说明效果有条件：AG2 在不同模型上对拓扑改变的响应不同；ChatDev 的32项 ProgramDev-v0 测试改变验证/终止流程后，任务准确率得到改善，但不是全1642条数据上的统一提升。不同系统在不同任务的失败率不能互排；成功轨迹也会带有失败模式标签，因此标签减少与终局成功要分别检查。原文个别图文计数张力保留在唯一论文页，不据此否定任务结果。[[raw/papers/Multi-Agent-Failures.pdf#page=26|S021 Fig.5 · p.26]] [[raw/papers/Multi-Agent-Failures.pdf#page=33|Appendix H、Table5 · pp.33–35]] [[raw/papers/Multi-Agent-Failures.pdf#page=36|Appendix J.1 · p.36]]
 
-**后续证据需求，尚非已成立研究缺口：**在匹配工具能力、反馈权限和总调用预算后，如何通过受控交接干预区分发送端遗漏、接收端忽略与状态截断？MAST 已为这些现象提供分类，不能只重新命名就称为创新；当前应先确定可操作的比较条件。
+### 从故障分类到选择性交接修复
+
+综述外补读[[wiki/papers/BRIDGE|S067 BRIDGE]]进一步把公开记录和执行合同组织成依赖图，定位“信息未观察到”“已经送达但未消费”“送错角色”等前沿。HandoffProbe在同一故障前缀上分别原样继续与加入修复，并用终局程序验收标记帮助、损害或结果不变；这些离线统计冻结后，在线控制器按效用、经验损害率、样本支持和预算选择修复。**受控交接干预与选择性修复已有直接机制覆盖，不能只在MAST分类后新增一个反思节点就称为新方法。**已完成摄入，应用未测。[[raw/papers/BRIDGE.pdf#page=4|S067 §3.1–3.4 · pp.4–6]]
+
+修复必须先满足图上的后置条件才提交；否则恢复本地图并发送原消息。这个回滚**只覆盖控制器的图与未发送消息缓冲区**，不撤销已执行的外部工具副作用。形式检查依赖合同和可见事件正确地表示所需事实及消费关系，不会直接读取Agent内部是否理解；p.18的已核验修复仍有最终任务失败实例。[[raw/papers/BRIDGE.pdf#page=6|§3.5、Algorithm1 · p.6]] [[raw/papers/BRIDGE.pdf#page=13|Appendix A · pp.13–14]] [[raw/papers/BRIDGE.pdf#page=18|Appendix E、Table13 · p.18]]
+
+BRIDGE的MAST562是281个handoff正例与281个控制的**诊断**子集，控制中多数含其他执行错误，不能写成全部轨迹的在线修复成绩。完整token成本与正文“2%开销”、INTEGRATE是否使用模型重构等口径有冲突，详见[[wiki/papers/BRIDGE#精确成本与实现归因仍需核对|原文差异记录]]；当前不用总体效率措辞替代明确账目。后续归因应先核对依赖如何从可观察事件得到、局部条件与真实任务的关系及完整预算，而不是把分类或图结构当作因果正确性的证明。[[raw/papers/BRIDGE.pdf#page=15|Appendix C.1–C.2 · p.15]] [[raw/papers/BRIDGE.pdf#page=18|Appendix F、Table14 · pp.18–19]]
 
 ## Hooks 与中间件
 
@@ -272,6 +292,8 @@ Agent-as-a-Judge 的DevAI将需求组织成依赖图，独立需求达标、考�
 **编排中的验证责任（S017–S021 已完成摄入，应用未测）：**MetaGPT 的执行测试反馈、Magentic-One 的“任务完成”自判，以及 MAST 对最终目标检查不足的观察，分别涉及测试、控制和诊断。验证动作存在不代表覆盖用户要求；MAST 也发现成功轨迹可含验证缺陷。具体角色与状态交接见 [[wiki/harness/Overview#失败发生在设计、交接，还是验收|编排诊断]]，不能把模型共识或无运行异常直接当作完成证据。[[raw/papers/MetaGPT.pdf#page=6|S017 §3.3 · p.6]] [[raw/papers/Magentic-One.pdf#page=7|S018 §4.1 · p.7]] [[raw/papers/Multi-Agent-Failures.pdf#page=8|S021 §4 FC3 · p.8]] [[raw/papers/Multi-Agent-Failures.pdf#page=36|Appendix J.1 · p.36]]
 
 ### 选择误差与纠错净收益要分别测量
+
+记忆与交接中的检查也有不同终点：[[wiki/harness/Overview#来源真实、当前准入与后续使用是三个条件|TRACE的来源绑定与准入]]控制可见证据；[[wiki/harness/Overview#从故障分类到选择性交接修复|BRIDGE的局部后置条件]]控制修复消息提交。两篇都给出前一阶段通过、后一阶段仍失败的实例，因此需保留准入/局部检查与最终使用/任务验收两套观察，不能把前者代作后者的标签。[[raw/papers/TRACE.pdf#page=24|S066 C.8 · p.24]] [[raw/papers/BRIDGE.pdf#page=18|S067 Appendix E、Table13 · p.18]]
 
 **可执行标签与学习验证器（S038，已完成摄入，应用未测）：**[[wiki/papers/SWE-Gym|SWE-Gym]] 用真实仓库测试产生轨迹成败标签，再训练 outcome verifier 在候选轨迹间预测和选择。OpenHands 的32B策略/32B验证器在 SWE-Bench Verified 上，16条候选的 Pass@16=42.8%，选出一条的 Best@16=32.0%；前者是覆盖上界，后者才包含选择误差。测试标签仍受测试覆盖约束，verifier又增加预测误差。与 MCPMark 的程序检查区别在于判断如何产生；数据来源、筛选与预算见 [[wiki/optimization/Overview#数据与环境合成|Optimization]]。[[raw/papers/SWE-Gym.pdf#page=4|S038 §3.1 · p.4]] [[raw/papers/SWE-Gym.pdf#page=7|§5.1.1、Fig.3 · p.7]]
 
@@ -353,5 +375,14 @@ AgentPRM增加步骤间价值差约束，但**奖励模型训练粒度、搜索�
 | S029 · [Agent-as-a-Judge: Evaluate Agents with Agents](https://proceedings.mlr.press/v267/zhuge25a.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.2；Table 4 · p.35,36 · 引文898]] | 选择能执行工具和多步判断的评估者，追问评估是否真正检查工作产物与过程证据，以及人与模型一致性的适用条件。 | [[wiki/papers/Agent-as-a-Judge\|已完成摄入；应用未测]] |
 | S030 · [Can LLMs Correct Themselves? A Benchmark of Self-Correction in LLMs](https://papers.nips.cc/paper_files/paper/2025/hash/ec07904adc847a45f53dceb44078f8f0-Abstract-Datasets_and_Benchmarks_Track.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=36\|S001 §§4.6.2 · p.36 · 引文605]] | 加入自我纠错的条件性与成本分析，核查何种模型/任务有收益，防止把反思次数或重复检查本身当作可靠性证明。 | [[wiki/papers/CorrectBench\|已完成摄入；应用未测]] |
 | S031 · [On the Multi-turn Instruction Following for Conversational Web Agents](https://aclanthology.org/2024.acl-long.477/) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=35\|S001 §§4.6.1 · p.35 · 引文118]] | 补充跨多轮用户指令与环境交互的遵循问题，核查此前约束、当前指令和任务状态怎样共同评测，连接记忆与验证。 | [[wiki/papers/Self-MAP\|已完成摄入；应用未测]] |
+
+### 第一轮查新补读
+
+下列两篇来自2026-10-25 Brainstorm的定向查新，均为**综述之外补读**，没有S001引用编号。选择身份与预算先登记，实际阅读、整合及验收状态分别记录；两篇已完成原文核读、主题整合、主 Agent 内容/结构验收及摄入收尾，已加入完成计数；应用未测。
+
+| 来源 / 原始版本页 | 方向及补读预算 | 选择理由 | 状态 |
+| --- | --- | --- | --- |
+| S066 · [TRACE](https://arxiv.org/abs/2609.33517v1) | H2 上下文与记忆，1/2 | 核查过期记忆准入、隐式前提失效及有效信息的后续使用是否已有直接覆盖 | [[wiki/papers/TRACE\|完成摄入]]；应用未测 |
+| S067 · [BRIDGE](https://arxiv.org/abs/2610.17805v1) | H4 编排，1/2 | 核查交接依赖、成对故障归因和选择性修复是否已有直接覆盖 | [[wiki/papers/BRIDGE\|完成摄入]]；应用未测 |
 
 返回 [[wiki/index|索引]]。
