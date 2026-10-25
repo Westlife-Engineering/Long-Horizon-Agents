@@ -140,3 +140,28 @@
 
 - 摄入 [[wiki/papers/Lost-in-the-Middle|Lost in the Middle]]，连接 [[wiki/optimization/Overview#架构基础|有效上下文]] 与 [[wiki/harness/Overview#上下文与记忆|检索及编排]]；保留位置效应的任务/模型例外，区分检索召回、合成 KV 检索和语义 QA。
 - 内容与结构检查通过，Raw 哈希匹配；本地为 arXiv v3，未与综述所引 TACL 版本逐项对齐；Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S002 ReAct：思考与行动的反馈循环
+
+- 摄入 [[wiki/papers/ReAct|ReAct]] v3，整合至 [[wiki/harness/Overview#循环与工作流|循环与工作流]]；区分思考写回历史与行动取得环境观察，保留动态调整和失败恢复的边界。
+- 内容与结构验收通过、Raw 哈希匹配；ALFWorld 均值与最佳提示值分开，未将跨任务结果直接排名。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S003 ReWOO：计划结构与证据变量
+
+- 摄入 [[wiki/papers/ReWOO|ReWOO]] 固定 v1，在 [[wiki/harness/Overview#循环与工作流|循环与工作流]] 区分预定计划结构与实际工具返回值；补充重复提示成本和未知环境中的预规划限制。
+- 内容与结构验收通过、Raw 哈希匹配；保留 Accuracy/EM 差异、相对提升与百分点区别，以及特定工具失效设置。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S004 Arbor：持久假设树与科研状态
+
+- 摄入 [[wiki/papers/Arbor|Arbor]] 固定 v1，将假设、实验事实、解释与实现版本的关联整合至 [[wiki/harness/Overview#循环与工作流|循环与工作流]]；区分语义归纳、分层执行和动作路径搜索。
+- 内容与结构验收通过、Raw 哈希匹配；保留 AO 适用范围、归纳与剪枝边界，E_test 准入/最终验证及预算口径仍待核查。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S005 ToT：部分解搜索与模型误剪
+
+- 摄入 [[wiki/papers/Tree-of-Thoughts|Tree of Thoughts]] NeurIPS 会议版，在 [[wiki/harness/Overview#循环与工作流|循环与工作流]] 分开 thought 粒度、候选生成、评价与 BFS/DFS 控制，保留文本状态回溯的条件。
+- 内容与结构验收通过、Raw 哈希匹配；保留调用预算、词级/整题/oracle 输出区别和正确状态被误剪的原文反例。Obsidian 应用未测，未复现实验。
+
+## [2026-10-25] ingest | S006 LATS：环境反馈与树搜索
+
+- 摄入 [[wiki/papers/LATS|LATS]] PMLR 会议版，在 [[wiki/harness/Overview#循环与工作流|循环与工作流]] 区分环境观察、模型价值、终局奖励回传和失败反思，明确可回退环境与反馈权限。
+- 内容与结构验收通过、Raw 哈希匹配；保留 HotpotQA oracle、搜索后 pass@1、WebShop 平均分/严格成功率及配置待核查项。Obsidian 应用未测，未复现实验。

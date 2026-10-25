@@ -4,6 +4,11 @@ created: 2026-10-19
 updated: 2026-10-25
 sources:
   - "[[raw/papers/Towards Long-Horizon Agents.pdf]]"
+  - "[[raw/papers/ReAct.pdf]]"
+  - "[[raw/papers/ReWOO.pdf]]"
+  - "[[raw/papers/Arbor.pdf]]"
+  - "[[raw/papers/Tree-of-Thoughts.pdf]]"
+  - "[[raw/papers/LATS.pdf]]"
   - "[[raw/papers/HiAgent.pdf]]"
   - "[[raw/papers/MemGPT.pdf]]"
   - "[[raw/papers/A-MEM.pdf]]"
@@ -24,7 +29,33 @@ Harness 是围绕模型组织执行的机制：安排何时调用模型、带入
 
 决定模型调用、行动、观察与状态更新如何接续。综述区分沿单条轨迹推进的线性流程、显式维护子目标的计划—执行流程，以及比较候选路径的分支流程。分类回答的是如何控制执行，不直接保证哪种结构效果更好。[[raw/papers/Towards Long-Horizon Agents.pdf#page=20|S001 · §4.1 · p.20]]
 
-细分导航：Linear Workflows（§4.1.1）；Plan-Execute Workflows（§4.1.2）；Branching Workflows（§4.1.3）。后续阅读关注：失败时由谁重规划，状态如何传给下一步？
+细分导航：Linear Workflows（§4.1.1）；Plan-Execute Workflows（§4.1.2）；Branching Workflows（§4.1.3）。第一轮 S002–S006 已完成摄入与本节整合，内容与结构已验收；Obsidian 应用未测。
+
+### 状态保留什么，反馈何时改变后续决策
+
+**本库比较轴：**工作流的区别不只在有没有计划或树，而在保存的状态、观察进入决策的时点，以及允许重试什么。下面比较机制，不把不同模型、任务、反馈权限和调用预算的分数排成优劣。
+
+| 维持的状态 | 反馈怎样进入下一步 | 重选或恢复的边界 | 原文与唯一论文页 |
+| --- | --- | --- | --- |
+| 线性的 thought–action–observation 历史 | 外部动作返回观察后，可重新解释状态、调整后续动作；thought 本身只写回上下文 | 可以动态调整单条轨迹，没有自动保存所有替代分支或保证从错误中恢复 | [[wiki/papers/ReAct\|ReAct]]；[[raw/papers/ReAct.pdf#page=3\|S002 · §2 · pp.3–4]] |
+| 预生成的计划结构与 `#E` 证据变量 | 工具结果填入变量，后续工具使用实际值，Solver 最后综合；基本流程不让观察重新设计整份计划 | 信息不足且需探索时，预期的证据可能不存在，计划结构也可能需要改变 | [[wiki/papers/ReWOO\|ReWOO]]；[[raw/papers/ReWOO.pdf#page=3\|S003 · §2.1 · pp.3–4]]、[[raw/papers/ReWOO.pdf#page=8\|§4 · pp.8–9]] |
+| 假设、实验事实、解释与实现版本组成的研究树 | 每批 Executor 返回实验结果后，Coordinator 归纳认识、细化或剪枝，并选择候选材料 | Executor 固定假设、隔离实现；树边表示假设细化，当前最佳代码另有版本引用 | [[wiki/papers/Arbor\|Arbor]]；[[raw/papers/Arbor.pdf#page=6\|S004 · §4.2–4.3 · pp.6–8]] |
+| 同一道题的多个部分解与搜索候选集合 | 模型为候选评分或投票，BFS/DFS 程序决定保留、继续、剪枝和回溯 | 文本部分解可复制回退；模型评价可能剪掉正确分支 | [[wiki/papers/Tree-of-Thoughts\|ToT]]；[[raw/papers/Tree-of-Thoughts.pdf#page=3\|S005 · §3 · pp.3–4]]、[[raw/papers/Tree-of-Thoughts.pdf#page=8\|§4.3 · p.8]] |
+| 记录行动和观察的搜索树，以及失败轨迹与反思 | 先取得观察再评价状态；终局奖励作 MCTS 数值回传，失败反思以文本影响下一次尝试 | 需要可回退或重试的环境；观察、奖励、自评和反思的可靠性各不相同 | [[wiki/papers/LATS\|LATS]]；[[raw/papers/LATS.pdf#page=4\|S006 · §4 · pp.4–6]]、[[raw/papers/LATS.pdf#page=14\|Appendix B · p.14]] |
+
+由此可以更具体地问“失败后怎样改”：ReAct 可改变下一动作；ReWOO 让已有结构接收实际变量值，但作者的未知位置例子说明结构本身未必可提前确定；Arbor 则在实验结束后修订下一批假设。**本库推断：**先判断新信息只是补齐参数，还是会改变应执行的操作，才有依据选择反馈时点。这个问题尚是比较框架，不是已查新的研究缺口。[[raw/papers/ReAct.pdf#page=3|S002 · §2 · pp.3–4]] [[raw/papers/ReWOO.pdf#page=8|S003 · §4 · pp.8–9]] [[raw/papers/Arbor.pdf#page=7|S004 · §4.3 · pp.7–8]]
+
+### 分支能否撤回，评价能否被信任
+
+ToT 回退的是保存在搜索程序中的部分解；LATS 将这种选择扩展到行动与观察，却明确要求环境可恢复。**本库推断：**重新放入旧历史不等于撤销外部副作用，真实交互若不能重置，就需要另行说明分支怎样评估与提交。ToT 的 24 点和填字实验不能独自支持现实长程任务的恢复能力；LATS 的受控环境也不能替代不可逆任务证据。[[raw/papers/Tree-of-Thoughts.pdf#page=4|S005 · §3–4 · pp.4–5]] [[raw/papers/LATS.pdf#page=14|S006 · Appendix B · p.14]]
+
+评价信号同样要分开：ToT 的模型启发式会误剪罕见但正确的填字状态；LATS 的 HotpotQA 在提交答案后有 oracle 告知对错，编程则先用内部合成测试搜索、最后用真正测试集测量。相同的“反思”或“成功”标签，因此不意味着取得了同等质量的依据。对应 [[wiki/harness/Overview#验证|验证]] 中“何时检查、怎样产生判断”的区分。[[raw/papers/Tree-of-Thoughts.pdf#page=8|S005 · §4.3 · p.8]] [[raw/papers/LATS.pdf#page=6|S006 · §5.1–5.2 · pp.6–7]]
+
+Arbor 还引入另一种风险边界：事实结果和归纳后的 insight 应分别保留，否则单次实现失败可能被提升成整个方向的负面约束。这是本库对其状态表示的分析，不是已测量的因果错误率。其 `E_test` 在合并准入与最终验证中的使用关系也仍需核查：循环算法包含准入测试，任务说明又强调保留最终验证；现有文字不足以确认完整的独立评估安排，不能据此断言实际运行发生泄漏。[[raw/papers/Arbor.pdf#page=6|S004 · §4.2 · p.6]] [[raw/papers/Arbor.pdf#page=7|Algorithm1 · p.7]] [[raw/papers/Arbor.pdf#page=23|Appendix A · p.23]] [[raw/papers/Arbor.pdf#page=34|Appendix C.4 · p.34]]
+
+与 [[wiki/harness/Overview#上下文与记忆|上下文与记忆]] 相连时，也须保留状态的存续范围：ToT / LATS 的搜索状态主要服务当前任务，Arbor 将同一研究任务的假设树落盘用于压缩后恢复；这不同于已经验证跨任务经验迁移。Arbor 的实验目标是给定材料与评测器下的优化，对本库文献探索的分工和证据组织只能提供机制类比，不能证明系统会自动提出新颖 idea。[[raw/papers/LATS.pdf#page=3|S006 · Table1注释、§4 · pp.3–6]] [[raw/papers/Arbor.pdf#page=23|S004 · Appendix A–B · pp.23–27]]
+
+**后续比较条件：**固定反馈权限、可回退性和总资源口径后，再区分候选覆盖、状态评价、反思与输出选择各自的贡献。ReAct 的平均/最佳提示表现、ReWOO 的 Accuracy/EM、ToT 的系统输出/oracle 最佳状态、LATS 的属性平均分/严格成功率已在各论文页分开；当前不据这些异质分数决定研究方向。
 
 ## 上下文与记忆
 
@@ -95,11 +126,11 @@ Hooks 在运行流程的特定位置介入，让动作继续、阻止动作或�
 
 | 来源 ID / 原始发布页 | 综述定位 | 选择理由 | 状态 |
 | --- | --- | --- | --- |
-| S002 · [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=21\|S001 §§4.1.1 · p.21 · 引文761]] | 以观察—行动交替作为线性控制基线，后续用它区分响应式循环、显式计划与搜索的改变对象。 | 候选未读 |
-| S003 · [ReWOO: Decoupling Reasoning from Observations for Efficient Augmented Language Models](https://arxiv.org/abs/2305.18323) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=21\|S001 §§4.1.2 · p.21 · 引文720]] | 选择推理与工具观察解耦的计划—执行路线，核查它在提前规划、依赖关系和工具失败上的适用前提。 | 候选未读 |
-| S004 · [Toward Generalist Autonomous Research via Hypothesis-Tree Refinement](https://arxiv.org/abs/2606.11926) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=21\|S001 §§4.1.2 · p.21,22 · 引文262]] | 选择持久假设树与协调者—执行者循环，理解长期研究如何保存证据、分支和经验；不把其自主实验设置直接等同于本库文献找 idea。 | 候选未读 |
-| S005 · [Tree of Thoughts: Deliberate Problem Solving with Large Language Models](https://papers.nips.cc/paper_files/paper/2023/hash/271db9922b8d1f4dd7aaef84ed5ac703-Abstract-Conference.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=22\|S001 §§4.1.3 · p.22 · 引文760]] | 作为分支搜索的基础机制，核查生成、评分、回溯与提交的控制责任，并保留静态推理任务到交互任务的外推边界。 | 候选未读 |
-| S006 · [Language Agent Tree Search Unifies Reasoning, Acting, and Planning in Language Models](https://proceedings.mlr.press/v235/zhou24r.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=22\|S001 §§4.1.3；另见 §4.6.3 · p.22,37 · 引文875]] | 与 ToT 对照，追问树搜索怎样结合环境反馈、价值估计与反思，以及评估分支的成本和可回退性。 | 候选未读 |
+| S002 · [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=21\|S001 §§4.1.1 · p.21 · 引文761]] | 以观察—行动交替作为线性控制基线，后续用它区分响应式循环、显式计划与搜索的改变对象。 | 完成摄入；应用未测 |
+| S003 · [ReWOO: Decoupling Reasoning from Observations for Efficient Augmented Language Models](https://arxiv.org/abs/2305.18323) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=21\|S001 §§4.1.2 · p.21 · 引文720]] | 选择推理与工具观察解耦的计划—执行路线，核查它在提前规划、依赖关系和工具失败上的适用前提。 | 完成摄入；应用未测 |
+| S004 · [Toward Generalist Autonomous Research via Hypothesis-Tree Refinement](https://arxiv.org/abs/2606.11926) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=21\|S001 §§4.1.2 · p.21,22 · 引文262]] | 选择持久假设树与协调者—执行者循环，理解长期研究如何保存证据、分支和经验；不把其自主实验设置直接等同于本库文献找 idea。 | 完成摄入；应用未测 |
+| S005 · [Tree of Thoughts: Deliberate Problem Solving with Large Language Models](https://papers.nips.cc/paper_files/paper/2023/hash/271db9922b8d1f4dd7aaef84ed5ac703-Abstract-Conference.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=22\|S001 §§4.1.3 · p.22 · 引文760]] | 作为分支搜索的基础机制，核查生成、评分、回溯与提交的控制责任，并保留静态推理任务到交互任务的外推边界。 | 完成摄入；应用未测 |
+| S006 · [Language Agent Tree Search Unifies Reasoning, Acting, and Planning in Language Models](https://proceedings.mlr.press/v235/zhou24r.html) | [[raw/papers/Towards Long-Horizon Agents.pdf#page=22\|S001 §§4.1.3；另见 §4.6.3 · p.22,37 · 引文875]] | 与 ToT 对照，追问树搜索怎样结合环境反馈、价值估计与反思，以及评估分支的成本和可回退性。 | 完成摄入；应用未测 |
 
 ### 选读：上下文与记忆
 
