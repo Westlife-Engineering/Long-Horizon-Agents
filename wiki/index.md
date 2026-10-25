@@ -4,8 +4,8 @@
 
 ## 当前证据边界
 
-- 已纳入 **60 篇学术来源**：S001 综述及 S002–S060 五十九篇独立论文。S001 整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；独立论文的实际正文/附录阅读范围见各论文页，均不表示复现实验。
-- **独立论文（含方法、系统、评测与分析）完成摄入数为 59**。综述中的引用不是本库已验证的证据；第一轮已选定 65 个方向名额、64 篇不同候选，正在分批核读，候选与待验收论文不计完成摄入。
+- 已纳入 **65 篇学术来源**：S001 综述及 S002–S065 六十四篇独立论文。S001 整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；独立论文的实际正文/附录阅读范围见各论文页，均不表示复现实验。
+- **独立论文（含方法、系统、评测与分析）完成摄入数为 64**。综述中的引用不是本库已验证的证据；第一轮核心 65 个方向名额、64 篇不同论文已完成摄入（O2/O4复用S041）；brainstorm与本轮综合待开展，不表示整轮研究已经完成。
 - 方法论原始资料为 [[raw/articles/llm-wiki|LLM Wiki]]，不计入学术来源数。具体工作规则见 [[AGENTS|Schema]]。
 
 ## 从哪里开始
@@ -97,6 +97,11 @@ Harness 与 Optimization 的子方向都保留在各自 Overview 的页内导航
 | S058 | [[wiki/papers/MAD-OPD\|MAD-OPD]] | 完成摄入，应用未测；讨论条件化教师分布、任务消融与理论适用前提核查 |
 | S059 | [[wiki/papers/Pi-Play\|Pi-Play]] | 完成摄入，应用未测；QCP特权蒸馏、GRPO及出题课程共同更新 |
 | S060 | [[wiki/papers/Self-Distillation-Zero\|Self-Distillation-Zero]] | 完成摄入，应用未测；SRT修订者到首次生成的蒸馏、阶段贡献与预算口径 |
+| S061 | [[wiki/papers/STaR\|STaR]] | 完成摄入，应用未测；固定答案锚点与推理自举、每轮重初始化和dev/test边界 |
+| S062 | [[wiki/papers/rStar-Math\|rStar-Math]] | 完成摄入，应用未测；策略/PPM与搜索共同更新、启动模型及标签来源 |
+| S063 | [[wiki/papers/R-Zero\|R-Zero]] | 完成摄入，应用未测；可学习任务分布、多数票伪标签与迭代失稳 |
+| S064 | [[wiki/papers/Agent0\|Agent0]] | 完成摄入，应用未测；代码反馈、课程奖励、ADPO与有限轮次边界 |
+| S065 | [[wiki/papers/Environment-Tuning\|Environment-Tuning]] | 完成摄入，应用未测；人工课程、教学反馈、奖励真值和撤除条件 |
 
 ## 维护入口
 
@@ -106,6 +111,6 @@ Harness 与 Optimization 的子方向都保留在各自 Overview 的页内导航
 - [[workflows/autoresearch|Auto Research]]：按方向选文、每篇由同模型 subagent 摄入、共享写入、预算与停止条件；包含 Harness / Optimization 的启动和分工方案。
 - [[workflows/brainstorm|Brainstorm]]：共同证据上的独立分析、互评、查新反证与候选问题状态。
 
-**本轮状态（2026-10-25）：**第一轮 Auto Research 已启动，覆盖 Harness 6 类与 Optimization 7 类一级子方向；选文初筛完成，原文核读、主题整合与验收正分批推进，本轮尚未结束。每方向核心选读约 5 篇，先全局去重，再由同模型 subagent 分批摄入；最多同时 3 个子任务，主 Agent 验收与提交 Git。进度和边界见 [[wiki/overview#第一轮自主研究|第一轮自主研究]]；候选不计已读。
+**本轮状态（2026-10-25）：**第一轮 Auto Research 已启动，覆盖 Harness 6 类与 Optimization 7 类一级子方向；核心65个方向名额对应的64篇独立论文已完成原文核读、主题整合与内容/结构验收；Obsidian应用未测，brainstorm与本轮综合待开展，本轮尚未结束。每方向核心选读约 5 篇，先全局去重，再由同模型 subagent 分批摄入；最多同时 3 个子任务，主 Agent 验收与提交 Git。进度和边界见 [[wiki/overview#第一轮自主研究|第一轮自主研究]]；候选不计已读。
 
 新论文来了先整合已有页面；新问题形成独立内容时再拆页。自主研究在选定范围内引导后续阅读，不代替用户确定最终研究方向。[[wiki/frontier/Overview#本库的待检验问题|现有问题]] 仍是探索记录，是否追踪取决于后续选文与证据。
