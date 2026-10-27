@@ -190,6 +190,7 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 | [[wiki/harness/orchestration\|编排]] | 控制结构外化、四类设计问题与可选优化路线；分工、交接及选择性修复的原论文比较。 |
 | [[wiki/harness/hooks\|Hooks 与中间件]] | 判断与执行控制的协作图、政策准备与运行期对照；三类方案及执行权与误拒边界。 |
 | [[wiki/harness/verification\|验证]] | 证据、评价与用途的关系，三个维度的组合及 PRM 的位置；裁判、纠错与任务成功。 |
+| [[wiki/harness/connections\|Harness 跨模块联系与阶段性理解]] | 基于综述第 4 章的组会图解成果：共享记录何时成为依据、封装动作由何处约束、主动验收如何区分介入前后结果；未查新或实验。 |
 | [[wiki/optimization/architecture\|架构基础]] | 表示历史、访问证据与计算成本。 |
 | [[wiki/optimization/data-environments\|数据与环境合成]] | 生成对象、真实执行与筛选后的分布。 |
 | [[wiki/optimization/pretraining\|预训练与中期训练]] | 扩窗、数据配方、感知与代理指标。 |

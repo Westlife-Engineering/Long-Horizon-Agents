@@ -1,7 +1,7 @@
 ---
 type: overview
 created: 2026-10-19
-updated: 2026-10-27
+updated: 2026-10-28
 sources:
   - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
 ---
@@ -26,6 +26,8 @@ Harness 是围绕模型组织执行的机制：安排何时调用模型、带入
 
 ## 问题与跨模块联系
 
-[[wiki/harness/Questions|已收窄问题、反对证据与关闭条件]]保存本轮完整论证；尚无新颖性已确认的研究缺口。跨模块综合见[[wiki/frontier/Overview|Frontier]]。
+[[wiki/harness/connections|跨模块联系与阶段性理解]]以关系图串起共享记录的接受条件、封装动作的约束位置和主动验收的结果归属；这是 2026-10-28 组会讨论依据 S001 第 4 章形成的归纳与待检验问题，未查新或实验。
+
+[[wiki/harness/Questions|已收窄问题、反对证据与关闭条件]]保存第一轮跨论文讨论的完整论证；尚无新颖性已确认的研究缺口。跨模块综合见[[wiki/frontier/Overview|Frontier]]。
 
 选读队列、派发协议与提交流水见[[maintenance/research/R001|R001维护记录]]。新论文整合到相关主题；主归属目录不限制跨方向关联。
