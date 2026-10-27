@@ -1,7 +1,7 @@
 ---
 type: topic
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-26
 sources:
   - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
   - "[[raw/papers/harness/memory/HiAgent.pdf]]"
@@ -17,10 +17,58 @@ sources:
 
 # 上下文与记忆
 
+**工作流决定怎样推进，上下文与记忆决定推进时依据什么信息。** 综述 §4.2 将它们视为 workflow 与模型之间的状态接口：让当前决策所需的信息保持可见，也让以后仍有价值的信息得以延续。下面先读概念与关系，再看原论文的机制比较。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=23|S001 · §4.2 · Fig.8 · p.23]]
 
-当前上下文是这次调用实际可见的状态，持久记忆是能够跨越当前窗口、任务或会话存续的信息。综述用“丢弃、压缩、选择”描述工作上下文的维护，用“写入、维护、检索”描述持久记忆操作。二者区别在存续范围与运行时角色，而不只在文件是否落盘。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=23|S001 · §4.2 · Fig.8 · p.23]]
+## 两类状态怎样配合
 
-细分导航：Working Context（§4.2.1）；Persistent Memory（§4.2.2）。与 [[wiki/foundations/Formalization#H1–H3 与 C1–C3|C2/C3]] 相关。第一轮 S007–S011 已完成摄入与主题整合，下面是原论文支持的机制比较；内容与结构已验收，Obsidian 应用未测。
+| 状态 | 回答的问题 | 典型内容与作用 |
+| --- | --- | --- |
+| **工作上下文 Working Context** | 下一次模型调用现在能依据什么？ | 指令、近期观察、当前计划、检索证据、压缩历史；构成容量受限的活跃工作区。 |
+| **持久记忆 Persistent Memory** | 什么要跨越当前窗口、任务或会话保留下来？ | 项目规则、用户偏好、任务状态、案例和教训；供后续更新与取回。 |
+
+两者按**运行时作用与存续范围**区分，而不只看是否落盘。例如，规则保存在 `AGENTS.md` 中时是持久状态，加载到某次调用的输入后也成为工作上下文；这里的“工作记忆 Working Memory”指有限工作区，不另设第三大类。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=23|S001 · §4.2–4.2.1 · p.23]] [[raw/surveys/Towards Long-Horizon Agents.pdf#page=26|§4.2.2 · 项目规则示例 · p.26]]
+
+```mermaid
+flowchart TD
+    S["任务信息、观察与执行记录"] -->|"组装当前输入"| C["上下文维护<br/>丢弃 · 压缩 · 选择"]
+    C -->|"提供本步可见信息"| W["工作上下文"]
+    W -->|"用于决策"| A["模型决策与行动"]
+    A -->|"产生新观察与反馈"| S
+    S -->|"提取有价值内容并写入"| M["持久记忆<br/>事实 · 经验"]
+    M -->|"按需取回"| C
+    M -->|"更新 · 合并 · 归档或遗忘"| M
+```
+
+*本库依据 [[raw/surveys/Towards Long-Horizon Agents.pdf#page=23|S001 · Fig.8、§4.2 · pp.23–26]] 重绘的信息流示意；三种上下文操作可组合，图中不表示它们必须依次执行。Context Selection 从“组织当前输入”看选择，Memory Retrieval 从“持久存储”看取回；一次检索可以连接两者，但选择的来源也包括其他外部记录。*
+
+## 工作上下文：控制当前该看什么
+
+综述指出，信息过多会混入过时状态与噪声，出现 context rot、lost-in-the-middle 等利用退化；信息过少又会丢掉约束、证据与进度。因此目标是维护**容量受控、与下一步相关的工作区**。以下操作是综述分类；风险栏是本库据其目标归纳的检查点。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=24|S001 · §4.2.1 · p.24]]
+
+| 操作 | 怎样处理状态 | 需要防止什么 |
+| --- | --- | --- |
+| **丢弃 Discard** | 从当前输入移除低价值、失效或冗长内容；也可在进入前裁剪工具说明。 | 必要证据一并移出，且没有恢复通道。 |
+| **压缩 Compress** | 缩减当前大段输入，或把累计轨迹整合成持续维护的任务状态。 | 摘要遗漏约束、未完成目标或失败线索。 |
+| **选择 Select** | 丰富记录留在窗口外，需要时取回与当前决策有关的部分。 | 漏检依赖，或取回过多导致再次过载。 |
+
+**移出当前输入不等于删除外部原件；摘要也只是压缩的一种形式。** 轨迹整合还可保留事实表、约束清单、带完成标记的计划或依赖图。选择则可检索 Agent 自己的观察、工具结果与产物，需要决定何时查、怎样构造查询、查哪个存储、如何筛选并注入。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=24|S001 · §4.2.1 · Discard / Compression / Selection · p.24]]
+
+## 持久记忆：存什么，与怎样管理
+
+| 内容分类 | 保存什么 | 主要用途 |
+| --- | --- | --- |
+| **事实记忆 Factual Memory** | 偏好、规则、承诺、环境状态、文档或代码库事实。 | 延续已知条件，减少重复确认和推断。 |
+| **经验记忆 Experiential Memory** | 成败案例、状态—动作示例、教训、推理模式或流程。 | 复用过去的尝试，减少重复探索。 |
+
+两者是按内容与用途划分的并列类别；**经验可以只是一个案例，无须先成为通用规则**。经验还可加工成脚本、API 包装器或可执行 skill，从而与 [[wiki/harness/tools|工具与技能]] 相接。自然语言笔记、摘要、图、向量和代码技能则涉及表示形式，不能与事实／经验混成同一层分类。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=26|S001 · §4.2.2 · Memory Contents · p.26]] [[raw/surveys/Towards Long-Horizon Agents.pdf#page=25|Table 3 · State form · p.25]]
+
+两类内容都需要 **写入 Write**（提取哪些信息、保留到什么粒度）、**维护 Maintain**（合并、去重、更新、关联、归档或遗忘）和 **取回 Retrieve**（何时查、如何排序过滤、放回多少）。维护使记忆库能够处理过时与冲突；取回让保存的信息重新影响当前决策。运行时改记忆不等于改模型参数，但管理策略本身可以经过训练，不能将这一节所有方法概括为“无需训练”。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=26|S001 · §4.2.2 · Memory Operations · p.26]] [[raw/surveys/Towards Long-Horizon Agents.pdf#page=25|Table 3 · Train-free 列 · p.25]]
+
+**与长程能力的联系（本库综合）：**工作区维护支持窗口内连续行动；状态跨窗口保存与恢复支撑 [[wiki/foundations/Formalization#H1–H3 与 C1–C3|C2 连续性]]；案例、教训和技能跨任务复用支撑 C3 经验积累。这是作用联系，不能把事实记忆只分给 C2、经验记忆只分给 C3。综述最终关心的是：**正确的信息是否在需要时被保存、更新、取回并用于下一步行动**；孤立事实的召回不足以证明长程执行有效。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=10|S001 · §2.2 · pp.10–11]] [[raw/surveys/Towards Long-Horizon Agents.pdf#page=26|§4.2.2 · 评估边界 · p.26]]
+
+## 原论文机制与证据边界
+
+以下保留已读论文的机制比较与适用条件；具体阅读范围、实验设置及验收状态见各唯一论文页。
 
 ### 先区分保存的对象，再问怎样取回
 

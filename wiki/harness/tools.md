@@ -1,7 +1,7 @@
 ---
 type: topic
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-27
 sources:
   - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
   - "[[raw/papers/optimization/finetuning/Toolformer.pdf]]"
@@ -15,9 +15,46 @@ sources:
 # 工具、MCP 与技能
 
 
-这一组件规定 Agent 怎样访问外部能力、发现可用工具，以及复用程序性经验。综述将工具接口/协议、主动工具发现、技能库分开组织；工具接口与“如何完成一段工作”的可复用技能承担不同角色。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=26|S001 · §4.3 · p.26]]；[[raw/surveys/Towards Long-Horizon Agents.pdf#page=2|§4.3.1–4.3.3 目录 · p.2]]
+## 概念总览：从可调用能力到可复用方法
 
-细分导航：Tool Interfaces and Protocols；Active Tool Discovery；Skill Libraries。第一轮 S012–S016 已完成摄入与本节整合，内容与结构验收通过，Obsidian 应用未测；尚未独立核读 MCP 协议规范，不能用基准论文替代协议文档。
+**Tool 提供可执行能力，skill 保存运用这些能力的做事方法；function calling、MCP 和工具发现分别处理调用表达、统一接入和按需选择。** 综述 §4.3 按“接口与协议 → 主动工具发现 → 技能库”展开；下面的定义依据原文，关系辨析与例子为本库归纳。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=26|S001 · §4.3 · pp.26–29]]
+
+### 几个概念各管什么
+
+| 概念 | 回答的问题 | 含义与位置 |
+| --- | --- | --- |
+| **Tool（工具）** | 能执行什么操作？ | 模型之外的可调用能力，如搜索、运行代码、读写数据库；执行后返回观察结果。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=26\|§4.3 · pp.26–27]] |
+| **Function calling（函数调用）** | 怎样表达一次调用？ | 模型依据接口说明选择函数、填写参数，由运行环境执行并返回结果，模型再继续处理。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=27\|§4.3.1 · p.27]] |
+| **MCP（Model Context Protocol）** | 不同工具服务怎样统一接入？ | 通过统一的 host–client–server 交互机制连接服务，使其能力可被发现、调用；一个 server 可以提供多个工具。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=27\|§4.3.1 · p.27]] |
+| **Active tool discovery（主动工具发现）** | 工具太多，当前该加载哪些？ | 按需检索工具、读取定义或文档，只把相关接口带入上下文，避免每步都塞入整个目录。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=27\|§4.3.2 · pp.27–28]] |
+| **Programmatic tool use（程序化工具使用）** | 怎样高效组合多个调用？ | 用代码中的变量、循环和分支连接工具，把多次调用组织在一个程序里执行；综述将其与按需发现一起放在 §4.3.2。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=27\|§4.3.2 · pp.27–28]] |
+| **Skill / skill library（技能／技能库）** | 怎样复用已经有效的做法？ | 将经过验证的工具用法、控制流程和领域知识封装为可复用、可参数化的过程；可写成 Markdown 指南、可执行代码，或按依赖与组合关系组织成库。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=28\|§4.3.3 · p.28]] |
+
+### 它们怎样配合
+
+**读图：上方提供做事依据，中间决定并表达动作，下方接入和执行工具；右侧反馈让下一步依赖实际结果。** Skill 与 MCP 分处“方法”和“连接”两个位置。
+
+![工具关系图：技能与工具发现向模型提供信息，模型表达调用请求，运行环境通过本地接口或 MCP 执行工具并返回结果](../assets/diagrams/tools-overview/tools-relations.png)
+
+本库概念示意，以文献整理为教学例子，非论文实验或 MCP 协议时序图。依据 [[raw/surveys/Towards Long-Horizon Agents.pdf#page=26|S001 · §4.3 · pp.26–29]]；[可编辑图源](../assets/diagrams/tools-overview/tools-relations.excalidraw)。
+
+图示一种常见组织方式：**可执行 skill 也能封装成 tool，代码也能直接作为动作表示**；发现、组合、复用没有固定先后。下方按接入方式分支，MCP 服务也可以在本机运行，左右两侧的工具示例不限定各自能提供的能力。
+
+技能库由 harness 获取、检索、版本管理、修改和淘汰；**改库不必改模型参数**，也有研究通过训练将技能内化。复用旨在减少重复规划并提高可靠性，但旧技能在新环境中仍需核验。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=28|§4.3.3 · pp.28–29]]
+
+### 为什么接口清楚了，还需要学习与评测
+
+接口给出能力与参数约定，模型仍要把用户需求转成合适的调用，并根据返回结果继续行动。
+
+![三种判断的区别：调用格式正确不保证下载目标正确，单篇下载正确也不保证五篇齐全且无重复](../assets/diagrams/tools-overview/tools-evaluation.png)
+
+本库教学示意，依据 [[raw/surveys/Towards Long-Horizon Agents.pdf#page=27|S001 · §4.3.1 · p.27]]；[可编辑图源](../assets/diagrams/tools-overview/tools-evaluation.excalidraw)。
+
+Benchmark 是“测试任务＋可交互环境＋成功标准”。**有状态环境**会保留写入的文件、记录等，后续动作受其影响，完整任务评测还须核验最终约束。综述转述的 MCP 相关基准显示：所测条件下任务完成仍困难，输入 token 随步骤增长，失败更多涉及理解、判断与规划；这不是 MCP 导致失败的因果结论，也不是所有模型的固定表现。此处为综述转述（参考文献 31、350、411、700），已直接核读的 MCPMark 证据见下文。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=27|§4.3.1 · p.27]]
+
+## 已读论文：发现、表示、复用与验收
+
+第一轮 S012–S016 已完成摄入与本节整合，内容与结构验收通过，Obsidian 应用未测；尚未独立核读 MCP 协议规范，上述说明限于综述层面的概念，不替代协议文档。
 
 ### 发现、表示、复用和验收改变的是不同对象
 

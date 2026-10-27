@@ -1,7 +1,7 @@
 ---
 type: topic
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-27
 sources:
   - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
   - "[[raw/papers/harness/verification/CRITIC.pdf]]"
@@ -21,10 +21,55 @@ sources:
 
 # 验证
 
+Agent 声称“任务完成了”，系统还需要证据判断动作是否合规、过程是否偏离、最终产物是否满足要求。Verification 承担这个评价职责；评价如何落实为执行约束，见 [[wiki/harness/hooks#与 Verification 的关系|Hooks 与 Verification 的协作图]]。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=34|S001 · §4.6 · p.34]]
 
-验证检查状态、行动、输出或副作用是否满足要求。综述按三条轴组织：**检查什么**（正确性、安全性、指令遵循、验证器一致性）、**何时检查**（步骤中、运行结束）、**怎样产生判断**（自动标签/隐式奖励、验证器引导搜索、验证计算分配）。拦截机制与判断机制可以协作，但不是同一个角色。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=34|S001 · §4.6–4.6.1 · p.34]]；[[raw/surveys/Towards Long-Horizon Agents.pdf#page=36|§4.6.2–4.6.3 · pp.36–37]]
+## 验证怎样工作：证据、评价与用途
 
-细分导航：Assessment Targets；Verification Levels；Verifier Strategies。与 [[wiki/optimization/reinforcement-learning|训练中的信用分配]]、[[wiki/applications/Overview|评测的成功判据]] 相关；运行时检查有效，不自动证明它可作为可靠训练奖励。
+下面是**本库的机制阅读框架**，用于拆开一次验证中的不同责任；不是综述新增的分类，也不要求它们由三个模块顺序执行。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=34|S001 · §4.6 · p.34]]；[[raw/surveys/Towards Long-Horizon Agents.pdf#page=36|§4.6.2–4.6.3 · pp.36–37]]
+
+| 环节 | 要问的问题 | 为什么不能省略 |
+| --- | --- | --- |
+| **取得证据** | 依据是原文、工具返回、环境状态，还是模型采样？ | 工具返回提供信息，不自动证明模型正确理解了信息。 |
+| **形成评价** | 用程序检查、模型判断，还是学习到的评分器？ | 判断或高分可能出错；先明确它评价的是哪项要求。 |
+| **使用评价** | 交给 Hook 拦截，供搜索选择，触发修订，还是验收产物？ | 有反馈不等于已接入纠错；有局部检查不等于完成整项任务。 |
+
+沿用知识库例子：检查笔记是否夸大结论，需要读取原文作为证据、比较表述与证据的适用范围，再把结论用于修订或验收。只确认文件位于可写目录，回答的是权限问题，不能替代这次内容验证。
+
+### PRM 在评价环节中的位置
+
+**PRM（Process Reward Model）为中间步骤产生质量估计；ORM（Outcome Reward Model）侧重最终结果。** PRM 可以是实际训练出的模型，“模型”与“函数”是实现与数学描述的关系：
+
+$$
+\underbrace{\hat r_t}_{\text{步骤质量估计}}
+= f_\phi\!\left(\underbrace{\text{上下文},\text{候选步骤}}_{\text{评价输入}}\right)
+$$
+
+其中 $\phi$ 是模型参数；公式为本库教学抽象。**分数本身不执行动作**，由搜索或控制机制使用它来选择候选、引导修正等。步骤级验证也可调用工具、生成检查推理，不必都训练专用 PRM；高分仍不等于真实正确或任务完成。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=36|S001 · §4.6.2 · p.36]]
+
+## 三个维度：目标、粒度与策略
+
+| 维度 | 它改变或选择什么 |
+| --- | --- |
+| **Assessment Targets：检查什么** | Correctness 检查内容正确性；Safety 检查动作风险；Faithfulness 检查指令遵循与目标保持。综述还列出 Multi-agent Cross-verification，强调多个评估者交叉检查。 |
+| **Verification Levels：在哪个粒度介入** | Step-level 检查中间推理或决策；End-of-run 检查最终产物或环境状态。二者可以单用或组合，不能仅凭时点判断采用了什么评估机制。 |
+| **Verifier Strategies：怎样改进验证** | 自动标签／隐式奖励改变**评价信号的获取**；验证器引导搜索改变**评分参与探索和选择的方式**；计算分配改变**生成、搜索、判断之间的预算投入**。 |
+
+来源：[[raw/surveys/Towards Long-Horizon Agents.pdf#page=34|S001 · §4.6.1 · pp.34–35]]；[[raw/surveys/Towards Long-Horizon Agents.pdf#page=36|§4.6.2–4.6.3 · pp.36–37]]。**本库辨析：**交叉验证偏重评估者的组织方式，可用于正确性等目标；多评估者达成一致也不自动等于事实正确。以上维度用于描述和组合方案，不是三阶段流程。
+
+> [!example] 把维度组合起来：检查论文总结是否夸大结论
+> **目标**选正确性与指令忠实性；**粒度**选关键结论形成后，再在提交前整体检查；有多条候选解释时，**策略**可选择用验证评分引导后续搜索。
+>
+> 具体可读取原文后用模型评价，再据此选解释、要求修订或接受产物。“怎样实现判断”和“怎样使用评价”是本库补充的机制描述，不是综述另外两类方案；这只是教学配置，不要求每个任务都采用。
+
+## Table 4：方法索引与训练范围
+
+Table 4 按上述维度分组列举代表方法；读一行时，先看它被用来说明哪个方面，再看机制和训练前提。**Train-free 表示能用冻结模型开展该方法，不等于无模型或零开销。** [[raw/surveys/Towards Long-Horizon Agents.pdf#page=35|S001 · Table 4 · p.35]]
+
+表中 Implicit PRM 标为非免训练，机制栏却写“无需额外训练”；正文补充其依赖已做结果训练的模型。因此“无需再训练过程模型”不能读成“整条路线无需训练”。这里仅核对综述表格与正文，不展开对应论文。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=35|S001 · Table 4 · p.35]]；[[raw/surveys/Towards Long-Horizon Agents.pdf#page=36|§4.6.3 · p.36]]
+
+后文分别核对局部检查、最终成功与纠错净收益；评价被用于 [[wiki/optimization/reinforcement-learning|训练奖励]] 时，还须确认标签是否可靠，不能仅因运行时有用就充当 [[wiki/applications/Overview|任务成功判据]]。
+
+## 原论文中的判断与效果
 
 本轮 S027–S031 已完成摄入；应用未测。下面按反馈来源、判断对象和判断之后的动作组织原论文证据，不把“验证”视为单一算法。
 

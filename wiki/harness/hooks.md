@@ -1,7 +1,7 @@
 ---
 type: topic
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-27
 sources:
   - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
   - "[[raw/papers/harness/hooks/IsolateGPT.pdf]]"
@@ -13,10 +13,54 @@ sources:
 
 # Hooks 与中间件
 
+Hooks 把约束落实在 harness 的执行路径上。模型即使答应遵守规则，仍可能提出危险动作；运行系统需要在实际执行处拥有**放行、阻止或转交**的能力。综述将这类可编程边界统称为 hooks，没有严格划分 hook 与 middleware 的上下级关系。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=31|S001 · §4.5、Fig.10 · p.31]]
 
-Hooks 在运行流程的特定位置介入，让动作继续、阻止动作或交接控制。综述按规则来源与适应性分成预定义规则、用户定义策略、运行时自适应信号三类。这个分类描述机制入口，不能独自说明判断是否可靠或副作用是否已发生。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=31|S001 · §4.5 · Fig.10 · p.31]]
+## 与 Verification 的关系
 
-细分导航：Pre-defined Rule-based Hooks；Custom User-defined Hooks；Runtime-adaptive Hooks。第一轮 S022–S026 已完成摄入与本节整合，内容与结构验收通过；Obsidian 应用未测。下文把**规则从哪里来、谁作运行时判断、在哪个控制点执行**分别描述。
+**同一次检查，可以同时承担评价与执行控制两种职责。** 从 [[wiki/harness/verification|Verification]] 看，问题是“依据什么证据，判断是否符合要求”；从 Hooks 看，问题是“在哪个执行点介入，怎样让判断真正约束动作”。例如，一个检查文件权限并拒绝写入的函数，就兼有两种职责，无须拆成两个独立模型。以下为依据综述的本库机制归纳。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=31|S001 · §4.5 · p.31]]；[[raw/surveys/Towards Long-Horizon Agents.pdf#page=34|§4.6 · p.34]]
+
+![Hooks 将评价落实为执行约束；Verification 也可供搜索、纠错和验收使用](../assets/diagrams/hooks-verification/relationship.png)
+
+*本库教学示意：画出一种动作前检查的配合方式，不要求所有系统按此拆分。实线表示动作／控制去向，虚线表示检查请求、证据与评价信息。依据 S001 §4.5–4.6（PDF pp.31、34、36）；[可编辑图源](../assets/diagrams/hooks-verification/relationship.excalidraw)。*
+
+**贯穿例子：整理知识库，`raw/` 只读、`wiki/` 可写，笔记须忠实于论文。** 下表为教学情境，不是论文实验：
+
+| 情况 | 要形成的判断 | 判断怎样被使用 |
+| --- | --- | --- |
+| 准备覆盖原始 PDF | 是否违反只读约束 | Hook 在写入前阻止动作。 |
+| 笔记可合法写入，但夸大了结论 | 原文证据是否支持该表述 | 要求修订或不接受产物；权限通过不能代替内容核验。 |
+| 有三条后续分析路径 | 哪条更值得继续 | 评分供搜索选择，不一定涉及禁止动作。 |
+
+检测器发现违规，执行程序若不使用这个判断，动作仍可能发生。反过来，拦住越权操作也不能证明报告内容正确。**两者按职责区分；验证既可在执行前进行，也可用于中间步骤和终局验收。** [[raw/surveys/Towards Long-Horizon Agents.pdf#page=34|S001 · §4.6 · p.34]]；[[raw/surveys/Towards Long-Horizon Agents.pdf#page=36|§4.6.2–4.6.3 · pp.36–37]]
+
+## 三类可选方案：判断标准从哪里来
+
+| 主类 | 标准来源 | 综述怎样细分 |
+| --- | --- | --- |
+| 预定义规则 | 框架作者规定通用底线 | 按**检查位置**：输入边界过滤进入模型的数据；工具调用边界检查参数；协议边界认证身份、逐动作授权。 |
+| 用户自定义 | 部署者规定应用政策 | 按**政策执行机制**：符号执行、LLM 离线编译、LLM 在线判断，见下图。 |
+| 运行时自适应 | 从数据与运行信号形成判据 | 按**信号来源**：不确定性、行为偏离、威胁变化；分别关注推理是否可靠、轨迹是否异常、旧检测标准是否失效。 |
+
+来源：[[raw/surveys/Towards Long-Horizon Agents.pdf#page=31|S001 · §4.5.1 · pp.31–32]]；[[raw/surveys/Towards Long-Horizon Agents.pdf#page=32|§4.5.2 · pp.32–33]]；[[raw/surveys/Towards Long-Horizon Agents.pdf#page=33|§4.5.3 · pp.33–34]]。
+
+**本库机制辨析：**这些类别并不争夺同一个位置。用户政策可以在工具调用边界执行，也可结合运行时风险信号。因而“在哪里介入、谁规定标准、怎样形成判断”要分别描述；三类可以组合，表格不规定执行顺序。
+
+## 用户政策：准备期与运行期有什么不同
+
+![Symbolic、Static 和 Dynamic 在政策准备期与动作运行期的区别](../assets/diagrams/hooks-verification/phases.png)
+
+*依据 S001 §4.5.2–4.5.3（PDF pp.32–34）的本库对照示意；箭头表示规则交付、部署或政策输入，三行是可选实现。[可编辑图源](../assets/diagrams/hooks-verification/phases.excalidraw)。*
+
+上图按**综述的类别定义**绘制，不能据此推定每篇所列论文的完整实现。[[wiki/harness/hooks#规则来源与执行权是两条轴|下文的实现核对]]保留了 ShieldAgent 的差异：综述归入 Static，但归档原文包含运行时模型参与。符号执行受政策覆盖范围限制，静态编译可能误译意图，在线模型判断则可能误判。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=32|S001 · §4.5.2 · pp.32–33]]
+
+**Dynamic 问“运行时由谁判断”，Adaptive 问“判据怎样从数据和信号中形成或变化”。** 每次让 LLM 检查人给定的政策，不代表标准具有自适应性；自适应也不必每一步重训模型，可以使用统计信号、行为模型或可更新的检查清单。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=33|S001 · §4.5.3 · pp.33–34]]
+
+> [!tip] “有没有额外模型”要拆成三个问题
+> 是否增加模型推理调用？是否使用另一套权重？是否为检查任务专门训练？三者不能互相替代：同一套权重可承担额外检查调用，固定权重可在运行时判断，增加程序检查则未必调用模型。具体实现决定答案。
+
+## 原论文中的机制与边界
+
+第一轮 S022–S026 已完成摄入与整合；Obsidian 应用未测。下文分别核对规则来源、判断机制与实际执行权。
 
 ### 规则来源与执行权是两条轴
 

@@ -184,12 +184,12 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 
 | 页面 | 内容 |
 | --- | --- |
-| [[wiki/harness/workflows\|循环与工作流]] | 反馈何时改变决策，分支是否能恢复环境。 |
-| [[wiki/harness/memory\|上下文与记忆]] | 保存、准入、取回和使用分别会怎样失败。 |
-| [[wiki/harness/tools\|工具、MCP 与技能]] | 发现、表示、复用与真实执行的区别。 |
-| [[wiki/harness/orchestration\|编排]] | 分工、交接、依赖与选择性修复。 |
-| [[wiki/harness/hooks\|Hooks 与中间件]] | 规则来源、执行权与正常任务误拒。 |
-| [[wiki/harness/verification\|验证]] | 裁判、修订、测试与终局成功的区别。 |
+| [[wiki/harness/workflows\|循环与工作流]] | 三类工作流的定义、优缺点与组合关系；具体实现中的反馈时点和分支恢复边界。 |
+| [[wiki/harness/memory\|上下文与记忆]] | 工作上下文与持久记忆的循环、操作与内容分类；原论文的保存、准入、取回和使用边界。 |
+| [[wiki/harness/tools\|工具、MCP 与技能]] | Tool、函数调用、MCP、工具发现与 skill 的定义和关系图解；原论文中的组合、复用与任务验收。 |
+| [[wiki/harness/orchestration\|编排]] | 控制结构外化、四类设计问题与可选优化路线；分工、交接及选择性修复的原论文比较。 |
+| [[wiki/harness/hooks\|Hooks 与中间件]] | 判断与执行控制的协作图、政策准备与运行期对照；三类方案及执行权与误拒边界。 |
+| [[wiki/harness/verification\|验证]] | 证据、评价与用途的关系，三个维度的组合及 PRM 的位置；裁判、纠错与任务成功。 |
 | [[wiki/optimization/architecture\|架构基础]] | 表示历史、访问证据与计算成本。 |
 | [[wiki/optimization/data-environments\|数据与环境合成]] | 生成对象、真实执行与筛选后的分布。 |
 | [[wiki/optimization/pretraining\|预训练与中期训练]] | 扩窗、数据配方、感知与代理指标。 |

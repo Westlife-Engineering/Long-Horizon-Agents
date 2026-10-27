@@ -1,7 +1,7 @@
 ---
 type: overview
 created: 2026-10-19
-updated: 2026-10-25
+updated: 2026-10-27
 sources:
   - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
 ---
@@ -17,12 +17,12 @@ Harness 是围绕模型组织执行的机制：安排何时调用模型、带入
 
 | 方向 | 这里要区分什么 | 主归属来源 |
 | --- | --- | --- |
-| [[wiki/harness/workflows\|循环与工作流]] | 反馈何时改变决策，分支是否能恢复环境 | 5篇；跨方向见主题页 |
-| [[wiki/harness/memory\|上下文与记忆]] | 保存、准入、取回和使用分别会怎样失败 | 6篇；跨方向见主题页 |
-| [[wiki/harness/tools\|工具、MCP 与技能]] | 发现、表示、复用与真实执行的区别 | 4篇；跨方向见主题页 |
-| [[wiki/harness/orchestration\|编排]] | 分工、交接、依赖与选择性修复 | 6篇；跨方向见主题页 |
-| [[wiki/harness/hooks\|Hooks 与中间件]] | 规则来源、执行权与正常任务误拒 | 5篇；跨方向见主题页 |
-| [[wiki/harness/verification\|验证]] | 裁判、修订、测试与终局成功的区别 | 6篇；跨方向见主题页 |
+| [[wiki/harness/workflows\|循环与工作流]] | 三类结构的特点、取舍与组合；反馈时点和分支恢复边界 | 5篇；跨方向见主题页 |
+| [[wiki/harness/memory\|上下文与记忆]] | 工作上下文与持久记忆如何配合；保存、准入、取回和使用的边界 | 6篇；跨方向见主题页 |
+| [[wiki/harness/tools\|工具、MCP 与技能]] | Tool、函数调用、MCP、工具发现与 skill 的关系；组合、复用与任务验收 | 4篇；跨方向见主题页 |
+| [[wiki/harness/orchestration\|编排]] | 控制结构外化、可选编排路线与交接修复 | 6篇；跨方向见主题页 |
+| [[wiki/harness/hooks\|Hooks 与中间件]] | 判断与控制怎样配合；政策准备与运行期、执行权与误拒边界 | 5篇；跨方向见主题页 |
+| [[wiki/harness/verification\|验证]] | 证据怎样形成并用于评价；维度组合、PRM、纠错与任务成功 | 6篇；跨方向见主题页 |
 
 ## 问题与跨模块联系
 

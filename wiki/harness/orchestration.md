@@ -1,7 +1,7 @@
 ---
 type: topic
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-27
 sources:
   - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
   - "[[raw/papers/harness/orchestration/MetaGPT.pdf]]"
@@ -15,9 +15,43 @@ sources:
 # 编排
 
 
-编排把工作分配到多个执行循环：拆分任务和角色，决定协调拓扑，调整路由/协调策略，再通过协议交换消息与产物。这是工作组织问题；不能由“用了多个 Agent”直接推出能力提升。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=29|S001 · §4.4 · Fig.9 · p.29]]
+编排（Orchestration）把多个执行循环组织起来，承担分工、协调与交接；这些循环可以是一个 Agent 的子任务，也可以属于多个专门化 Agent。综述将其称为 **长程控制结构的外化（externalized）**：由模型外围的 harness 显式组织工作如何推进。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=29|S001 · §4.4 · p.29]]
 
-细分导航：Decomposition and Roles；Coordination Topologies；Orchestration Optimization；Agent Protocols。第一轮 S017–S021 已完成摄入与本节整合，内容与结构验收通过；Obsidian 应用未测。这里比较运行机制和证据边界，不把不同任务的分数排成优劣。
+> [!important] 这一节是一张方案地图
+> §4.4 从四个问题介绍可行设计，**没有规定一套所有系统都必须采用的编排流程**。理解重点是“哪些安排可以选择或改变”，而非把四个小节依次执行一遍。
+
+## 四个问题，看清编排的选择空间
+
+下表按综述 §4.4.1–4.4.4 归纳；各维度可以组合，不是互斥的整套方案。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=29|S001 · pp.29–31]]
+
+| 维度 | 关心什么 | 可行选择与关键关系 |
+| --- | --- | --- |
+| **分解与角色** Decomposition & Roles | 拆成什么工作，交给谁？ | 可预定义，也可随反馈调整或生成执行者；粒度过粗会压垮单个执行者，过细会增加协调开销。 |
+| **协调拓扑** Coordination Topologies | 谁与谁连接，谁控制谁？ | 可集中、分布或分层组织；DAG 表达任务依赖。**连接结构**与**合作／竞争关系**是不同维度。 |
+| **编排优化** Orchestration Optimization | 这些安排怎样得到或改进？ | 可搜索工作流、优化提示与连边，也可学习模型路由或协调策略；优化对象是系统的组织与调用安排。 |
+| **Agent 协议** Agent Protocols | 怎样交换任务、状态与产物？ | 共同的消息与任务约定支撑交接；**结果聚合**是配套职责，负责把多个输出选取或合成最终结果。 |
+
+## Externalized：控制可以外化，安排也可以演化
+
+综述在 §4.4.3 再次强调 **externalized evolution**：工作流、提示、通信图或路由安排本身也能成为改进对象。这里要区分“改进外围组织方式”与“把能力内化进模型参数”；**自动优化不等于从零训练底层 LLM，RL 只是可选路线之一**。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=30|S001 · §4.4.3 · p.30]]
+
+```mermaid
+flowchart TD
+    A[编排安排怎样得到？] --- B[手工设计]
+    A --- C[搜索工作流或协作图]
+    A --- D[学习路由或协调策略]
+```
+
+*本库依据 §4.4.3 绘制的选择示意：连线表示可选路线，可以组合，不表示先后步骤。*
+
+**本库辨析：方案的来源与运行时是否固定，是两个问题。** 搜索所得的流程可以在后续任务中固定使用；学到的协调策略也可以根据当前状态动态派活。外化描述控制的落点，不要求整个系统完全不训练：§4.4.2 的竞争式编排就可以服务于参与者训练，其收益最终内化到模型。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=30|S001 · §4.4.2–4.4.3 · p.30]]
+
+> [!note] 协议支撑协作，但不替编排作决定
+> **编排**决定谁做什么、何时继续；**协议**约定怎样表达委派、状态和交付；**聚合**决定多个结果怎样形成一个输出。综述末尾将其概括为向 protocol-mediated coordination 转变；**本库限定：**这是作者的趋势判断，使用协议或投票本身并不推出组织必然去中心化，固定层级也可通过共同协议协作。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=30|S001 · §4.4.4 · pp.30–31]]
+
+## 已读论文中的机制与证据边界
+
+以下保留原论文比较，检验具体安排在什么条件下有效；不能由“用了多个 Agent”直接推出能力提升，也不将不同任务的分数排成优劣。
 
 ### 谁负责分工，交接时保留什么
 
