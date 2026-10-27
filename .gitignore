@@ -13,3 +13,6 @@ Desktop.ini
 
 # Project-local transient material for the authorized research round
 .research-tmp/
+
+# Regenerable working files inside meeting preparation batches
+组会/**/.tmp/

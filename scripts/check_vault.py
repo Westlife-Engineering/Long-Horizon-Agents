@@ -70,8 +70,11 @@ def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
 
+    meeting_files = [p for p in sorted((ROOT / "组会").rglob("*.md"))
+                     if ".tmp" not in p.relative_to(ROOT / "组会").parts]
     files = [ROOT / "AGENTS.md", *sorted((ROOT / "workflows").glob("*.md")),
-             *sorted((ROOT / "wiki").rglob("*.md")), *sorted((ROOT / "maintenance").rglob("*.md"))]
+             *sorted((ROOT / "wiki").rglob("*.md")), *sorted((ROOT / "maintenance").rglob("*.md")),
+             *meeting_files]
     texts: dict[Path, str] = {}
     errors: list[dict] = []
     warnings: list[dict] = []
@@ -213,7 +216,7 @@ def main() -> int:
             if "sources" in fields and not re.search(r"^sources:\s*(?:\[|\n\s+-)", fm, re.M):
                 issue(errors, path, "frontmatter_sources", "sources must be a list")
 
-        if fields.get("type") in {"paper", "survey"}:
+        if path.is_relative_to(ROOT / "wiki") and fields.get("type") in {"paper", "survey"}:
             sid = fields.get("source_id", "")
             if not sid:
                 table_id = re.search(r"\|\s*来源\s*ID\s*\|\s*(S\d+)\s*\|", text, re.I)
@@ -330,7 +333,7 @@ def main() -> int:
 
     result = {
         "scope": "structural checks only; no scholarly or Obsidian UI validation",
-        "markdown_files": len(files), "wikilinks": count,
+        "markdown_files": len(files), "meeting_markdown_files": len(meeting_files), "wikilinks": count,
         "paper_pages": sum(len(v) for v in ids.values()),
         "pdfs_checked": len(pdf_pages),
         "registered_hashes_matched": len(paper_hashes),
