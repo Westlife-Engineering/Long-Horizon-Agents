@@ -1,9 +1,11 @@
 ---
 type: paper
 primary_direction: optimization/pretraining
+related_directions:
+  - optimization/architecture
 source_id: S042
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-28
 reading_status: targeted-primary-read
 ingest_status: complete
 sources:
@@ -29,6 +31,8 @@ sources:
 | S001 选择依据 | 引文 [110]，§5.3.1，PDF pp.44；参考文献 PDF p.84；正文角色和书目已回读核对 |
 
 本页按本地 PDF 第一页起计页码。网页只用于身份核对，学术主张以已归档 PDF 为依据；未复现实验。原始下载文件为 `.research-tmp/S042-download.pdf`，归档前后字节与哈希一致。主题、索引、互链与摄入日志已同步；主 Agent 已完成内容与结构验收，Raw 哈希匹配。Obsidian 应用未测。
+
+2026-10-28 为 [[wiki/optimization/architecture|架构基础]] 回读 §2.1.1（PDF pp.7–8，查看 Fig.2）与 §2.2（pp.10–11），用于解释 MLA 的逐 token latent、位置 key 与缓存增长，以及 MTP 训练目标和推测解码的区别；未复现实验。
 
 
 ## 训练配方分别改变什么
@@ -63,8 +67,8 @@ MTP 的因果链在训练 token 序列上成立：额外模块可看到向后移
 
 ## 本库落点与下一条证据
 
-已整合到 [[wiki/optimization/pretraining|预训练与中期训练]]，主题与本页双向关联。相关方法的比较以本文实际实验为限，未核读的引用不成为独立来源。返回 [[wiki/index|索引]]。
+已整合到 [[wiki/optimization/pretraining|预训练与中期训练]]、[[wiki/optimization/architecture|架构基础]]，主题与本页双向关联。相关方法的比较以本文实际实验为限，未核读的引用不成为独立来源。返回 [[wiki/index|索引]]。
 
 ## 分类与阅读入口
 
-主归属与交叉方向：[[wiki/optimization/pretraining|optimization/pretraining]]。
+主归属：[[wiki/optimization/pretraining|optimization/pretraining]]；交叉方向：[[wiki/optimization/architecture|optimization/architecture]]。

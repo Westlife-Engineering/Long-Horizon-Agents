@@ -6,7 +6,7 @@ related_directions:
   - optimization/finetuning
 source_id: S041
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-28
 reading_status: problem-driven-read
 ingest_status: complete
 sources:
@@ -90,3 +90,11 @@ Deep Search Fig.7 中固定10轮训练早期奖励较高、随后下降；固定
 主归属与交叉方向：[[wiki/optimization/reinforcement-learning|optimization/reinforcement-learning]] · [[wiki/optimization/data-environments|optimization/data-environments]] · [[wiki/optimization/finetuning|optimization/finetuning]]。
 
 主要贡献是ScalingInter在线RL交互课程；数据/环境与微调队列保留历史选择理由，不据队列把方法归为SFT。
+
+## 2026-10-28：RL问题讨论定向回读
+
+本轮读取：p.1；pp.4–5、p.7、pp.9–12、p.21、pp.32–34；视觉核对p.12 Fig.7／Table1。未核读其余全部附录／源码，未复现实验；旧读取与实现核查记录保留。
+
+本轮把交互上限课程、总预算和迁移分开：Fig.7支持该设置的课程收益；episode重置是采集条件，WebArena排除网站状态写入类任务，新环境／工具迁移仍列为未来方向。 [[raw/papers/optimization/reinforcement-learning/AgentGym-RL.pdf#page=9|§3.3、Fig.7、§7、B.1 · pp.9–12、21、32]]
+
+已用于 [[wiki/optimization/Questions#从综述自然引出的三个RL问题|三个RL问题]]；形成过程与范围见 [[组会/2026-10-28-Optimization-RL/README|本轮组会]]。

@@ -3,7 +3,7 @@ type: paper
 primary_direction: optimization/reinforcement-learning
 source_id: S053
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-28
 reading_status: problem-driven-read
 ingest_status: complete
 sources:
@@ -151,3 +151,11 @@ ALFWorld分析中重复状态较多，支撑事后分组有足够材料；论文
 ## 分类与阅读入口
 
 主归属与交叉方向：[[wiki/optimization/reinforcement-learning|optimization/reinforcement-learning]]。
+
+## 2026-10-28：RL问题讨论定向回读
+
+本轮读取：p.1；pp.3–10；p.18；视觉核对p.6 Fig.3／Eqs.6–9及p.9 Figs.4–5。未核读其余全部附录／源码，未复现实验；旧读取与实现核查记录保留。
+
+本轮用成功轨迹中的绕路解释局部比较；两级优势消融支持所测设置的价值，不是动作独立因果贡献的证明。单例anchor缺少组内局部相对差异，episode信号仍可保留。 [[raw/papers/optimization/reinforcement-learning/GiGPO.pdf#page=5|§4.2–4.3、§5.4 · pp.5–6、9]]
+
+已用于 [[wiki/optimization/Questions#从综述自然引出的三个RL问题|三个RL问题]]；形成过程与范围见 [[组会/2026-10-28-Optimization-RL/README|本轮组会]]。

@@ -265,7 +265,14 @@ def main() -> int:
     expected_raw = {row["new_path"] for row in migration["raw"] if row["new_path"]}
     current_sources = []
     for page in (ROOT / "wiki").rglob("*.md"):
-        fields, _ = metadata(get_text(page))
+        fields, fm = metadata(get_text(page))
+        # A topic may directly cite independent web evidence, without assigning
+        # that webpage to an unrelated paper or counting it as an academic source.
+        source_field = re.search(r"(?ms)^sources:(.*?)(?=^[A-Za-z_][\w-]*:|\Z)", fm)
+        for link in WIKILINK.findall(source_field.group(1) if source_field else ""):
+            target, _ = split_target(link)
+            if target.startswith("raw/web/") and resolve(target, page).is_file():
+                expected_raw.add(resolve(target, page).relative_to(ROOT).as_posix())
         if fields.get("type") not in {"paper", "survey"}:
             continue
         current_sources.append(page)

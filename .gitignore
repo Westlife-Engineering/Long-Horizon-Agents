@@ -1,12 +1,15 @@
 # Local Obsidian workspace and UI state
 .obsidian/workspace*.json
 .obsidian/cache/
+.obsidian/plugins/obsidian-excalidraw-plugin/data.json
+.claudian/
 .trash/
 
 # Operating-system files
 Thumbs.db
 Desktop.ini
 .DS_Store
+debug.log
 
 # Temporary Office lock files
 ~$*

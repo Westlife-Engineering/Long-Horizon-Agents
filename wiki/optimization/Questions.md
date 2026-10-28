@@ -1,7 +1,7 @@
 ---
 type: topic
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-28
 sources:
   - "[[raw/papers/optimization/reinforcement-learning/GiGPO.pdf]]"
   - "[[raw/papers/optimization/reinforcement-learning/Tree-GRPO.pdf]]"
@@ -10,9 +10,68 @@ sources:
   - "[[raw/papers/optimization/finetuning/Agent-R.pdf]]"
   - "[[raw/papers/optimization/self-evolution/Environment-Tuning.pdf]]"
   - "[[raw/papers/optimization/self-evolution/R-Quest.pdf]]"
+  - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
+  - "[[raw/papers/optimization/reinforcement-learning/Search-R1.pdf]]"
+  - "[[raw/papers/optimization/reinforcement-learning/AgentGym-RL.pdf]]"
+  - "[[raw/papers/optimization/reinforcement-learning/DeepSeek-R1.pdf]]"
+  - "[[raw/papers/optimization/reinforcement-learning/RL-Reasoning-Capacity.pdf]]"
+  - "[[raw/papers/optimization/finetuning/Reasoning-SFT-Generalization.pdf]]"
+  - "[[raw/web/20261028-Optimization-RL/kimi-k3-1-pro.html]]"
+  - "[[raw/web/20261028-Optimization-RL/deepseek-v41-flash-1017.html]]"
 ---
 
-# Optimization：第一轮问题与关闭依据
+# Optimization：问题与讨论
+
+## 2026-10-28：从整体理解转向RL提问
+
+本次先理解 [[wiki/optimization/Overview|第5章的三层关系]]，再提出 **3个具体问题＋6个宏观问题**。它们是学习与交流入口，允许已有研究回答；下方第一轮 O-A／O-B 的历史结案保留，不把本次问题误记为新颖研究缺口。完整推理、原文条件和修订过程见 [[组会/2026-10-28-Optimization-RL/讨论记录|组会讨论定稿]]。
+
+### 从综述自然引出的三个RL问题
+
+#### RL-Q1：最终做对了，怎样知道中间哪些选择值得强化？
+
+**怎样引出：**§5.5.1 说终局分数会混合关键探索、绕路和错误；§5.5.2 又把更新单位细到轮次／步骤。自然的问题是如何把完整任务的目标落实到局部选择，而非预设终局奖励不能学习。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=48|S001 · §5.5.1–5.5.2 · pp.48–50]]
+
+**已有覆盖：**Search-R1 用最终答案 EM 训练交错搜索；GiGPO 则在整条轨迹优势外，比较重复环境状态后采到的折扣回报。后者提供局部相对信号，不要求新增逐步正确标签。[[raw/papers/optimization/reinforcement-learning/Search-R1.pdf#page=6|S051 · §3.4 · p.6]] [[raw/papers/optimization/reinforcement-learning/GiGPO.pdf#page=5|S053 · §4.2–4.3 · pp.5–6]]
+
+**边界与追问：**相同环境状态不自动等于所有决策条件相同；采样后续回报也不是独立动作的因果贡献。局部信号在特定任务的消融有效，不等于普遍必需。**当终局奖励可靠时，增加局部信用最应该改善样本效率、无效操作还是训练稳定性？** 下一步先看同任务、同总交互预算的证据，而不是先改奖励。状态：基础问题已有覆盖，保留条件选择问题。[[raw/papers/optimization/reinforcement-learning/GiGPO.pdf#page=9|S053 · §5.4 · p.9]]
+
+#### RL-Q2：模型走进自己造成的错误状态后，怎样获得可学的恢复经验？
+
+**怎样引出：**示范覆盖、当前策略采样和 OPD 学生状态监督分别出现在 §5.4、§5.5、§5.6。它们把问题拆成“谁造成当前状态”和“谁提供学习信号”；未见过某状态不等于必然不能泛化。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=47|S001 · §5.4 小结 · p.47]] [[raw/surveys/Towards Long-Horizon Agents.pdf#page=52|§5.6 · pp.52–53]]
+
+**已有覆盖：**DAgger-LLM 的 DAgger-style 在每个交互步选择教师或学生行动，无论谁执行都收集教师动作标签，以交叉熵训练。它是 RL 的邻近训练路线，证明“采学生相关状态”与“用监督目标”可以组合。[[raw/papers/optimization/distillation/DAgger-LLM.pdf#page=4|S057 · §3.2、Eqs.8–13 · pp.4–5]]
+
+**边界与追问：**实际配方的教师执行概率最低为0.6，并过滤未形成有效提交的轨迹；这不等于纯学生失败分布。最终解决率改善也未独立识别恢复能力。**教师是在帮学生少犯错，还是让学生真的学会犯错后继续？怎样区分？** 优先亲读采集、标签和过滤，而非仅看“在线”名称。状态：训练接口已有覆盖；恢复归因是本轮尚未解决的证据问题。[[raw/papers/optimization/distillation/DAgger-LLM.pdf#page=17|S057 · F.1–F.2 · pp.17–18]]
+
+#### RL-Q3：RL学到的能力，对训练时的交互条件有多大依赖？
+
+**怎样引出：**§5.2 的环境条件、§5.5.3 的采样预算与 §5.7 的课程相连：行动上限改变成本，也改变能访问的状态；行动更多不自动增加任务本身的依赖深度。后一句为本库归纳。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=41|S001 · §5.2 · pp.41–43]] [[raw/surveys/Towards Long-Horizon Agents.pdf#page=51|§5.5.3 · p.51]]
+
+**已有覆盖：**AgentGym-RL 逐渐提高交互上限，其 Deep Search 曲线支持该设置下相对固定上限的训练收益。Search-R1 也有固定检索器／语料下的新 QA 数据集评测；这类任务迁移与更换工具、环境是不同证据。[[raw/papers/optimization/reinforcement-learning/AgentGym-RL.pdf#page=9|S041 · §3.3、Fig.7 · pp.9–12]] [[raw/papers/optimization/reinforcement-learning/Search-R1.pdf#page=7|S051 · §4.3 · p.7]]
+
+**边界与追问：**AgentGym 的曲线未匹配全部交互成本，WebArena 实验还排除了写入／修改／删除网站内容的任务。**若训练总成本和测试上限相同，收益还在吗？换题、换工具、换环境，分别保留多少？** 状态：课程已有直接覆盖，迁移需按改变条件分层，未确认新缺口。[[raw/papers/optimization/reinforcement-learning/AgentGym-RL.pdf#page=32|S041 · B.1 · p.32]] [[raw/papers/optimization/reinforcement-learning/AgentGym-RL.pdf#page=21|§7 · p.21]]
+
+### 六个适合与学长讨论的宏观问题
+
+**M1｜从推理模型 RL 到 Agentic RL，研究问题究竟在哪一层发生变化？** 二者可共享优化算法；Search-R1 在 rollout 中插入检索观察，R1 的主要推理训练则不等同于完整工具交互。值得追问的是：环境状态、观察依赖和反馈成本中，哪一项最容易改变训练方法，而不是只改变工程实现？两类可以重叠，详细比较见 [[wiki/optimization/reinforcement-learning#推理模型RL与Agentic RL：沿交互条件比较|交互条件表]]。[[raw/papers/optimization/reinforcement-learning/Search-R1.pdf#page=4|S051 · §3 · pp.4–6]] [[raw/papers/optimization/reinforcement-learning/DeepSeek-R1.pdf#page=10|S077 · §6 · pp.10–11]]
+
+**M2｜我们感觉“业界更重视 RL”，是在说公开叙事、训练配方，还是实际投入？** 2026-10-24 Kimi K3.1 Pro 与2026-10-17 DeepSeek V4.1 Flash 的官方说明分别强调多领域联合RL及系统工程、带自反馈的RL。它们支持两家团队公开重视该路线，不支持行业份额或SFT被替代。可追问：若把环境、验证器、数据生产的人力单独计算，投入重点还叫“RL算法”吗？[[raw/web/20261028-Optimization-RL/kimi-k3-1-pro.html|Kimi官方说明 · Advancing the Frontier]]；[[raw/web/20261028-Optimization-RL/deepseek-v41-flash-1017.html|DeepSeek官方说明 · Build complete projects]]。原始URL、日期与快照边界见 [[组会/2026-10-28-Optimization-RL/检索与证据记录|本轮检索记录]]。
+
+**M3｜SFT、RL、OPD的分工，应由训练阶段还是监督条件决定？** R1正式配方结合SFT与RL，固定教师轨迹蒸馏也有效；S079在其推理设置下发现SFT泛化依赖优化、数据与底座条件，不能从“示范训练”直接推出“只会记忆”。可追问：当教师、验证器、底座和预算不同，首先依据哪种失败决定补什么学习信号？S079不是Agent环境迁移实验，SFT–RL比较也未匹配总FLOPs。[[raw/papers/optimization/reinforcement-learning/DeepSeek-R1.pdf#page=6|S077 · §3、Fig.2 · pp.6–8]] [[raw/papers/optimization/finetuning/Reasoning-SFT-Generalization.pdf#page=10|S079 · §8 · p.10]]
+
+**M4｜说“RL带来新能力”，究竟指成功概率、可解覆盖，还是新任务迁移？** S078在多组单轮推理设置中观察到低k提升与高k覆盖下降可并存；pass@k测“至少采到一个正确解”，不保证实际选得出来，Table3也不支持base在所有设置下是严格上界。可追问：哪种测量能区分更稳定地用出旧能力与学到可迁移的新策略？不能把有限采样未出现当成概率为零，也不能把该文外推成Agentic RL的不可能性定理。[[raw/papers/optimization/reinforcement-learning/RL-Reasoning-Capacity.pdf#page=5|S078 · §2.2 · p.5]] [[raw/papers/optimization/reinforcement-learning/RL-Reasoning-Capacity.pdf#page=23|C.5、Table3 · p.23]]
+
+**M5｜长期任务的首要瓶颈，是优化算法、反馈、环境还是交互成本？** 综述同时讨论四个设计维度，R1也把软件工程评估耗时列为规模化训练限制；Kimi近期说明同时涉及沙箱、采样调度与环境质检。可追问：在学长熟悉的任务里，缓解哪种限制最可能改变整个研究方案？已有材料提供具体例子，尚无跨任务统一瓶颈排序。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=47|S001 · §5.5 · pp.47–52]] [[raw/papers/optimization/reinforcement-learning/DeepSeek-R1.pdf#page=11|S077 · §6 · p.11]] [[raw/web/20261028-Optimization-RL/kimi-k3-1-pro.html|Kimi官方说明 · Advancing the Frontier]]
+
+**M6｜准备深入RL，怎样判断一个增益值得研究，而不只是多花了预算？** 最终完成率、有限成本下的可靠执行、多次采样覆盖、错误后恢复及迁移分别回答不同问题。R1的SWE评测使用Agentless，提醒我们成绩也依赖外部流程。可追问：如果只能选少数评价维度，最应该揭示哪种容易被总分掩盖的能力或退化？这是研究视角问题，本轮不预设实验方案。[[raw/papers/optimization/reinforcement-learning/DeepSeek-R1.pdf#page=40|S077 · D.1 · p.40]] [[raw/papers/optimization/reinforcement-learning/RL-Reasoning-Capacity.pdf#page=5|S078 · §2.2 · p.5]]
+
+### 本轮范围与亲读入口
+
+截至2026-10-28，本轮定向核读7篇论文（4篇库内回读＋3篇新增），尝试核查3份近期官方说明，其中2份正文可得。采用代表性覆盖核查，没有行业抽样统计，也未完成所有近邻工作的查新；具体问题不因本轮未找到答案而升级为领域空白。
+
+亲读可先按兴趣选三条：**理解交互RL**读Search-R1 pp.4–6；**理解训练状态与监督**读DAgger-LLM p.4及pp.17–18；**理解能力之争怎样提问**读S078 p.5与p.23，再对照S079 §8 p.10。若先看整章，把S001 p.37与Fig.11 p.39放在前面。完整版本和核读范围见唯一来源页与 [[组会/2026-10-28-Optimization-RL/检索与证据记录|证据记录]]。
+
 
 ## 第一轮Brainstorm结案
 

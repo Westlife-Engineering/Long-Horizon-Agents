@@ -4,8 +4,8 @@
 
 ## 当前证据边界
 
-- 已纳入 **70篇学术来源**：S001综述及S002–S070六十九篇独立论文（64篇核心选读、5篇定向补读），独立论文均完成摄入。核心65个方向名额中O2/O4复用S041，同篇不重复计数。
-- S001整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；其余论文实际正文、附录及实现读取范围见唯一页，均不表示全文所有附录/实现已审或复现实验。未读综述引用和搜索线索不是直接证据。
+- 已纳入 **79篇学术来源**：S001综述及S002–S079七十八篇独立论文；第一轮64篇核心选读、5篇定向补读，Application另核读6篇，Optimization-RL讨论新增3篇。独立论文均完成摄入。核心65个方向名额中O2/O4复用S041，同篇不重复计数。
+- S001整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；§6 Application已完整核读并补充6篇代表论文机制比较；§5已回核整体结构，以7篇定向原文形成3个RL问题和6个宏观讨论问题；其余论文实际正文、附录及实现读取范围见唯一页，均不表示全文所有附录/实现已审或复现实验。未读综述引用和搜索线索不是直接证据。
 - 第一轮核心阅读、补读、两轮Brainstorm与跨模块综合已完成；保留4张材料问题卡，**未确认新颖研究缺口，未选定最终课题**。内容与结构已验收，Obsidian新页应用验收未完成。
 - 五篇综述外补读为TRACE、BRIDGE、SpecRover、C3、R-Quest，理由与预算见[[maintenance/research/R001#第一轮查新补读|Harness]]和[[maintenance/research/R001#Optimization：第一轮查新补读|Optimization]]；Agent-R/GiGPO同源代码补充不增加论文数。方法论资料[[raw/articles/llm-wiki|LLM Wiki]]不计学术来源数。
 
@@ -14,6 +14,8 @@
 [[wiki/overview|领域总览]]：用系统耦合、任务层级与证据边界理解整张地图。
 
 **第一轮研究成果从[[wiki/frontier/Overview#第一轮结果与亲读入口|四个问题与亲读路线]]进入**；模块细节分别见[[wiki/harness/Questions#第一轮Brainstorm结案|Harness讨论结案]]、[[wiki/optimization/Questions#第一轮Brainstorm结案|Optimization讨论结案]]。下面的Foundation仍是基础定义的默认图解入口。
+
+本次准备与学长讨论RL，可从 [[wiki/optimization/Overview|第5章整体结构]] → [[wiki/optimization/Questions#2026-10-28：从整体理解转向RL提问|三个具体问题与六个宏观问题]] → [[组会/2026-10-28-Optimization-RL/讨论记录|完整组会讨论]] 阅读。
 
 ## Foundation：从图解笔记开始
 
@@ -30,8 +32,8 @@
 | Foundation | [[wiki/foundations/Formalization\|定义、运行循环与理解辨析]] | 从状态—观察—上下文理解 Agent 循环，串起任务依赖、H1–H3、记忆与自我演化，并区分定义、推断和评测代理。 |
 | Evolution | [[wiki/foundations/Evolution\|从 Prompt 到 Runtime]] | 控制对象怎样从单次提示扩展到完整执行轨迹？ |
 | Harness | [[wiki/harness/Overview\|外部运行机制]] | 六类运行机制、原文条件比较，以及记忆使用/修复验证的收窄问题。 |
-| Optimization | [[wiki/optimization/Overview\|能力内化与训练]] | 七类内化路线、信用与监督条件，以及分组/训练保留的收窄问题。 |
-| Application | [[wiki/applications/Overview\|应用与评测]] | 不同环境接口提供什么反馈，评测如何归因？ |
+| Optimization | [[wiki/optimization/Overview\|能力内化与训练]] | 训练条件、能力形成与经验循环；三个RL问题、六个宏观讨论及历史下钻问题。 |
+| Application | [[wiki/applications/Overview\|应用与评测]] | 五类接口的应用地图；六篇代表论文解释成功机制、归因与耦合瓶颈。 |
 | Frontier | [[wiki/frontier/Overview\|前沿与待检验问题]] | 第一轮研究结果、跨模块联系、查新范围与亲读路线；另保留作者展望。 |
 
 Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问题页已独立列出。论文目录按主归属分层，交叉方向仍共享唯一来源。
@@ -44,7 +46,7 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 
 | ID | 唯一来源页 | 主归属 | 交叉方向 | 摘要与状态 |
 | --- | --- | --- | --- | --- |
-| S001 | [[wiki/surveys/Towards Long-Horizon Agents\|Towards Long-Horizon Agents]] | survey | — | 地图来源与阅读记录；已补充 Foundation 问题驱动精读及证据落点 |
+| S001 | [[wiki/surveys/Towards Long-Horizon Agents\|Towards Long-Horizon Agents]] | survey | — | 地图来源与阅读记录；Foundation、Optimization与Application的定向回读及证据落点 |
 
 ### harness/workflows · 循环与工作流
 
@@ -55,6 +57,7 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 | S004 | [[wiki/papers/harness/workflows/Arbor\|Arbor]] | harness/workflows | — | 完成摄入，应用未测；假设树、实验事实与解释、版本隔离及评测准入边界 |
 | S005 | [[wiki/papers/harness/workflows/Tree-of-Thoughts\|Tree-of-Thoughts]] | harness/workflows | — | 完成摄入，应用未测；部分解搜索、模型误剪和最终输出选择 |
 | S006 | [[wiki/papers/harness/workflows/LATS\|LATS]] | harness/workflows | — | 完成摄入，应用未测；环境反馈、MCTS与反思，以及可回退性和oracle条件 |
+| S072 | [[wiki/papers/harness/workflows/Agentless\|Agentless]] | harness/workflows | harness/verification | 固定定位—修复—验证；补丁选择消融及生成测试的语义边界；未复现、应用未测。 |
 
 ### harness/memory · 上下文与记忆
 
@@ -75,6 +78,9 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 | S014 | [[wiki/papers/harness/tools/CodeAct\|CodeAct]] | harness/tools | optimization/finetuning | 完成摄入，应用未测；可组合代码动作、执行反馈与配套微调的区分 |
 | S015 | [[wiki/papers/harness/tools/Voyager\|Voyager]] | harness/tools | harness/memory | 完成摄入，应用未测；程序性技能获取与跨任务复用，以及环境和成功判定条件 |
 | S016 | [[wiki/papers/harness/tools/MCPMark\|MCPMark]] | harness/tools | harness/verification | 完成摄入，应用未测；有状态 MCP 任务、程序验收与重复运行可靠性 |
+| S071 | [[wiki/papers/harness/tools/SWE-agent\|SWE-agent]] | harness/tools | harness/verification | 同模型接口消融；搜索、编辑与上下文组织的贡献；未复现、应用未测。 |
+| S075 | [[wiki/papers/harness/tools/VideoSeek\|VideoSeek]] | harness/tools | harness/workflows, harness/memory | 长视频主动观察与同帧对照；证据选择、感知与推理的边界；未复现、应用未测。 |
+| S076 | [[wiki/papers/harness/tools/Toolathlon\|Toolathlon]] | harness/tools | harness/verification | 跨应用状态、对象覆盖与终态验证；单例成功和重复可靠性区别；未复现、应用未测。 |
 
 ### harness/orchestration · 编排
 
@@ -131,7 +137,7 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 
 | ID | 唯一来源页 | 主归属 | 交叉方向 | 摘要与状态 |
 | --- | --- | --- | --- | --- |
-| S042 | [[wiki/papers/optimization/pretraining/DeepSeek-V3\|DeepSeek-V3]] | optimization/pretraining | — | 完成摄入，应用未测；组合配方、MTP与扩窗，以及后训练工程结果的归因层次 |
+| S042 | [[wiki/papers/optimization/pretraining/DeepSeek-V3\|DeepSeek-V3]] | optimization/pretraining | optimization/architecture | 完成摄入，应用未测；组合配方、MLA、MTP与扩窗，以及后训练工程结果的归因层次 |
 | S043 | [[wiki/papers/optimization/pretraining/YaRN\|YaRN]] | optimization/pretraining | — | 完成摄入，应用未测；频率分段与温度扩窗，PPL/passkey证据和版本边界 |
 | S044 | [[wiki/papers/optimization/pretraining/ProLong\|ProLong]] | optimization/pretraining | — | 完成摄入，应用未测；SFT后长任务评测、长短数据混合与训练长度条件 |
 | S045 | [[wiki/papers/optimization/pretraining/Qwen2-VL\|Qwen2-VL]] | optimization/pretraining | — | 完成摄入，应用未测；动态视觉token、M-RoPE与Qwen-Agent多轮系统证据 |
@@ -146,6 +152,8 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 | S048 | [[wiki/papers/optimization/finetuning/ATLAS\|ATLAS]] | optimization/finetuning | — | 完成摄入，应用未测；完整历史上的关键步骤监督、语义选择与成本条件 |
 | S049 | [[wiki/papers/optimization/finetuning/Agent-Distillation\|Agent-Distillation]] | optimization/finetuning | harness/tools | 完成摄入，应用未测；教师前缀、离线工具蒸馏与测试时动作筛选 |
 | S050 | [[wiki/papers/optimization/finetuning/Agent-R\|Agent-R]] | optimization/finetuning | optimization/self-evolution | 完成摄入，应用未测；迭代SFT及采树重放、训练拼接、在线恢复三阶段的代码证据与边界 |
+| S073 | [[wiki/papers/optimization/finetuning/UI-TARS\|UI-TARS]] | optimization/finetuning | optimization/data-environments | GUI训练与恢复；固定步数SFT/DPO对照及评价协议限制；未复现、应用未测。 |
+| S079 | [[wiki/papers/optimization/finetuning/Reasoning-SFT-Generalization\|Reasoning-SFT-Generalization]] | optimization/finetuning | optimization/reinforcement-learning | 完成摄入，应用未测；SFT泛化的优化／数据／底座条件，保留教师信息与总预算边界。 |
 
 ### optimization/reinforcement-learning · Agentic Reinforcement Learning
 
@@ -158,13 +166,16 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 | S054 | [[wiki/papers/optimization/reinforcement-learning/Tree-GRPO\|Tree-GRPO]] | optimization/reinforcement-learning | — | 完成摄入，应用未测；共享前缀采样、树内/跨树优势和预算归因 |
 | S055 | [[wiki/papers/optimization/reinforcement-learning/Memory-R1\|Memory-R1]] | optimization/reinforcement-learning | harness/memory | 完成摄入，应用未测；分阶段记忆操作/使用学习、回答器依赖与oracle测试边界 |
 | S068 | [[wiki/papers/optimization/reinforcement-learning/C3\|C3]] | optimization/reinforcement-learning | — | 综述外补读，完成摄入；trace状态恢复、执行反事实信用和预算可靠性；应用未测 |
+| S074 | [[wiki/papers/optimization/reinforcement-learning/WebThinker\|WebThinker]] | optimization/reinforcement-learning | harness/tools, harness/orchestration | 深度浏览、报告状态与在线DPO；区分流程收益和引用可靠性；未复现、应用未测。 |
+| S077 | [[wiki/papers/optimization/reinforcement-learning/DeepSeek-R1\|DeepSeek-R1]] | optimization/reinforcement-learning | optimization/finetuning | 完成摄入，应用未测；推理RL与多阶段SFT／蒸馏配方，区分交互条件和能力归因。 |
+| S078 | [[wiki/papers/optimization/reinforcement-learning/RL-Reasoning-Capacity\|RL-Reasoning-Capacity]] | optimization/reinforcement-learning | optimization/finetuning | 完成摄入，应用未测；有限采样覆盖与成功概率，避免把经验边界写成普遍不可能性。 |
 
 ### optimization/distillation · On-Policy Distillation
 
 | ID | 唯一来源页 | 主归属 | 交叉方向 | 摘要与状态 |
 | --- | --- | --- | --- | --- |
 | S056 | [[wiki/papers/optimization/distillation/GKD\|GKD]] | optimization/distillation | — | 完成摄入，应用未测；学生前缀上的教师概率监督、散度与文本任务边界 |
-| S057 | [[wiki/papers/optimization/distillation/DAgger-LLM\|DAgger-LLM]] | optimization/distillation | — | 完成摄入，应用未测；混合环境执行与教师动作标签、实际教师比例和评测分母 |
+| S057 | [[wiki/papers/optimization/distillation/DAgger-LLM\|DAgger-LLM]] | optimization/distillation | — | 完成摄入，应用未测；混合环境执行与教师动作标签、教师执行概率和评测分母 |
 | S058 | [[wiki/papers/optimization/distillation/MAD-OPD\|MAD-OPD]] | optimization/distillation | — | 完成摄入，应用未测；讨论条件化教师分布、任务消融与理论适用前提核查 |
 | S059 | [[wiki/papers/optimization/distillation/Pi-Play\|Pi-Play]] | optimization/distillation | optimization/self-evolution | 完成摄入，应用未测；QCP特权蒸馏、GRPO及出题课程共同更新 |
 | S060 | [[wiki/papers/optimization/distillation/Self-Distillation-Zero\|Self-Distillation-Zero]] | optimization/distillation | — | 完成摄入，应用未测；SRT修订者到首次生成的蒸馏、阶段贡献与预算口径 |
@@ -184,6 +195,7 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 
 | 页面 | 内容 |
 | --- | --- |
+| [[wiki/applications/success-mechanisms\|已有应用为何有效]] | 六篇原文的机制对照、条件性瓶颈及主动验证与内化边界；与Application组会记录互链。 |
 | [[wiki/harness/workflows\|循环与工作流]] | 三类工作流的定义、优缺点与组合关系；具体实现中的反馈时点和分支恢复边界。 |
 | [[wiki/harness/memory\|上下文与记忆]] | 工作上下文与持久记忆的循环、操作与内容分类；原论文的保存、准入、取回和使用边界。 |
 | [[wiki/harness/tools\|工具、MCP 与技能]] | Tool、函数调用、MCP、工具发现与 skill 的定义和关系图解；原论文中的组合、复用与任务验收。 |
@@ -191,15 +203,15 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 | [[wiki/harness/hooks\|Hooks 与中间件]] | 判断与执行控制的协作图、政策准备与运行期对照；三类方案及执行权与误拒边界。 |
 | [[wiki/harness/verification\|验证]] | 证据、评价与用途的关系，三个维度的组合及 PRM 的位置；裁判、纠错与任务成功。 |
 | [[wiki/harness/connections\|Harness 跨模块联系与阶段性理解]] | 基于综述第 4 章的组会图解成果：共享记录何时成为依据、封装动作由何处约束、主动验收如何区分介入前后结果；未查新或实验。 |
-| [[wiki/optimization/architecture\|架构基础]] | 表示历史、访问证据与计算成本。 |
-| [[wiki/optimization/data-environments\|数据与环境合成]] | 生成对象、真实执行与筛选后的分布。 |
-| [[wiki/optimization/pretraining\|预训练与中期训练]] | 扩窗、数据配方、感知与代理指标。 |
-| [[wiki/optimization/finetuning\|微调]] | 状态来源、监督位置与环境继续执行。 |
-| [[wiki/optimization/reinforcement-learning\|Agentic Reinforcement Learning]] | 反馈、局部信用、采样与交互课程。 |
-| [[wiki/optimization/distillation\|On-Policy Distillation]] | 学生状态、教师权限与最终入训过滤。 |
-| [[wiki/optimization/self-evolution\|自我演化]] | 任务、轨迹、模型共同更新及真值锚点。 |
+| [[wiki/optimization/architecture\|架构基础]] | 显式、压缩与混合的分层图解；MLA 的压缩对象，以及生成、缓存和算子效率的区别。 |
+| [[wiki/optimization/data-environments\|数据与环境合成]] | 任务—环境—轨迹的关系图解；课程、环境类型与轨迹加工维度，以及执行、标签和筛选分布的边界。 |
+| [[wiki/optimization/pretraining\|预训练与中期训练]] | 训练阶段、三类基础能力与数据策略的层次图解；原论文机制和代理指标的边界。 |
+| [[wiki/optimization/finetuning\|微调]] | SFT的行为塑造与冷启动；数据／课程／蒸馏配合、条件化泛化及与RL／OPD的分工。 |
+| [[wiki/optimization/reinforcement-learning\|Agentic Reinforcement Learning]] | RL训练闭环与四个设计维度；推理RL／Agentic RL交互条件、能力测量及原论文归因边界。 |
+| [[wiki/optimization/distillation\|On-Policy Distillation]] | 学生轨迹上的监督回路、两类监督路线与训练阶段关系；原论文的状态覆盖和教师权限。 |
+| [[wiki/optimization/self-evolution\|自我演化]] | 经验回写的外层循环；离线、在线与共同演化的关系及真值锚点。 |
 | [[wiki/harness/Questions\|harness问题与关闭依据]] | 两轮讨论后保留的材料问题、反对证据与关闭理由。 |
-| [[wiki/optimization/Questions\|optimization问题与关闭依据]] | 两轮讨论后保留的材料问题、反对证据与关闭理由。 |
+| [[wiki/optimization/Questions\|Optimization问题与讨论]] | 本次3个RL问题＋6个宏观问题；另保留第一轮材料问题、反证与关闭依据。 |
 
 ## 维护入口
 

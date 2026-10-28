@@ -1,0 +1,330 @@
+{
+  "title": "Long-Horizon Agents",
+  "subtitle": "Foundation 与 Harness",
+  "prepared": "2026-10-28",
+  "font": "Microsoft YaHei",
+  "size": [
+    1280,
+    720
+  ],
+  "slides": [
+    {
+      "type": "cover",
+      "section": "第一次组会 · 综述阅读与讨论",
+      "title": "Long-Horizon\nAgents",
+      "subtitle": "Foundation 与 Harness",
+      "lead": "Long-Horizon Tasks 的决策依赖与运行机制",
+      "source": "基于 Towards Long-Horizon Agents: A Survey（S001）",
+      "notes": "本次汇报 Foundation 与 Harness，预计约 13 分钟。Foundation 约 3–4 分钟，Harness 约 10 分钟。后续补充 Model Optimization、Application 与 Frontier。主要来源为本地 raw/surveys/Towards Long-Horizon Agents.pdf（S001），SHA-256 C62DA7E66A4C3F7251ED8B450F51DF6500B2F850C7C70853779614E3D780E738。"
+    },
+    {
+      "type": "table",
+      "section": "01  Foundation · 概念",
+      "title": "Long-Horizon Tasks 具有持续的决策依赖",
+      "lead": "前序决策影响后续行动，环境反馈可能要求修订计划。",
+      "headers": [
+        "Task Level",
+        "新增要求",
+        "Capability"
+      ],
+      "rows": [
+        [
+          "H1  Intra-Context Tasks",
+          "单个 Context 内持续交互",
+          "C1  Intra-Context\nInteractive Reasoning"
+        ],
+        [
+          "H2  Cross-Context Tasks",
+          "跨 Context / Session\n保存约束与进度",
+          "C2  Cross-Context\nState and Memory"
+        ],
+        [
+          "H3  Cross-Task Streams",
+          "后续任务利用已有经验",
+          "C3  Cross-Task\nExperience Accumulation"
+        ]
+      ],
+      "widths": [
+        330,
+        350,
+        440
+      ],
+      "takeaway": "独立批处理主要增加工作量；诊断、修改与测试则形成相互依赖的决策。",
+      "source": "综述框架：S001 §2.1–2.2，PDF pp.7、9–11；批处理辨析：§2.4.1，p.13",
+      "notes": "约 60 秒。Long-Horizon 依据相互依赖的决策与持续交互定义，时长或调用次数不能单独判定。H1–H3 是本综述的操作性框架，C2 在 C1 基础上增加状态延续，C3 增加跨任务经验积累。层级判断还需说明窗口与交接条件。批处理与调试的比较是教学例子。来源：S001 §2.1 PDF pp.7、9，§2.2 pp.10–11，§2.4.1 p.13；wiki/foundations/Formalization.md。 H1–H3 与 C1–C3 的英文名称按原文 Fig.3（PDF p.10）保留。Context Window 的容量与 Handoff 条件会影响层级判断。",
+      "tableTop": 220,
+      "tableHeight": 320,
+      "fontSize": 24
+    },
+    {
+      "type": "formula-loop",
+      "section": "01  Foundation · 概念",
+      "title": "Agent–Environment Loop",
+      "lead": "",
+      "takeaway": "",
+      "source": "S001 §2.1, Eq.1 与 Agent–Environment Loop, PDF p.9；依据 Formalization.md 重绘的简化示意",
+      "notes": "约 75 秒。沿横向流程解释 Environment State s_t、Observation o_t、Context c_t、Action a_t 与下一 Environment State s_{t+1}。Q 表示 Task Specification，History 包括 o_{0:t} 与 a_{0:t-1}；本轮 Observation 已到来，Action 尚未提出。四个公式分别对应 Observation、Context Construction、Action Selection 与 State Transition。πθ 是 Base Policy，ℋ 是 Harness，⊕ 表示 Runtime Coupling。图中的 Validation & Execution 是原文式外说明的 Harness 职责，并不意味着 ℋ 只负责构造 Context。返回线表示 t 更新为 t+1 后重复该过程，直至 Termination；省略了拒绝、失败重试及并行调度。箭头是过程顺序，State Transition 仍同时依赖 s_t 与 a_t。来源：S001 §2.1 PDF p.9，Eq.1 与 Agent–Environment Loop；wiki/foundations/Formalization.md。",
+      "formulas": [
+        "\\mathrm{Agent}=\\pi_{\\theta}\\oplus\\mathcal{H}",
+        "o_t\\sim Z(\\cdot\\mid s_t)",
+        "c_t=\\mathcal{H}(o_{0:t},a_{0:t-1},Q)",
+        "a_t\\sim\\pi_{\\theta}(\\cdot\\mid c_t)",
+        "s_{t+1}\\sim\\Psi(\\cdot\\mid s_t,a_t)"
+      ]
+    },
+    {
+      "type": "table",
+      "section": "01  Foundation · 概念辨析",
+      "title": "Long-Horizon 与相邻概念描述不同维度",
+      "lead": "同一 Agent 可以同时具有这些性质。",
+      "headers": [
+        "概念",
+        "主要维度",
+        "关键区别"
+      ],
+      "rows": [
+        [
+          "Long-Horizon Agent",
+          "相互依赖决策的\n持续推进能力",
+          "通过交互维持推理，并按需延续\nState / Memory、积累跨任务经验"
+        ],
+        [
+          "Long-Running Agent",
+          "执行时长与持续运行",
+          "可运行数天，但各步骤仍相互独立；\n长时间运行不等于复杂的决策依赖"
+        ],
+        [
+          "Autonomous Agent",
+          "人工参与与控制程度",
+          "Long-Horizon Agent 可保留人工审批；\n高 Autonomy 也可能只完成短任务"
+        ],
+        [
+          "Self-Evolving Agent",
+          "经验驱动的持久改变\n旨在改善后续表现",
+          "H1 / H2 不要求持久自我改变；\nH3 / C3 与 Self-evolution 高度重叠"
+        ]
+      ],
+      "widths": [
+        315,
+        260,
+        545
+      ],
+      "fontSize": 23,
+      "tableTop": 222,
+      "tableHeight": 340,
+      "takeaway": "三个相邻概念都不能单独说明系统能否完成 Long-Horizon Tasks。",
+      "source": "综述概念辨析：S001 §2.4.1–2.4.3, Fig.5, PDF pp.13–15",
+      "notes": "约 60 秒。依据综述 §2.4 的三个相邻概念组织。Long-Horizon 关注任务依赖所要求的 C1–C3 能力；Long-Running 关注执行时长与恢复，可运行很久但各步逻辑解耦。Autonomous 关注人工参与和控制程度，属于治理维度，不直接衡量任务能力；Long-Horizon Agent 可以保留 Approval Checkpoints。Self-Evolving 指经验驱动的持久系统改变，以改善未来表现，改变对象包括 Parameters、Memory、Tools、Topology，并不限于模型权重。H1 / H2 不以 Self-evolution 为必要条件，但并非所有 H1 / H2 系统都固定不变。H3 / C3 与 Self-evolution 高度重叠，综述把 Self-evolution 视为实现 C3 的一种机制，不能把它们画成互斥集合。四行描述不同维度，既不是四类互斥产品，也不是能力升级顺序。来源：S001 §2.4.1 p.13；§2.4.2 pp.13–14；§2.4.3 与 Fig.5 p.14；本节结语 p.15。"
+    },
+    {
+      "type": "table",
+      "section": "02  Harness · 总览",
+      "title": "Harness 由六类运行机制组成",
+      "lead": "六类机制分别组织执行、管理状态，并约束和评估行动。",
+      "headers": [
+        "机制",
+        "职责",
+        "典型内容"
+      ],
+      "rows": [
+        [
+          "Loops and Workflows",
+          "组织执行过程",
+          "单 Trajectory、显式计划、候选比较"
+        ],
+        [
+          "Context and Memory",
+          "管理决策所需状态",
+          "Working Context / Persistent Memory"
+        ],
+        [
+          "Tools, MCP, and Skills",
+          "接入外部能力并复用过程",
+          "Function Calling、组合与复用"
+        ],
+        [
+          "Orchestration",
+          "分配工作并协调交接",
+          "角色、通信与结果聚合"
+        ],
+        [
+          "Hooks and Middleware",
+          "落实执行约束",
+          "放行、阻止或转交"
+        ],
+        [
+          "Verification",
+          "评估行为与结果",
+          "Correctness / Safety / Faithfulness"
+        ]
+      ],
+      "widths": [
+        325,
+        350,
+        445
+      ],
+      "tableTop": 210,
+      "tableHeight": 355,
+      "fontSize": 22.5,
+      "takeaway": "模块交接涉及记录的采用、动作的约束和结果的确认。",
+      "source": "综述分类：S001 §4、Table 2，PDF pp.20–21；交接视角为讨论归纳",
+      "notes": "约 40 秒。六类机制是职责分类，不是每次运行必须依次执行的六个步骤。实际实现可能同时承担多个职责。后续讨论聚焦跨模块交接中的依据采用、约束覆盖和结果归属。来源：S001 §4 PDF p.20、Table 2 p.21；wiki/harness/Overview.md。"
+    },
+    {
+      "type": "harness-map",
+      "section": "02  Harness · 运行结构",
+      "title": "Harness 围绕 Agent Loop 组织执行",
+      "source": "依据 S001 §4, Table 2, PDF pp.20–21 重绘；连线表示简化职责关系，不限定实现顺序",
+      "notes": "约 60 秒。结构按 S001 §4 总览与 Table 2（PDF pp.20–21）重绘，并参考 wiki/harness/Overview.md。上层 Orchestration 超出单个 Agent Loop，负责任务分解、角色分配、路由和协调。Loops and Workflows 决定 Model Call、Action、Observation、检查与状态更新的控制顺序，可以采用 Linear、Plan-Execute 或 Branching，不是固定流水线。Context and Memory 管理本轮 Working Context 与跨窗口、任务、Session 的 Persistent Memory。Base Policy 提出 Action。Hooks and Middleware 在预定义执行点提供检查、修改、暂停、阻止或转交，图中只示意 Action 执行前的一个位置。Tools, MCP, and Skills 接入外部能力并复用过程。Environment 返回 Observation，供后续 Context 更新。Verification 可以评估 State、Action、Output 与 Side Effects，不只在末尾验收；虚线表示检查与控制反馈关系，不是必经执行步骤。其结果进入后续继续、修订或接受结果的控制。Hooks 与 Verification 职责可由同一函数共同实现，图中的分区不表示六个独立进程。此图为综述内容的教学归纳，非原论文系统架构图。",
+      "map": {
+        "orchestration": [
+          "Orchestration",
+          "分解任务 · 分配角色 · 协调交接"
+        ],
+        "workflow": [
+          "Loops and Workflows",
+          "安排调用、计划与分支"
+        ],
+        "context": [
+          "Context and Memory",
+          "Working Context\nPersistent Memory"
+        ],
+        "policy": [
+          "Base Policy",
+          "提出 Action"
+        ],
+        "hooks": [
+          "Hooks and Middleware",
+          "检查 · 阻止 · 修改 · 转交"
+        ],
+        "tools": [
+          "Tools, MCP, and Skills",
+          "接入能力 · 复用过程"
+        ],
+        "verification": [
+          "Verification",
+          "评价 State / Action / Output"
+        ]
+      }
+    },
+    {
+      "type": "columns",
+      "section": "02  Harness · Context and Memory",
+      "title": "Context 与 Memory 共同管理决策依据",
+      "lead": "Working Context 包含本轮可见信息，Persistent Memory 保存跨窗口或任务的记录。",
+      "columns": [
+        [
+          "Working Context",
+          "本轮模型可见的信息",
+          "Discard：移除低价值或过时内容\nCompress：保留约束、进度与失败线索\nSelect：按需取回相关记录"
+        ],
+        [
+          "Persistent Memory",
+          "跨 Context Window / Task 保留记录",
+          "Factual Memory：事实、规则\nExperiential Memory：案例、教训\nWrite / Maintain / Retrieve"
+        ]
+      ],
+      "takeaway": "Memory Retrieval 还需考虑记录的有效期与适用条件。",
+      "source": "概念：S001 §4.2、Fig.8，PDF pp.23–26；接受条件是跨节讨论归纳",
+      "notes": "约 60 秒。Working Context 与 Persistent Memory 按运行时用途区分。规则文件在磁盘上是持久记录，加载后也成为本轮 Context。Fig.8 中 Discard、Compress、Select 对应正文的 Context Discard、Context Compression、Context Selection，可组合使用。Factual Memory 与 Experiential Memory 是内容分类；文本、图或代码是表示形式。Memory Operations 包括 Write、Maintain、Retrieve。Memory Retrieval 不代表记录已被正确理解或适当使用。来源：S001 §4.2、Fig.8 PDF pp.23–26；wiki/harness/memory.md。"
+    },
+    {
+      "type": "table",
+      "section": "02  Harness · Verification / Hooks and Middleware",
+      "title": "Verification 形成评价，Hooks 控制执行",
+      "lead": "检查对象可以重叠，主要区别在评价与执行控制。",
+      "headers": [
+        "对比维度",
+        "Verification",
+        "Hooks and Middleware"
+      ],
+      "rows": [
+        [
+          "核心职责",
+          "评价是否满足要求\nCorrectness / Safety / Faithfulness",
+          "在执行边界落实约束\nAllow / Block / Hand-off"
+        ],
+        [
+          "作用对象",
+          "State、Action、推理步骤与 Output",
+          "输入、Tool Call 与协议交互等\n执行边界上的数据和动作"
+        ],
+        [
+          "调用与干预",
+          "按检查策略调用\nStep-level / End-of-run",
+          "到达预设 Lifecycle Point 时调用\n满足 Policy / 风险条件时干预"
+        ],
+        [
+          "结果用途",
+          "判断、评分或诊断\n支持搜索、修订与验收",
+          "放行、阻止、修改、暂停或转交\n直接影响后续执行"
+        ]
+      ],
+      "widths": [
+        180,
+        470,
+        470
+      ],
+      "fontSize": 23,
+      "tableTop": 222,
+      "tableHeight": 340,
+      "takeaway": "Verification 可由 Hook 调用，同一实现可同时承担评价与控制。",
+      "source": "职责对比归纳：S001 §4.5–4.6, PDF pp.31–34、36–37",
+      "notes": "约 60–70 秒。本页按职责对比，不按互斥对象分类。Verification 不仅评价最终 Output，也可检查 State、Action 的 Safety 和中间推理质量；可形成判断、评分或诊断，用于搜索选择、修订和验收。Hooks 提供执行路径上的可编程介入位置，并把 Policy 或风险判断落实为 Allow / Block / Hand-off 等控制。必须区分调用与干预：到达预设 Lifecycle Point 时可调用 Hook；是否阻止、修改或转交取决于具体条件。Pre-defined Rule-based Hooks 和 Custom User-defined Hooks 的条件来源分别是框架规则与部署者 Policy；Runtime-adaptive Hooks 可从 Uncertainty、行为变化与威胁变化等 Runtime Signals 形成触发条件，不能把所有 Hooks 都说成固定规则。Verification 的调用由 Workflow / 检查策略组织，可在 Step-level 或 End-of-run 介入，不以已经发生违规为前提。Step-level 不等于一定在动作之后，Safety Verification 可以在执行之前进行。评价对象和时点都可能重叠；同一函数可同时形成判断并执行控制。表格是对 S001 职责的归纳，不要求分成两个独立模块。综述 §4.5.3 的部分不确定性方法仅输出风险信号，因此表中 Hooks 的控制职责是系统接口层面的概括，实际仍需检查判断是否接入执行机制。来源：S001 §4.5 pp.31–34；§4.6 p.34；§4.6.2–4.6.3 pp.36–37；wiki/harness/hooks.md 与 wiki/harness/verification.md。"
+    },
+    {
+      "type": "timeline",
+      "section": "基于综述的拓展思考",
+      "title": "共享记录应保留结论的成立条件",
+      "lead": "示意：Branch A 解读实验，Branch B 根据共享记录撰写总结。",
+      "steps": [
+        [
+          "Branch A",
+          "假设模型与预算一致\n提升暂归因于 Memory",
+          "带条件的候选解释"
+        ],
+        [
+          "写入 Memory",
+          "压缩后只保留\n“Memory 提升性能”",
+          "原假设与判断状态丢失"
+        ],
+        [
+          "Branch B",
+          "将记录直接写成论文结论\n未再核对原实验条件",
+          "候选解释被当成事实"
+        ]
+      ],
+      "takeaway": "长任务会反复复用 Memory，局部判断的误用可能沿后续决策传播。",
+      "boundary": "共享记录要同时保留证据、成立条件和判断状态。",
+      "source": "拓展思考 · 示意情境；机制依据：S001 §4.1.3 p.22、§4.2.2 p.26、§4.4.4 pp.30–31",
+      "notes": "简短讲稿（约 45–60 秒）：\n这一页关注的是，局部判断在共享后，会不会被当成确定事实。比如 Branch A 只是暂时把性能提升归因于 Memory，但写入 Memory 时，原来的假设被省略了。Branch B 再取回，就可能直接把它写成论文结论。长任务会反复复用这些记录，因此一次条件丢失可能影响后续多个判断。由此得到的思考是：共享记录除了保存结论，还应保留证据、成立条件，以及它是候选解释还是已确认事实。\n\n补充说明与来源：\n约 75–90 秒。核心问题：一个 Branch 的候选解释经过 Memory 写入和检索后，会不会被另一执行者当成已确认事实？本页把讨论记录 C.1 的文献整理情境具体化：Branch A 在模型与预算一致的假设下，暂将性能提升解释为 Memory 的作用；压缩后的共享记录只保留“Memory 提升性能”；Branch B 写总结时省略了原假设，并把候选解释当作论文结论。该情境是为讲解构造的示意，不对应任何实际论文实验，模型与预算一致也不是完成因果归因的充分条件。讨论价值在于 Long-Horizon Tasks 的后续步骤会反复取回并使用记录，条件遗漏可能随多次复用传播。思考落点：记录不仅要保存结论，还要保存支持它的证据、成立条件和当前判断状态；取回时区分参考候选解释与采用已确认事实。及时共享可靠观察仍有价值，不主张所有 Branch 隔离或等全部结束再共享。来源：组会/2026-10-28-Harness/讨论记录.md C.1、E；S001 §4.1.3 p.22、§4.2.2 p.26、§4.4.4 pp.30–31。"
+    },
+    {
+      "type": "timeline",
+      "section": "基于综述的拓展思考",
+      "title": "Verification 也可能改变任务的完成状态",
+      "lead": "示意：验收要求是“检查开始前，笔记文件已保存”。",
+      "steps": [
+        [
+          "Agent 执行结束",
+          "草稿只在内存\n目标文件尚未保存",
+          "尚未满足验收要求"
+        ],
+        [
+          "Verifier 介入",
+          "检查时先保存草稿\n再读取文件确认",
+          "检查同时补做了任务"
+        ],
+        [
+          "汇总结果",
+          "若只报告“任务完成”\n就会掩盖这次补做",
+          "完成结果包含介入贡献"
+        ]
+      ],
+      "takeaway": "Verifier 能调用 Tool 时，验收过程也可能改变被评价的结果。",
+      "boundary": "记录介入前后的达标状态，区分原执行与检查修复的贡献。",
+      "source": "拓展思考 · 示意情境；机制依据：S001 §4.6.2, PDF p.36；讨论记录 §C.3",
+      "notes": "简短讲稿（约 40–50 秒）：\n这一页关注的是，Verifier 可能在检查过程中补做任务。比如 Agent 只写出了草稿，没有保存；Verifier 检查时先保存，再确认文件存在。如果最后只记录“任务完成”，就容易把检查时补做的部分也算到原 Agent 身上。主动检查和修复本身有价值，但评价时应区分原执行的结果和介入后的结果，只记录会改变达标状态的动作。\n\n补充说明与来源：本页来自讨论记录 C.3 的保存情境，是基于综述的拓展思考，不是论文报告的实验。S001 §4.6.2 PDF p.36 说明 Agentic Verifiers 能推理、调用 Tool，并主动探查 Environment。保存动作改变了“指定文件已保存”这一验收要求的达标状态，介入后的文件存在不能反推介入前已完成。若系统明确授权检查并修复，可以报告整体完成，但应保留补做贡献；无须禁止 Verifier 行动，也不必追踪不影响任务判定的焦点或访问记录变化。该情境只讨论保存要求，不证明文件内容正确或整项任务完成。来源：组会/2026-10-28-Harness/讨论记录.md C.3；S001 §4.6.2 p.36。"
+    }
+  ]
+}

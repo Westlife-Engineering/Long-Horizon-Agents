@@ -3,7 +3,7 @@ type: paper
 primary_direction: optimization/distillation
 source_id: S057
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-28
 reading_status: targeted-fulltext-read
 ingest_status: complete
 sources:
@@ -76,3 +76,11 @@ GRPO在293任务SkyRL-v0子集、8采样/题上训练；与DAgger不同数据、
 ## 分类与阅读入口
 
 主归属与交叉方向：[[wiki/optimization/distillation|optimization/distillation]]。
+
+## 2026-10-28：RL问题讨论定向回读
+
+本轮读取：pp.1–9、p.16、pp.17–18；视觉核对p.4 Eqs.8–13、p.7 Table3、p.8 Figs.1–2／Table4、p.17 F.1。未核读其余全部附录／源码，未复现实验；旧读取与实现核查记录保留。
+
+DAgger-style在每交互步独立选执行者，β按训练迭代调度；1.0／0.8／0.6是设定教师执行概率，非实测占比。混合采集与有效提交过滤限制纯学生失败覆盖的解释；最终解决率和reverse KL尚不独立识别恢复能力。 [[raw/papers/optimization/distillation/DAgger-LLM.pdf#page=4|§3.2、F.1–F.2 · pp.4–5、17–18]]
+
+已用于 [[wiki/optimization/Questions#从综述自然引出的三个RL问题|三个RL问题]]；形成过程与范围见 [[组会/2026-10-28-Optimization-RL/README|本轮组会]]。

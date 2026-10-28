@@ -30,7 +30,7 @@ sources:
 | 原文件名 | `Dong 等 - Towards Long-Horizon Agents A Survey.pdf` |
 | 版本依据 | 用户提供的本地版本，以 SHA-256 区分；该综述本身的 DOI、arXiv 版本号、正式发表日期未确认，不用 PDF 创建时间代替 |
 | SHA-256 | `C62DA7E66A4C3F7251ED8B450F51DF6500B2F850C7C70853779614E3D780E738` |
-| 读取日期 | 2026-10-19；2026-10-24 补读 Foundation；2026-10-25 为选文核读 §4–5 与参考文献；2026-10-26 回读 §4.1–4.2；2026-10-27 回读 §4.3–4.6；2026-10-28 为组会跨模块讨论核读 §4 |
+| 读取日期 | 2026-10-19；2026-10-24 补读 Foundation；2026-10-25 为选文核读 §4–5 与参考文献；2026-10-26 回读 §4.1–4.2；2026-10-27 回读 §4.3–4.6；2026-10-28 为组会跨模块讨论核读 §4，回读 §5.1–5.7，完整核读 §6 |
 | 阅读状态 | 整体为地图式阅读（map-read）；§2 已做问题驱动精读，不是全文逐项精读 |
 
 身份以 [[raw/surveys/Towards Long-Horizon Agents.pdf#page=1|原文首页]] 为准。本次核读摘要、目录、引言、核心定义与层级、演进主线，选读 §4–5 的组件/训练阶段入口和与笔记有关的正文，阅读 §6 应用定义与评测总述、§7 前沿及 §8 结论。重点核对 Fig.1、Fig.2、Fig.3、Eq.1 与 Table 8 的页面图像。
@@ -51,7 +51,25 @@ sources:
 
 2026-10-28 为 [[组会/2026-10-28-Harness/README|Harness 组会讨论]] 核读第 4 章正文：从 PDF p.20 章节标题至 p.37 第 5 章之前，并查看 Fig.7–10 与 Table 4。三个同模型子任务分别核对相关原页，两轮提案与互评后，主 Agent 将共享记忆的接受范围、工具封装的约束位置及主动验收的结果归属提炼到 [[wiki/harness/connections|跨模块联系与阶段性理解]]。它们是本库归纳、假设与教学情境，未追读原论文、未联网查新或实验；各角色实际页段与修订见组会记录。
 
-**尚未完成：**§4–6 全部方法细节、所有图表、全部参考文献的逐项核验。本次提取文本只用于定位，未作为新的原始来源。本文引用使用 PDF 页码；已使用的正文位置与印刷页码一致。
+同日参考用户提供的“解释 MLA 优势”对话，回读 §5.1（PDF pp.37–40），查看 Fig.11 页面图像；在 [[wiki/optimization/architecture|架构基础]] 重排显式上下文、压缩状态、混合与高吞吐的分层解释，补充 MLA 压缩对象和代表性例子。关系图、状态更新图与分类辨析为本库教学重组；MLA 和 MTP 的细节另回读库内 S042 DeepSeek-V3，未新增来源或实验。
+
+同日参考用户提供的“综述5.2层次解析”对话，回读 §5.2（PDF pp.40–43），查看 p.42 页面图像；在 [[wiki/optimization/data-environments|数据与环境合成]] 以关系图和简表说明三个合成对象的配合、课程的独立调节维度、环境的分类依据与轨迹的四项改进。图示、概念辨析和修复任务例子标为本库归纳／教学情境；保留已有原论文比较，未新增来源或实验。
+
+同日参考用户提供的“解析综述5.3”对话，回读 §5 总述（PDF p.37）、§5.3 及 §5.4 开头（pp.43–45），查看 p.44 页面图像；在 [[wiki/optimization/pretraining|预训练与中期训练]] 区分训练阶段、三类基础能力和横跨能力的数据策略，解释任务工作状态与长度边界。关系图、概念辨析和论文核对例子为本库教学整理；LongWriter、OPUS 仅保留综述转述身份，未新增来源或实验。
+
+同日参考用户提供的“解析综述54内容”对话，回读 §5.4（PDF pp.45–47）、§5 总览（p.37）及 §5.6 导言（p.52），查看 Fig.11（p.39）。在 [[wiki/optimization/finetuning|微调]] 以关系图、简表说明行为塑造与冷启动、选择／课程／蒸馏的配合、蒸馏来源与过程结构的区别，以及学生状态覆盖的局限；图示与分类辨析为本库归纳。监督位置另回核库内 S048、S049 原文 p.4；未新增学术来源或实验。
+
+同日参考用户提供的“解析综述5.5”完整对话，回读 §5 总述（PDF p.37）、§5.5（pp.47–52）及 §5.6 导言（p.52），查看 Fig.12 与 Table 6。在 [[wiki/optimization/reinforcement-learning|Agentic Reinforcement Learning]] 用闭环图和简表说明阶段定位、四个设计维度及其可组合关系，区分评价标准、反馈粒度与更新单位。图示、分类辨析和修复例子为本库教学重组；保留原论文比较，未新增来源或实验。
+
+同日参考用户提供的“综述57层次解析”完整对话，回读 §5.7（PDF pp.53–55）、§5 总述与 Table 5（pp.37–38）、§5.2.1（p.41）及 §5.6.1–5.6.2（p.53），查看 Fig.11、Fig.13。在 [[wiki/optimization/self-evolution|自我演化]] 用闭环图与简表解释外层训练循环、离线／在线的组织方式和共同演化的更新对象；图示、维度辨析与代码修复例子为本库教学归纳。保留已有原论文比较，未新增来源或实验。
+
+同日参考用户提供的“解析综述5.6内容”对话，回读 §5 总览（PDF p.37）、§5.6 及 §5.7 入口（pp.52–54），查看 pp.52–53 页面图像。在 [[wiki/optimization/distillation|On-Policy Distillation]] 用监督回路与简表解释学生状态分布、教师指导／自我改进及其与 SFT、RL、自我演化的关系；区分监督调度与信号构造、特权信息与环境反馈。图示与关系辨析为本库归纳；另回核库内 GKD、DAgger-LLM、π-Play、SD-Zero 的相关机制页，保留文本前缀与环境状态的区别，未新增来源或实验。
+
+2026-10-28 为 [[组会/2026-10-28-Application/README|Application组会]] 完整核读 §6（PDF pp.55–67，第7节之前，含§6.6及Table7），查看Fig.14（p.57），回看§4与§5总述（pp.20、37）。以六篇原论文进行定向核查，形成 [[wiki/applications/success-mechanisms|已有应用的成功机制与瓶颈]]；本轮完整读取的是综述第6节，不表示逐项核验其全部引文。原始结果与推断分开，未复现实验，也不以本轮案例外推通用Agent所有子类。
+
+2026-10-28 为 [[组会/2026-10-28-Optimization-RL/README|Optimization-RL组会]] 再核读完整§5（PDF pp.37–55，截至§6标题前），查看Table5 p.38、Fig.11 p.39、Fig.12 p.47、Table6 p.49、Fig.13 p.54。将七节以“训练条件—能力形成与适配—经验改进循环”组织到 [[wiki/optimization/Overview|Optimization总览]]；该关系是本库教学归纳，原节号与证据身份保留。另定向核读7篇原论文（4篇库内回读、3篇新增）支持 [[wiki/optimization/Questions#2026-10-28：从整体理解转向RL提问|三个RL问题与六个宏观问题]]；不表示逐项核验本综述全部引文，原论文版本／范围见各唯一页，未复现实验。
+
+**尚未完成：**§4–6 所引全部方法的细节、全篇所有图表和全部参考文献的逐项核验。本次提取文本只用于定位，未作为新的原始来源。本文引用使用 PDF 页码；已使用的正文位置与印刷页码一致。
 
 ## 本文研究什么
 
@@ -68,6 +86,12 @@ sources:
 | 控制单位从提示、上下文扩展到整条运行轨迹，阶段相互嵌套 | [[raw/surveys/Towards Long-Horizon Agents.pdf#page=15\|§3 · Table 1 · pp.15–16]] | [[wiki/foundations/Evolution\|Evolution]] |
 | Harness 分为循环/工作流、上下文/记忆、工具/MCP/技能、编排、hooks/中间件、验证 | [[raw/surveys/Towards Long-Horizon Agents.pdf#page=20\|§4 · p.20]] | [[wiki/harness/Overview\|Harness]] |
 | Optimization 按架构基础及六个能力发展环节组织 | [[raw/surveys/Towards Long-Horizon Agents.pdf#page=37\|§5 · p.37]] | [[wiki/optimization/Overview\|Optimization]] |
+| 架构按历史表示与运行效率区分；MLA 保留逐 token 访问，Hybrid 组合显式访问与压缩状态 | [[raw/surveys/Towards Long-Horizon Agents.pdf#page=38\|§5.1 · pp.38–40]] | [[wiki/optimization/architecture\|架构基础]] |
+| 任务、环境与轨迹是三个耦合对象；课程正交调节难度，环境按转移与反馈机制分类，轨迹沿四个方向加工 | [[raw/surveys/Towards Long-Horizon Agents.pdf#page=40\|§5.2 · pp.40–43]] | [[wiki/optimization/data-environments\|数据与环境合成]] |
+| 预训练／中期训练形成推理、长上下文状态与感知基础；数据选择、配比与结构横跨这些能力 | [[raw/surveys/Towards Long-Horizon Agents.pdf#page=43\|§5.3 · pp.43–45]] | [[wiki/optimization/pretraining\|预训练与中期训练]] |
+| SFT 通过轨迹模仿塑造行为；选择、课程与蒸馏共同设计监督分布，覆盖仍受示范限制 | [[raw/surveys/Towards Long-Horizon Agents.pdf#page=45\|§5.4 · pp.45–47]] | [[wiki/optimization/finetuning\|微调]] |
+| Agentic RL 从信用、更新、采样和交互结构四个维度组织长程策略学习 | [[raw/surveys/Towards Long-Horizon Agents.pdf#page=47\|§5.5、Fig.12、Table 6 · pp.47–52]] | [[wiki/optimization/reinforcement-learning\|Agentic Reinforcement Learning]] |
+| 自我演化将自身经验回写训练；离线、在线与 Agent–环境共同演化可衔接，持续进步仍受验证和优化约束 | [[raw/surveys/Towards Long-Horizon Agents.pdf#page=54\|§5.7、Fig.13 · pp.53–55]] | [[wiki/optimization/self-evolution\|自我演化]] |
 | 五类应用按环境接口划分；评测需要考虑跨度与模型/harness/训练的共同影响 | [[raw/surveys/Towards Long-Horizon Agents.pdf#page=56\|§6 · p.56]]；[[raw/surveys/Towards Long-Horizon Agents.pdf#page=64\|§6.6 · pp.64–65]] | [[wiki/applications/Overview\|Application]] |
 | 作者的开放方向分为 evolution、effectiveness、efficiency、trustworthiness 四条轴 | [[raw/surveys/Towards Long-Horizon Agents.pdf#page=68\|§7 · Table 8 · pp.67–68]] | [[wiki/frontier/Overview\|Frontier]] |
 

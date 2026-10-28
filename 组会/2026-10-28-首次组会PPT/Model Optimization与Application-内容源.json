@@ -1,0 +1,216 @@
+{
+  "title": "Model Optimization 与 Application",
+  "prepared": "2026-10-28",
+  "font": "Microsoft YaHei",
+  "size": [
+    1280,
+    720
+  ],
+  "slides": [
+    {
+      "type": "table",
+      "section": "03  Model Optimization · 总览",
+      "title": "Model Optimization：能力怎样进入策略",
+      "lead": "按作用重组第 5 章：训练条件、能力形成与经验改进循环。",
+      "headers": [
+        "层次",
+        "综述中的环节",
+        "核心作用"
+      ],
+      "rows": [
+        [
+          "训练条件",
+          "Architectural Substrate\nData and Environment Synthesis",
+          "承载长历史\n提供可执行、可验证的经验"
+        ],
+        [
+          "能力基础",
+          "Pre-training / Mid-training",
+          "形成推理、状态利用与感知基础"
+        ],
+        [
+          "行为适配",
+          "Fine-tuning / Agentic RL\nOn-Policy Distillation",
+          "利用示范、回报与指导更新策略\n关注实际访问的状态"
+        ],
+        [
+          "经验改进循环",
+          "Self-evolution",
+          "把当前表现转成下一轮经验\n可进一步调整任务与环境"
+        ]
+      ],
+      "widths": [
+        210,
+        450,
+        460
+      ],
+      "tableTop": 222,
+      "tableHeight": 340,
+      "fontSize": 23,
+      "takeaway": "这些环节可组合；章节顺序不规定每个系统的训练顺序。",
+      "source": "综述依据：S001 §5、Table 5、Fig.11，PDF pp.37–55；层次划分为本库教学归纳",
+      "notes": "约60秒。承接Harness：外部运行机制帮助完成任务，Model Optimization讨论这些行为怎样进入参数或可训练模块。表格将本库三层关系中的能力形成拆成基础与适配两行，便于呈现；它不是作者提出的新分类。架构和数据/环境是支撑条件，Self-evolution是跨轮组织，不能把七节当作七种同层级算法。SFT、RL、OPD可配合，OPD强调在当前学生相关状态上提供监督，不能概括为RL仅有稀疏奖励、OPD指导总是正确。\n来源：raw/surveys/Towards Long-Horizon Agents.pdf，S001，§5总述p.37，Table5 p.38，Fig.11 p.39，§5.3–5.7 pp.43–55。PDF页码与本文印刷页码一致。SHA-256 C62DA7E66A4C3F7251ED8B450F51DF6500B2F850C7C70853779614E3D780E738。\n知识入口：wiki/optimization/Overview.md。"
+    },
+    {
+      "type": "optimization-map",
+      "section": "03  Model Optimization · 关系图",
+      "title": "训练更新与经验反馈的关系",
+      "lead": "",
+      "source": "依据 S001 §5、Fig.11、Fig.13，PDF pp.37、39、53–55 重组；箭头表示供给、更新与反馈",
+      "notes": "约75秒。本图是本库教学示意，不是作者原图，不是一次任务执行中依次训练所有阶段。Architectural Substrate支撑长历史表示与计算。Data and Environment Synthesis提供任务、交互条件和训练经验；学习阶段用这些经验及相应信号更新策略。更新后的策略在Harness与Environment支持下执行，产生成功、失败和恢复轨迹。只有这些记录经选择和验证，再进入学习，才构成图示的参数学习循环。Self-evolution组织跨轮经验生产，也可调整任务/环境，图中回写路径是简化表达。记录Memory可改变后续输入，但不自动意味着参数更新；外部工具也不会因训练而消失。\n来源：S001 raw/surveys/Towards Long-Horizon Agents.pdf，§5 p.37、Fig.11 p.39、§5.6 pp.52–53、§5.7与Fig.13 pp.53–55。知识入口：wiki/optimization/Overview.md。"
+    },
+    {
+      "type": "table",
+      "section": "03  Model Optimization · Agentic RL 总览",
+      "title": "Agentic RL 的四个设计维度",
+      "lead": "利用自身交互反馈优化策略，学习目标覆盖多轮决策及其长期后果。",
+      "headers": [
+        "设计维度",
+        "回答什么问题",
+        "典型设计"
+      ],
+      "rows": [
+        [
+          "Credit Assignment\n信用分配",
+          "哪些决策值得强化",
+          "结果、过程与显式评价准则\nOutcome / Process / Rubric"
+        ],
+        [
+          "Policy Optimization\n策略优化",
+          "怎样把信号转成稳定更新",
+          "控制策略漂移、细化更新单位\n维持探索与轨迹多样性"
+        ],
+        [
+          "Sampling Strategy\n采样策略",
+          "哪些经验有机会被学到",
+          "多轮 Rollout、共享前缀的树采样\n预算分配与轨迹筛选"
+        ],
+        [
+          "Interaction Patterns\n交互结构",
+          "把哪些决策组织成学习对象",
+          "Hierarchical / Multi-agent\nMemory-state Learning"
+        ]
+      ],
+      "widths": [
+        310,
+        350,
+        460
+      ],
+      "tableTop": 222,
+      "tableHeight": 354,
+      "fontSize": 23,
+      "takeaway": "四个维度可以组合；采样、信用与更新共同受交互结构影响。",
+      "source": "综述框架：S001 §5.5、Fig.12，PDF pp.47–52；表述按设计问题压缩",
+      "notes": "约75秒。先用本表定位Agentic RL，再进入下一页的学习信号与训练状态讨论。综述把RL目标从单次回答扩展到多轮交互轨迹，利用自身交互反馈优化策略；这不要求所有方法都只用最新轨迹，也不要求此前必经SFT。\nCredit Assignment关心如何把结果与过程反馈对应到决策。Outcome/Process区分评价对象，Rubric表达显式标准，三者可交叉，并非三个互斥奖励算法。终局反馈也可训练早期动作，不预设每步都必须有奖励。Policy Optimization把信用信号转成参数更新，综述讨论Clipping-based、Turn-level、Entropy-based，对应稳定性、优化粒度和探索。Sampling Strategy决定实际生成/保留哪些经验，包括Trajectory-level Rollout、Tree-structured Sampling、Budget-aware and Pruning。Interaction Patterns组织可优化的决策，包含Hierarchical、Multi-agent及Memory-state Learning；运行时写Memory本身不等于更新参数。\n四行是可组合设计维度，不是固定顺序或四种互斥算法。用共享前缀或局部比较取得信号，不自动提供单个动作的因果贡献。下一页因此分别追问局部信用的作用和错误状态是否最终进入更新。\n原始来源：raw/surveys/Towards Long-Horizon Agents.pdf，S001 §5.5与Fig.12 p.47；§5.5.1 pp.48–50；§5.5.2 p.50；§5.5.3 pp.50–51；§5.5.4 pp.51–52。页码从PDF第一页计。知识入口：wiki/optimization/reinforcement-learning.md。表格为综述框架的压缩表达，不代表逐项核验其全部引用或复现实验。"
+    },
+    {
+      "type": "rows",
+      "section": "03  Model Optimization · 额外思考",
+      "title": "能力内化的证据需要分层",
+      "lead": "“训练后表现更好”可以对应不同的能力变化。",
+      "items": [
+        [
+          "01",
+          "当前配置下更可靠",
+          "固定模型接口、任务与预算，看完整任务成功率。\n这能支持当前配置下的改进。"
+        ],
+        [
+          "02",
+          "错误发生后仍能继续",
+          "看错误前缀之后的恢复过程。\n总分提升还可能来自少犯错，未必来自更会恢复。"
+        ],
+        [
+          "03",
+          "交互条件改变后仍有效",
+          "分别改变题目、工具接口、环境或预算。\n换题成功与换接口成功，需要不同的迁移证据。"
+        ]
+      ],
+      "takeaway": "讨论：什么证据足以说明，训练改善了可迁移的策略能力？",
+      "source": "本库评测视角归纳；依据 S001 §5.2、§5.5–5.7、§6.6，PDF pp.40–55、64–65",
+      "notes": "讲述方案\n\n上一页概括了 Agentic RL 怎样采样、分配信用并更新策略。这一页进一步看，训练后分数提高，究竟说明学到了什么。\n\n可以用代码修复来理解。第一，在同样的接口和预算下，修复成功率更高，说明当前配置下更可靠。第二，还要区分是更少犯错，还是犯错以后更会恢复。比如更少改错文件，与改错后能发现、撤回并继续修复，是两种不同的改善，最终成功率本身不能把它们分开。第三，是换条件以后还剩多少能力：换一道题、换一个工具接口，或者缩短交互预算，检验的并不是同一种迁移。\n\n所以这页想保留的判断是，当前成功、错误后的恢复和跨条件迁移需要分别举证。讨论点是：什么证据足以支持“训练学到了可迁移的策略”，而不只是在当前配置下做得更好？\n\n原讲解与证据定位\n约75秒。三层是讨论维度，不是能力等级定义，也不是已设计或已运行的实验。当前成功率、错误后的恢复、改变条件后的迁移回答不同问题。训练学会使用当前工具可以是一种能力内化，无需把工具全部移除；但要声称能力更通用，需要改变条件后的证据。外部流程负担是否减少，也应单独计量。可以进一步讨论：若成功率提高同时消耗更多交互，研究收益究竟体现在哪里？最终完成率、成本、覆盖、恢复和迁移应按问题选择，而不只看一个总分。\n来源：raw/surveys/Towards Long-Horizon Agents.pdf，§5.2 pp.40–43，§5.5–5.7 pp.47–55，§6.6 pp.64–65。结合上一页原文机制形成归纳，未将这些判断表述为综述统一实验结论。知识入口：wiki/optimization/Questions.md、wiki/optimization/Overview.md。"
+    },
+    {
+      "type": "table",
+      "section": "04  Application · 总览",
+      "title": "Application 按观察与行动接口组织",
+      "lead": "接口决定能看到什么、能改变什么，以及能获得什么反馈。",
+      "headers": [
+        "应用类别",
+        "接口与反馈",
+        "需要补足的能力"
+      ],
+      "rows": [
+        [
+          "Software Engineering",
+          "代码、终端、测试与运行结果",
+          "定位问题、修复与需求核验"
+        ],
+        [
+          "Information Seeking",
+          "网页、检索与文档证据",
+          "补齐信息、综合证据与判断停止"
+        ],
+        [
+          "Computer Use",
+          "截图、界面状态与键鼠动作",
+          "定位对象、跟踪状态与恢复"
+        ],
+        [
+          "Multimodal Agents",
+          "跨时间与模态的感知流",
+          "找到关键片段、保留与对齐信息"
+        ],
+        [
+          "General-purpose Agents",
+          "多个工具、权限与外部服务",
+          "跨接口保持目标、约束与完整交付"
+        ]
+      ],
+      "widths": [
+        330,
+        380,
+        410
+      ],
+      "tableTop": 222,
+      "tableHeight": 346,
+      "fontSize": 23,
+      "takeaway": "类别可以重叠；反馈形式的差异不构成领域难度排名。",
+      "source": "综述框架：S001 §6、Fig.14，PDF pp.55–57；能力表述依据正文压缩",
+      "notes": "约60秒。综述第6节按Agent与Environment的接口组织，而非按整体难度。Software Engineering常有可执行反馈，但测试通过不保证覆盖真实需求。Information Seeking获得的是证据，通常没有直接执行判定器。Computer Use状态部分可见。Multimodal信息跨时间与模态分散。General-purpose可在单个工作流组合多个接口，不是和其他四类完全互斥。此页覆盖综述五类全景，后面的原论文例子仅限本次定向核读范围，不能以长视频案例代表全部Multimodal，以跨应用数字任务代表所有General-purpose任务。\n来源：raw/surveys/Towards Long-Horizon Agents.pdf，§6 pp.55–56，Fig.14 p.57，§6.1–6.5 pp.56–64。知识入口：wiki/applications/Overview.md。"
+    },
+    {
+      "type": "application-map",
+      "section": "04  Application · 关系图",
+      "title": "任务结果来自 Model、Harness 与环境配合",
+      "lead": "同一套运行关系，在不同应用中接入不同的观察、动作与反馈。",
+      "source": "本库机制示意；依据 S001 §6、§6.6，PDF pp.55–64；终态评测信号未必向运行中 Agent 开放",
+      "notes": "约75秒。本图是跨应用教学归纳，表达运行和结果归因，不是作者原图或组件贡献比例。模型根据当前输入做判断并提出动作；Harness管理输入、接口与执行；Environment接受操作并返回观察/反馈。持久产物和运行记录帮助后续决策，但是否正确仍需检查。图中终态评测从任务要求和实际结果取证，与运行中可得到的反馈区别开来；例如隐藏测试或benchmark的终态评分脚本不一定提供给Agent。不同系统可把某些决策放在固定规则中，模型并非唯一控制者。横向框代表职责，不规定必须有三个物理独立软件模块。\n来源：raw/surveys/Towards Long-Horizon Agents.pdf，§6 pp.55–56、Fig.14 p.57、§6.6 pp.64–65。知识入口：wiki/applications/Overview.md、wiki/applications/success-mechanisms.md。"
+    },
+    {
+      "type": "rows",
+      "section": "04  Application · 额外思考",
+      "title": "已有成效依赖可用信息与有效反馈",
+      "lead": "从代表案例归纳成功机制，避免把所有收益都归于自由规划。",
+      "items": [
+        [
+          "01",
+          "把操作与证据组织成模型可用的形式",
+          "SWE-agent 的接口消融支持编辑与搜索设计有用。\nVideoSeek 的同帧对照支持证据选择有用。"
+        ],
+        [
+          "02",
+          "固定流程也能利用反馈推进任务",
+          "Agentless 用定位、修复、测试选择组成固定流程。\n测试筛选有收益，自由规划并非取得成效的必要条件。"
+        ],
+        [
+          "03",
+          "局部正确之后仍有完整交付问题",
+          "Toolathlon 案例中，Agent 选对 checkpoint 却漏传依赖图片。\n正确子结果需要放回完整目标与产物依赖中检查。"
+        ]
+      ],
+      "takeaway": "讨论：任务中最缺的是信息、判断、有效反馈，还是完成条件？",
+      "source": "跨案例归纳；S071 p.6；S075 App.A.3 p.12；S072 §3 p.6、Table 4 p.14；S076 App.E.2 p.18",
+      "notes": "讲述方案\n\n前面按接口介绍了应用。这一页换一个角度，看这些系统的成效具体来自哪里。\n\n第一，是把信息和操作整理成模型真正能用的形式。比如 VideoSeek 选择的视频帧，交给基础模型后也能改善回答，说明“看到了什么”本身就很重要；SWE-agent 的接口消融也说明，搜索和编辑怎样设计会影响结果。但这些证据不能把所有收益都归给推理能力。\n\n第二，是让反馈参与结果选择。Agentless 用固定的定位、修复和测试选择流程，也能取得成效。因此，有效反馈不一定依赖模型自由规划每一步；这也不意味着固定流程在所有任务上都更好。\n\n第三，是完整交付。Toolathlon 有个案例，Agent 已经选对 checkpoint，却漏传 README 依赖的图片，整个任务仍然失败。这个例子说明，局部答案正确之后，还要检查目标有没有漏项、产物依赖是否齐全。\n\n因此，面对一个具体任务，可以先问：现在缺的是关键信息、对已有信息的判断、有效反馈，还是完整的完成条件？这比直接把失败全部归给模型或 Harness，更有助于确定下一步该查什么。\n\n原讲解与证据定位\n约100秒。第一点分别有接口干预和证据集合对照，不能把它们合成一个统一实验。SWE-agent的Table3比较了编辑、搜索、文件窗口与上下文设计。VideoSeek Table5把所选帧交给GPT-5，支持所选信息更有用；其与完整Agent的差距仍混合多轮交互、推理和信息组织，不能全部归为纯推理。第二点是对自由规划必要性的反例：Agentless采用固定定位/修复/验证流程，Table4在候选补丁上加测试筛选获得收益。不能推出固定流程总优于动态决策。第三点是单个失败案例，不表示整类任务的主导失败率。Toolathlon App.E.2中模型找到正确checkpoint，仍因漏传README所需图片失败。\n来源：raw/papers/harness/tools/SWE-agent.pdf §5.1、Tables1/3 p.6；raw/papers/harness/tools/VideoSeek.pdf App.A.3/Table5 p.12；raw/papers/harness/workflows/Agentless.pdf §3 p.6、§5.2.3/Table4 p.14；raw/papers/harness/tools/Toolathlon.pdf App.E.2 p.18。均为作者报告，未复现。知识入口：wiki/applications/success-mechanisms.md。"
+    }
+  ]
+}

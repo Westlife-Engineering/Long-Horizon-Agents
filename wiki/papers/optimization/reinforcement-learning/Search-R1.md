@@ -3,7 +3,7 @@ type: paper
 primary_direction: optimization/reinforcement-learning
 source_id: S051
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-28
 reading_status: problem-driven-read
 ingest_status: complete
 sources:
@@ -75,3 +75,11 @@ Table4 的 7B-base/PPO 平均 EM 从无 mask 的0.343到有 mask 的0.431，支�
 ## 分类与阅读入口
 
 主归属与交叉方向：[[wiki/optimization/reinforcement-learning|optimization/reinforcement-learning]]。
+
+## 2026-10-28：RL问题讨论定向回读
+
+本轮读取：p.1；pp.3–9；p.16、p.18；视觉核对p.4 Fig.1／Eq.2及p.8 Tables2–3。未核读其余全部附录／源码，未复现实验；旧读取与实现核查记录保留。
+
+本轮用它说明终局答案奖励能训练多轮检索；固定检索器／语料下的新QA题评测，不等于新工具或环境迁移。 [[raw/papers/optimization/reinforcement-learning/Search-R1.pdf#page=4|§3–4、B.2 · pp.4–9、16]]
+
+已用于 [[wiki/optimization/Questions#从综述自然引出的三个RL问题|三个RL问题]]；形成过程与范围见 [[组会/2026-10-28-Optimization-RL/README|本轮组会]]。

@@ -91,6 +91,8 @@
 
 触发：用户提出研究问题、比较或解释请求，或已授权的 Auto Research 轮次需要综合与核查。执行 [[workflows/query|Query 清单]]；多 Agent 构思与审查接 [[workflows/brainstorm|Brainstorm]]。
 
+用户引用 ChatGPT / Codex 对话并要求提炼到指定文档，或按对话审核修改文档时，读取根目录的 [[conversation-to-note/SKILL|conversation-to-note 技能]]，按对话侧重点组织解释；该技能复用本文件及工作流规则，不另作 Schema 入口。
+
 1. 从索引找到相关页面，沿论文页定位原始证据；关键结论回读原始页，不把旧 Wiki 当作新的独立证据。
 2. 按问题综合回答，给来源和定位，区分已知、综述转述、本库推断与未知。证据不足时说明缺口；引入新来源转 Ingest。
 3. 有长期价值的澄清、比较、问题或纠错写回最合适的现有页；只有独立内容足够时新建问题页，不保存每次聊天全文。

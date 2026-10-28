@@ -1,7 +1,7 @@
 ---
 type: topic
 created: 2026-10-25
-updated: 2026-10-25
+updated: 2026-10-28
 sources:
   - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
   - "[[raw/papers/optimization/self-evolution/STaR.pdf]]"
@@ -20,13 +20,57 @@ sources:
 # 自我演化
 
 
-本章讨论的训练式自我演化把生成经验、筛选反馈和策略更新接成循环，并可能更新任务或环境分布。作者区分离线生成—筛选—训练、在线交互更新、Agent—环境共同演化。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=54|S001 · §5.7 · Fig.13 · pp.54–55]]
+**Self-evolution 把自身经验接回训练：当前策略产生尝试与反馈，系统筛选可学的经验、更新策略，再开始下一轮；任务与环境也可以随能力调整。** S001 将其作用概括为“跨任务经验积累”，目标是把本次执行中的成功、失败与恢复，内化为后续任务可用的能力。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=38|S001 · Table 5 · p.38]] [[raw/surveys/Towards Long-Horizon Agents.pdf#page=53|§5.7 · pp.53–55]]
 
-细分导航：Offline Self-evolution；Online Self-evolution；Agent–Environment Co-evolution。这里的范围较窄：外部记忆或技能库的增长，只有被蒸馏、微调、RL 或可训练模块吸收时，才属于该章所说的训练式内化。更广义的外部自我演化见 [[wiki/frontier/Overview|Frontier]]。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=55|S001 · §5.7 小结 · p.55]]
+## 在 Model Optimization 中的位置
+
+第 5 章以架构支撑长历史处理，以数据／环境合成提供经验，以预训练／中期训练建立基础能力，再讨论 SFT、RL、OPD 等学习方式。**§5.7 把这条训练管线闭合起来：模型的表现反过来影响下一轮经验生产。** 图 11 将它画在管线下方，回连数据与环境合成；它虽列在最后，却也适用于冷启动，不要求先依次完成前面所有训练环节。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=37|S001 · §5 总览 · p.37]] [[raw/surveys/Towards Long-Horizon Agents.pdf#page=39|Fig.11 · p.39]] [[raw/surveys/Towards Long-Horizon Agents.pdf#page=54|§5.7.1 · p.54]]
+
+**本库关系归纳：**[[wiki/optimization/data-environments|§5.2]] 解释经验怎样构造；[[wiki/optimization/finetuning|SFT]]、[[wiki/optimization/reinforcement-learning|RL]]、[[wiki/optimization/distillation|OPD]] 可承担每轮学习；自我演化组织这些环节跨轮衔接。不能把它们简单分成“静态数据／动态数据”：§5.2 已包含适应性课程，OPD 也会随学生轨迹生成监督；与 OPD 的交叉见[[wiki/optimization/self-evolution#OPD与自我演化可以处在同一个循环|后文原论文比较]]。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=40|S001 · §5.2.1 · pp.40–41]] [[raw/surveys/Towards Long-Horizon Agents.pdf#page=53|§5.6.1–5.7 · pp.53–54]]
+
+## 共同闭环：经验怎样变成能力
+
+```mermaid
+flowchart TD
+    P["当前策略"] -->|执行或搜索| X["候选经验<br/>成功、失败与轨迹"]
+    E["任务与环境"] -->|交互条件| X
+    X -->|测试与验证| F["筛选经验<br/>识别能力缺口"]
+    F -->|构造训练目标| U["训练更新<br/>SFT／蒸馏／RL"]
+    U -->|写回策略| P
+    F -.->|共同演化时调整| E
+```
+
+*本库依据 §5.7 与 Fig.13 重组的机制示意；实线是经验回写循环，虚线是共同演化增加的调整路径，不规定具体更新频率。验证可以使用外部测试、教师或奖励模型，“self”不代表正确性由模型独立保证。* [[raw/surveys/Towards Long-Horizon Agents.pdf#page=54|S001 · §5.7.1、Fig.13 · pp.54–55]]
+
+## 三种形式：组织方式与更新对象
+
+下表概括综述的三节；**前两项主要区分经验与更新怎样组织，第三项进一步扩展更新对象**，这一关系是本库归纳。它们可以组合，不是三个必经阶段。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=54|S001 · §5.7.1–5.7.3 · pp.54–55]]
+
+| 形式 | 核心机制与作用 | 主要限制 |
+| --- | --- | --- |
+| **§5.7.1 离线自演化**（Offline） | 生成 → 筛选 → 训练；先将经验整理为可审计、去噪、重标注的数据，再做更新。适合冷启动与能力巩固，也可迭代多轮。 | 候选仍受现有策略分布限制，可能反复强化已知行为。 |
+| **§5.7.2 在线自演化**（Online） | 经验收集与策略更新交替，使训练接触当前策略自己走到的状态，包括工具副作用与恢复尝试。 | 长轨迹放大奖励延迟、信用误差、验证器漏洞和探索成本。 |
+| **§5.7.3 Agent–环境共同演化**（Co-evolution） | 随能力调整任务、环境或交互伙伴，使下一轮挑战既有学习价值，又能提供可用反馈。 | 动态课程也可能强化错误能力；难度上升不等于能力进步。 |
+
+三个小节内部又各有侧重：
+
+- **离线：把搜索和失败变成训练资产。** 可保留成功轨迹、有信息量的失败和可修正片段，再转成 SFT、蒸馏、偏好优化或离线 RL 的目标。“利用失败”不等于把错误动作当正确示范；自举依赖尝试、筛选与学习共同作用。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=54|S001 · §5.7.1 · p.54]]
+- **在线：既可在环境中持续采样，也可自己制造挑战。** 前者由 rollout、反馈与 RL 衔接；后者通过 self-play、challenger–solver 等结构产生任务和训练信号。Agent0 被综述放在本节，同时更新课程与执行者，正说明它与共同演化有交叉。“在线”描述收集与更新的组织方式，不规定必须在服务用户时逐动作改权重。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=55|S001 · §5.7.2 · p.55]]
+- **共同演化：训练世界也能调整。** 可以调任务／环境难度和反馈、发现环境—任务组合；多 Agent 中还可共同更新其他策略，或学习课程设计策略。目标是跟随**可学习的能力边界**，而非一味出更难的题。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=55|S001 · §5.7.3 · p.55]]
+
+**教学例子：**代码 Agent 改错文件后出现的新报错，是它自身行为造成的困难状态，可成为在线训练经验；将失败与修复整理成训练对，是离线经验加工；根据这些薄弱点调整下一轮仓库任务，才是任务分布的适应性变化。一次任务内的状态转移，本身不等于环境共同演化。
+
+## 总体意义与边界
+
+对长程 Agent，这个闭环连接了**实际执行中的困难状态、跨任务的能力内化和不断移动的学习边界**。外部记忆、技能库与工作流记录可先保存经验；其中稳定模式经微调、蒸馏、RL 或可训练模块吸收后，才进入本节的训练式自我演化。更广义的外部演化见 [[wiki/frontier/Overview|Frontier]]。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=55|S001 · §5.7 小结 · p.55]]
+
+**闭环不保证持续进步。** 综述指出自生成数据可能收缩分布、弱验证器可能诱导奖励投机，因此主张结合离线审计、在线探索和过程反馈。下文保留原论文对真值锚点、更新对象和有限轮次收益的核查；这些条件决定“循环在运行”是否真的转化为能力增长。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=55|S001 · §5.7 小结 · p.55]]
+
+## 原论文比较与证据边界
 
 ### 循环中究竟更新了什么
 
-“自己生成训练材料”与“自己确定正确性”是两条轴。下面比较实际更新对象及外部信息来源；S061–S065已完成摄入，内容与结构验收通过；Obsidian应用未测。
+“自己生成训练材料”与“自己确定正确性”是两条轴。下面比较已核读论文的更新对象及外部信息来源。
 
 | 方法 | 循环改变什么 | 正确性或质量锚点 |
 | --- | --- | --- |

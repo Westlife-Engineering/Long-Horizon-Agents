@@ -1,7 +1,7 @@
 ---
 type: topic
 created: 2026-10-19
-updated: 2026-10-25
+updated: 2026-10-28
 sources:
   - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
 ---
@@ -12,7 +12,7 @@ sources:
 
 ## 五类应用入口
 
-下表概括综述 p.56 的五类定义；具体方法和基准论文尚未独立核读。
+下表概括综述 p.56 的五类定义。已围绕第6节定向核读6篇原论文；成功机制、组件对照和条件性瓶颈判断见 [[wiki/applications/success-mechanisms|已有应用为何有效]]，不将少量案例外推到整类。
 
 | 应用 | 接口与反馈 | 后续阅读时要核查的问题 |
 | --- | --- | --- |
@@ -34,7 +34,7 @@ sources:
 
 ## 当前不做的推断
 
-当前只有综述提供的分类与评测入口，不能据此判定哪类应用最适合本库研究，也不能将表中系统条目都当成已核验论文。确定问题后再选取实际基准原文，通过 [[workflows/ingest|Ingest]] 进入知识库。
+本轮对SWE-agent／Agentless、WebThinker、UI-TARS、VideoSeek、Toolathlon做机制核查，其余综述条目仍不视为直接证据。不能依据分数排列领域难度，也不能从某组件提升推出该侧是主要瓶颈。[[wiki/applications/success-mechanisms|正式综合]]逐项区分论文事实、跨案例推断与尚不能判断；完整过程见 [[组会/2026-10-28-Application/README|本轮组会记录]]。
 
 相关机制见 [[wiki/harness/Overview|Harness]] 与 [[wiki/optimization/Overview|Optimization]]；评测真实性和迁移问题见 [[wiki/frontier/Overview|Frontier]]。
 
