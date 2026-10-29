@@ -10,6 +10,7 @@ sources:
   - "[[raw/papers/optimization/self-evolution/Agent0.pdf]]"
   - "[[raw/papers/optimization/self-evolution/Environment-Tuning.pdf]]"
   - "[[raw/papers/optimization/self-evolution/R-Quest.pdf]]"
+  - "[[raw/papers/optimization/self-evolution/RRSI.pdf]]"
   - "[[raw/papers/optimization/finetuning/Agent-R.pdf]]"
   - "[[raw/papers/optimization/distillation/Pi-Play.pdf]]"
   - "[[raw/papers/optimization/distillation/Self-Distillation-Zero.pdf]]"
@@ -20,7 +21,9 @@ sources:
 # 自我演化
 
 
-**Self-evolution 把自身经验接回训练：当前策略产生尝试与反馈，系统筛选可学的经验、更新策略，再开始下一轮；任务与环境也可以随能力调整。** S001 将其作用概括为“跨任务经验积累”，目标是把本次执行中的成功、失败与恢复，内化为后续任务可用的能力。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=38|S001 · Table 5 · p.38]] [[raw/surveys/Towards Long-Horizon Agents.pdf#page=53|§5.7 · pp.53–55]]
+**S001 第5章的训练式 self-evolution 把自身经验接回训练：当前策略产生尝试与反馈，系统筛选可学的经验、更新策略，再开始下一轮；任务与环境也可以随能力调整。** S001 将其作用概括为“跨任务经验积累”，目标是把本次执行中的成功、失败与恢复，内化为后续任务可用的能力。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=38|S001 · Table 5 · p.38]] [[raw/surveys/Towards Long-Horizon Agents.pdf#page=53|§5.7 · pp.53–55]]
+
+**固定权重也可以发生系统层的持久演化。** 新摄入的 [[wiki/papers/optimization/self-evolution/RRSI|S081 RRSI]] 更新提示、控制流、工具等外部 harness，模型 policy 保持冻结。本页保留上半部分的训练管线定位，并在原论文比较中加入这条外部更新轴；“自我演化”需要说明留下的是权重、任务分布还是程序修改，不能仅由名称推定训练发生。[[raw/papers/optimization/self-evolution/RRSI.pdf#page=3|S081 · §2–3 · pp.3–6]]
 
 ## 在 Model Optimization 中的位置
 
@@ -40,7 +43,7 @@ flowchart TD
     F -.->|共同演化时调整| E
 ```
 
-*本库依据 §5.7 与 Fig.13 重组的机制示意；实线是经验回写循环，虚线是共同演化增加的调整路径，不规定具体更新频率。验证可以使用外部测试、教师或奖励模型，“self”不代表正确性由模型独立保证。* [[raw/surveys/Towards Long-Horizon Agents.pdf#page=54|S001 · §5.7.1、Fig.13 · pp.54–55]]
+*本库依据 §5.7 与 Fig.13 重组的训练式机制示意；实线是经验回写循环，虚线是共同演化增加的调整路径，不规定具体更新频率。此图的训练更新节点不覆盖 RRSI 这类固定权重的 harness 搜索。验证可以使用外部测试、教师或奖励模型，“self”不代表正确性由模型独立保证。* [[raw/surveys/Towards Long-Horizon Agents.pdf#page=54|S001 · §5.7.1、Fig.13 · pp.54–55]]
 
 ## 三种形式：组织方式与更新对象
 
@@ -85,6 +88,14 @@ flowchart TD
 
 [[wiki/papers/optimization/finetuning/Agent-R|S050 Agent-R，已完成摄入，应用未测]]提供已核读的迭代SFT实例：更新actor后重新采集MCTS轨迹，同时提高筛选门槛，再监督学习修复后续。它说明更新目标与经验刷新频率应分开登记；策略、采样数据、门槛和训练量同时变化，不能把结果只归因于“自我反思”。具体恢复条件和实现材料缺口见 [[wiki/optimization/finetuning#学到修订行为以后，环境是否能继续|微调的恢复边界]]。[[raw/papers/optimization/finetuning/Agent-R.pdf#page=7|§3.2–4.2 · pp.7–9]]
 
+### 固定模型时，经验也可能写成外部程序
+
+[[wiki/papers/optimization/self-evolution/RRSI|RRSI]] 让当前 harness 在固定 evolve 集上产生轨迹，提出源代码修改，再依据成绩与成本决定保留哪些修改。它与 STaR 的推理数据→参数学习、Agent0 的课程／执行者共同训练有相同的外层反馈结构，但持久更新对象不同。**本库比较：**任务内依据报错改变下一动作，只表明反馈适应；把测过的流程修改保存供后续任务使用，才进入这里讨论的跨轮外部演化。[[raw/papers/optimization/self-evolution/RRSI.pdf#page=3|S081 · §2–3 · pp.3–6]] [[raw/papers/optimization/self-evolution/STaR.pdf#page=3|S061 · §3 · pp.3–4]] [[raw/papers/optimization/self-evolution/Agent0.pdf#page=3|S064 · §3 · pp.3–5]]
+
+这也补充了闭环失稳的另一来源：即便不产生伪标签、不改权重，反复复用同一批评分仍可能把 benchmark 特化、随机高分或资源膨胀写成永久状态。RRSI 对提案数量／方向、diff 筛查、准入底线／成本与剪枝做联合约束；办公场景消融中，去掉任一组约束出现 evolve 分上升而 OOD 平均下降。它支持在所测条件下控制搜索过程的价值，尚不能识别每个部件的独立因果贡献，也没有证明无限轮稳定。[[raw/papers/optimization/self-evolution/RRSI.pdf#page=5|S081 · §3.2–3.3 · pp.5–6]] [[raw/papers/optimization/self-evolution/RRSI.pdf#page=9|Table 2 · p.9]] [[raw/papers/optimization/self-evolution/RRSI.pdf#page=11|Limitations · p.11]]
+
+完整机制、与 STaR／Agent0 的对照及报告歧义放在 [[wiki/papers/optimization/self-evolution/RRSI|唯一论文页]]。跨套件成绩不能与数学推理训练结果排列高低；最终 harness 的运行 token 与外层搜索成本也须分开。
+
 ### OPD与自我演化可以处在同一个循环
 
 **修订S001分类边界。** S001 §5.6用“固定任务/环境、只加密监督”区别OPD与自我演化；这可描述某些单轮训练设置，不能作为互斥论文分类。[[wiki/papers/optimization/distillation/Pi-Play|S059 π-Play]]在内层学生rollout上做特权蒸馏，外层examiner又随学生能力更新题目课程，教师以EMA跟随学生，且学生保留GRPO终局奖励。因此应分别记录任务分布、学生策略和教师目标的更新频率。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=52|S001 §5.6 · p.52]] [[raw/papers/optimization/distillation/Pi-Play.pdf#page=4|S059 §2.2–2.5 · pp.4–5]]
@@ -117,5 +128,6 @@ R-Zero原文已经观察到多轮后性能回落；以外部模型作诊断参�
 - [[wiki/papers/optimization/self-evolution/Agent0|S064 · Agent0]]：主归属。
 - [[wiki/papers/optimization/self-evolution/Environment-Tuning|S065 · Environment-Tuning]]：主归属。
 - [[wiki/papers/optimization/self-evolution/R-Quest|S069 · R-Quest]]：主归属。
+- [[wiki/papers/optimization/self-evolution/RRSI|S081 · RRSI]]：主归属；固定权重的 harness 演化，交叉关联工作流与验证。
 
 [[wiki/optimization/Overview|返回模块地图]] · [[maintenance/research/R001|本轮选读理由与维护记录]]。

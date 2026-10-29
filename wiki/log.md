@@ -610,3 +610,23 @@
 
 - 核对仓库与组会临时区，删除根目录可再生应用调试日志；临时区无剩余文件。本机插件设置和会话状态保留在本地并排除 Git。
 - 结构检查通过：79 篇来源页、81 份 PDF、100 项已登记哈希通过，原基线 92 份 Raw 未变。此检查不代表学术内容或 Obsidian 应用验收。
+
+## [2026-10-28] ingest | Terminal-Bench 的任务验收与评测边界
+
+- 摄入 [[wiki/papers/harness/tools/Terminal-Bench|S080 Terminal-Bench]] 固定 v1，原样复制并核验哈希；按评测论文梳理任务构造、质量审查、模型与 harness 组合及错误诊断，整合至应用与验证，并与 MCPMark／Toolathlon 比较协议。
+- 保留任务数量与附录统计不一致等原文边界；内容核对和结构检查通过，索引与双向链接同步。未复现实验，Obsidian 内显示未测；未提交或推送。
+
+## [2026-10-28] ingest | RRSI的Harness演化与迁移约束
+
+- 原样复制并摄入用户提供的 [[wiki/papers/optimization/self-evolution/RRSI|S081 RRSI]]，核读正文与附录，比较STaR／Agent0的持久更新对象；在自我演化、工作流与验证中区分参数学习、任务内适应和跨轮harness修改，保留任务验证、diff筛查与候选准入的不同作用。
+- 主Agent原页核查与结构验收通过，复制前后SHA-256一致；索引及双向链接同步，保留摘要数字、准入权重和评价协议歧义。未复现实验，Obsidian内显示未测；不提交或推送Git。
+
+## [2026-10-29] query | Terminal-Bench 的测量价值与人工对齐
+
+- 按 benchmark-paper-reading 回读 S080，补齐 [[wiki/papers/harness/tools/Terminal-Bench|唯一论文页]] 的测量价值、作者对照定位、专业验收对齐、分层人工一致性及统计／成本口径；将人的难度预估、任务终态验收与失败诊断分开，保留未核读实现和未复现边界。
+- 同步应用、验证与索引；实际使用后精简个人 skill 的重复输出约定，论文页不另附平行检查报告。原件哈希与结构检查通过；Obsidian 内显示未测。
+
+## [2026-10-29] ingest | 五篇前作对 Terminal-Bench 的反证审视
+
+- 摄入 S082–S086：SWE-bench、SWE-Lancer、AppWorld、OSWorld、τ-bench；按固定原文核查八项主张，形成 [[wiki/applications/terminal-bench-comparison|跨基准比较]]。收窄“其他基准是合成环境”的泛化，保留专业终端任务覆盖与审查流程增量，将经济价值、判分优越和可靠部署外推留为待证。
+- 更新 S080 唯一页、应用／验证和索引；原有105份Raw未变，新来源总计86篇。结构、引用与登记哈希检查通过，决定性原页已回核；未复现实验、未提交Git，Obsidian内显示未测。范围、分工和验收见 [[maintenance/research/2026-10-29-terminal-bench-review|本轮记录]]。

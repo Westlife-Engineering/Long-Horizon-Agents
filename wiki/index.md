@@ -4,7 +4,7 @@
 
 ## 当前证据边界
 
-- 已纳入 **79篇学术来源**：S001综述及S002–S079七十八篇独立论文；第一轮64篇核心选读、5篇定向补读，Application另核读6篇，Optimization-RL讨论新增3篇。独立论文均完成摄入。核心65个方向名额中O2/O4复用S041，同篇不重复计数。
+- 已登记 **86篇学术来源**：S001综述及S002–S086八十五篇独立论文；第一轮64篇核心选读、5篇定向补读，Application另核读6篇，Optimization-RL讨论新增3篇，用户指定Terminal-Bench与RRSI，本次Terminal-Bench比较新增5篇前作。S002–S086已完成摄入，各篇实际读取与应用未测范围见唯一页。核心65个方向名额中O2/O4复用S041，同篇不重复计数。
 - S001整体为地图式阅读，Foundation（§2，PDF pp.7–15）已补充问题驱动精读；§6 Application已完整核读并补充6篇代表论文机制比较；§5已回核整体结构，以7篇定向原文形成3个RL问题和6个宏观讨论问题；其余论文实际正文、附录及实现读取范围见唯一页，均不表示全文所有附录/实现已审或复现实验。未读综述引用和搜索线索不是直接证据。
 - 第一轮核心阅读、补读、两轮Brainstorm与跨模块综合已完成；保留4张材料问题卡，**未确认新颖研究缺口，未选定最终课题**。内容与结构已验收，Obsidian新页应用验收未完成。
 - 五篇综述外补读为TRACE、BRIDGE、SpecRover、C3、R-Quest，理由与预算见[[maintenance/research/R001#第一轮查新补读|Harness]]和[[maintenance/research/R001#Optimization：第一轮查新补读|Optimization]]；Agent-R/GiGPO同源代码补充不增加论文数。方法论资料[[raw/articles/llm-wiki|LLM Wiki]]不计学术来源数。
@@ -16,6 +16,8 @@
 **第一轮研究成果从[[wiki/frontier/Overview#第一轮结果与亲读入口|四个问题与亲读路线]]进入**；模块细节分别见[[wiki/harness/Questions#第一轮Brainstorm结案|Harness讨论结案]]、[[wiki/optimization/Questions#第一轮Brainstorm结案|Optimization讨论结案]]。下面的Foundation仍是基础定义的默认图解入口。
 
 本次准备与学长讨论RL，可从 [[wiki/optimization/Overview|第5章整体结构]] → [[wiki/optimization/Questions#2026-10-28：从整体理解转向RL提问|三个具体问题与六个宏观问题]] → [[组会/2026-10-28-Optimization-RL/讨论记录|完整组会讨论]] 阅读。
+
+评估 Terminal-Bench 的实际进步，从 [[wiki/applications/terminal-bench-comparison|五篇前作与八项主张的反证审视]] 进入：区分新增技术任务覆盖、设计取舍、质量控制与尚未证明的总体优越。
 
 ## Foundation：从图解笔记开始
 
@@ -81,6 +83,12 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 | S071 | [[wiki/papers/harness/tools/SWE-agent\|SWE-agent]] | harness/tools | harness/verification | 同模型接口消融；搜索、编辑与上下文组织的贡献；未复现、应用未测。 |
 | S075 | [[wiki/papers/harness/tools/VideoSeek\|VideoSeek]] | harness/tools | harness/workflows, harness/memory | 长视频主动观察与同帧对照；证据选择、感知与推理的边界；未复现、应用未测。 |
 | S076 | [[wiki/papers/harness/tools/Toolathlon\|Toolathlon]] | harness/tools | harness/verification | 跨应用状态、对象覆盖与终态验证；单例成功和重复可靠性区别；未复现、应用未测。 |
+| S080 | [[wiki/papers/harness/tools/Terminal-Bench\|Terminal-Bench]] | harness/tools | harness/verification | 困难终端任务、现实验收与人工对齐；已结合五篇前作重审覆盖和优越性主张；未复现、应用未测。 |
+| S082 | [[wiki/papers/harness/tools/SWE-bench\|SWE-bench]] | harness/tools | harness/verification | 完成摄入；真实issue与修复／回归测试，结果通过与专业质量的距离；固定v2，未复现、应用未测。 |
+| S083 | [[wiki/papers/harness/tools/SWE-Lancer\|SWE-Lancer]] | harness/tools | harness/verification | 完成摄入；历史付费任务、E2E验收与经济价值代理；ICML会议版，未复现、应用未测。 |
+| S084 | [[wiki/papers/harness/tools/AppWorld\|AppWorld]] | harness/tools | harness/verification | 完成摄入；可控模拟应用、状态差分与场景变体一致性；固定v1，未复现、应用未测。 |
+| S085 | [[wiki/papers/harness/tools/OSWorld\|OSWorld]] | harness/tools | harness/verification | 完成摄入；真实OS与GUI／CLI任务，人类基线和副作用验收边界；NeurIPS会议版，未复现、应用未测。 |
+| S086 | [[wiki/papers/harness/tools/tau-bench\|τ-bench]] | harness/tools | harness/verification | 完成摄入；动态用户、政策、状态评分与重复成功，区分过程合规；ICLR会议版，未复现、应用未测。 |
 
 ### harness/orchestration · 编排
 
@@ -190,18 +198,20 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 | S064 | [[wiki/papers/optimization/self-evolution/Agent0\|Agent0]] | optimization/self-evolution | — | 完成摄入，应用未测；代码反馈、课程奖励、ADPO与有限轮次边界 |
 | S065 | [[wiki/papers/optimization/self-evolution/Environment-Tuning\|Environment-Tuning]] | optimization/self-evolution | — | 完成摄入，应用未测；人工课程、教学反馈、奖励真值和撤除条件 |
 | S069 | [[wiki/papers/optimization/self-evolution/R-Quest\|R-Quest]] | optimization/self-evolution | — | 综述外补读，完成摄入；坏题/重复诊断、外部初始化与回放锚点；应用未测 |
+| S081 | [[wiki/papers/optimization/self-evolution/RRSI\|RRSI]] | optimization/self-evolution | harness/workflows, harness/verification | 完成摄入；固定权重的harness搜索、提案／准入正则与跨套件迁移；未复现、应用未测。 |
 
 ## 主题综合目录
 
 | 页面 | 内容 |
 | --- | --- |
 | [[wiki/applications/success-mechanisms\|已有应用为何有效]] | 六篇原文的机制对照、条件性瓶颈及主动验证与内化边界；与Application组会记录互链。 |
-| [[wiki/harness/workflows\|循环与工作流]] | 三类工作流的定义、优缺点与组合关系；具体实现中的反馈时点和分支恢复边界。 |
+| [[wiki/applications/terminal-bench-comparison\|Terminal-Bench的反证导向比较]] | 五篇前作、八项主张：真实执行不是独占，技术任务覆盖有增量，质量与经济外推需另证。 |
+| [[wiki/harness/workflows\|循环与工作流]] | 三类工作流的定义与组合；反馈时点、分支恢复，以及任务内调整与跨轮harness修改的区别。 |
 | [[wiki/harness/memory\|上下文与记忆]] | 工作上下文与持久记忆的循环、操作与内容分类；原论文的保存、准入、取回和使用边界。 |
 | [[wiki/harness/tools\|工具、MCP 与技能]] | Tool、函数调用、MCP、工具发现与 skill 的定义和关系图解；原论文中的组合、复用与任务验收。 |
 | [[wiki/harness/orchestration\|编排]] | 控制结构外化、四类设计问题与可选优化路线；分工、交接及选择性修复的原论文比较。 |
 | [[wiki/harness/hooks\|Hooks 与中间件]] | 判断与执行控制的协作图、政策准备与运行期对照；三类方案及执行权与误拒边界。 |
-| [[wiki/harness/verification\|验证]] | 证据、评价与用途的关系，三个维度的组合及 PRM 的位置；裁判、纠错与任务成功。 |
+| [[wiki/harness/verification\|验证]] | 证据、评价与用途的关系；终态验收、轨迹诊断与纠错净收益，以及任务验证与系统修改准入的区别。 |
 | [[wiki/harness/connections\|Harness 跨模块联系与阶段性理解]] | 基于综述第 4 章的组会图解成果：共享记录何时成为依据、封装动作由何处约束、主动验收如何区分介入前后结果；未查新或实验。 |
 | [[wiki/optimization/architecture\|架构基础]] | 显式、压缩与混合的分层图解；MLA 的压缩对象，以及生成、缓存和算子效率的区别。 |
 | [[wiki/optimization/data-environments\|数据与环境合成]] | 任务—环境—轨迹的关系图解；课程、环境类型与轨迹加工维度，以及执行、标签和筛选分布的边界。 |
@@ -209,13 +219,14 @@ Harness 与 Optimization 的Overview保留地图；13个方向综合与两份问
 | [[wiki/optimization/finetuning\|微调]] | SFT的行为塑造与冷启动；数据／课程／蒸馏配合、条件化泛化及与RL／OPD的分工。 |
 | [[wiki/optimization/reinforcement-learning\|Agentic Reinforcement Learning]] | RL训练闭环与四个设计维度；推理RL／Agentic RL交互条件、能力测量及原论文归因边界。 |
 | [[wiki/optimization/distillation\|On-Policy Distillation]] | 学生轨迹上的监督回路、两类监督路线与训练阶段关系；原论文的状态覆盖和教师权限。 |
-| [[wiki/optimization/self-evolution\|自我演化]] | 经验回写的外层循环；离线、在线与共同演化的关系及真值锚点。 |
+| [[wiki/optimization/self-evolution\|自我演化]] | 经验回写的外层循环；训练式演化与固定权重harness搜索的区别，真值锚点与迁移约束。 |
 | [[wiki/harness/Questions\|harness问题与关闭依据]] | 两轮讨论后保留的材料问题、反对证据与关闭理由。 |
 | [[wiki/optimization/Questions\|Optimization问题与讨论]] | 本次3个RL问题＋6个宏观问题；另保留第一轮材料问题、反证与关闭依据。 |
 
 ## 维护入口
 
 - [[maintenance/research/R001|R001研究维护记录]]：范围、选读理由、讨论协议与Git版本。
+- [[maintenance/research/2026-10-29-terminal-bench-review|Terminal-Bench比较维护记录]]：五篇原文分工、主张范围、证据复核与本轮验收。
 - [[maintenance/migrations/2026-10-25-directory-migration|目录迁移记录]]：旧新路径、附件精简、哈希与验收。
 
 - [[wiki/log|操作日志]]：按时间记录来源摄入、查询沉淀、规则调整与健康检查。

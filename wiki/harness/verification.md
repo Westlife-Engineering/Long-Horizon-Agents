@@ -1,13 +1,19 @@
 ---
 type: topic
 created: 2026-10-25
-updated: 2026-10-27
+updated: 2026-10-29
 sources:
   - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
   - "[[raw/papers/harness/verification/CRITIC.pdf]]"
   - "[[raw/papers/harness/verification/AgentPRM-Xi.pdf]]"
   - "[[raw/papers/harness/verification/Agent-as-a-Judge.pdf]]"
   - "[[raw/papers/harness/tools/MCPMark.pdf]]"
+  - "[[raw/papers/harness/tools/Terminal-Bench.pdf]]"
+  - "[[raw/papers/harness/tools/SWE-bench.pdf]]"
+  - "[[raw/papers/harness/tools/SWE-Lancer.pdf]]"
+  - "[[raw/papers/harness/tools/AppWorld.pdf]]"
+  - "[[raw/papers/harness/tools/OSWorld.pdf]]"
+  - "[[raw/papers/harness/tools/tau-bench.pdf]]"
   - "[[raw/papers/harness/verification/Self-MAP.pdf]]"
   - "[[raw/papers/harness/orchestration/MetaGPT.pdf]]"
   - "[[raw/papers/harness/orchestration/Magentic-One.pdf]]"
@@ -17,6 +23,7 @@ sources:
   - "[[raw/papers/optimization/data-environments/SWE-Gym.pdf]]"
   - "[[raw/papers/harness/verification/CorrectBench.pdf]]"
   - "[[raw/papers/harness/verification/SpecRover.pdf]]"
+  - "[[raw/papers/optimization/self-evolution/RRSI.pdf]]"
 ---
 
 # 验证
@@ -89,11 +96,25 @@ Table 4 按上述维度分组列举代表方法；读一行时，先看它被用
 
 ### 检查对象决定成功指标
 
+**终态验收与轨迹诊断回答不同问题。** [[wiki/papers/harness/tools/Terminal-Bench|S080 Terminal-Bench]] 的任务测试检查最终容器状态，不按命令写法或控制台输出给任务分；测试与参考解不作为初始输入交给执行者。另一个独立分析才用模型裁判和人工校准，给失败轨迹标记执行、连贯性与验证问题。因而“任务通过”“执行者检查过”“事后被标成验证失败”是三种观察，不能互相替代。[[raw/papers/harness/tools/Terminal-Bench.pdf#page=2|S080 · §2.1、Fig.2 · pp.2–3]] [[raw/papers/harness/tools/Terminal-Bench.pdf#page=9|§4.4、Fig.8 · p.9]]
+
+这也把验证器自身的责任分成三项：**规范是否明确**（哪些终态应通过）、**任务是否可解**（参考解能通过）、**测试是否可被绕过**（捷径能否在未完成任务时得分）。论文用人工复核、参考解与空操作检查、轨迹审计和对抗作弊审计来降低风险；它们支持质量控制，不能证明测试覆盖了所有正确解或杜绝了所有漏洞。原文仍承认测试缺陷、联网漂移及公开答案污染的可能。[[raw/papers/harness/tools/Terminal-Bench.pdf#page=4|S080 · §2.3、Fig.3 · pp.4–5]] [[raw/papers/harness/tools/Terminal-Bench.pdf#page=10|§5 · pp.10–11]]
+
+**校准也要对准评价对象。** S080 报告了轨迹失败标签、命令失败识别和命令错误分类的人工一致性，具体样本与数字见 [[wiki/papers/harness/tools/Terminal-Bench#与人类评价的一致性，验证了哪一层|分层证据表]]；这些都不能替代最终任务 verifier 的独立验收验证。程序判分未做人工评分实验不自动意味着无效，应检查其对应需求、正确性与覆盖证据。[[raw/papers/harness/tools/Terminal-Bench.pdf#page=9|§§4.4–4.5 · pp.9–10]] [[raw/papers/harness/tools/Terminal-Bench.pdf#page=82|App.B.5、Table 3 · pp.27–28、82]]
+
+**本库综合：**Terminal-Bench 的诊断可用于区分“没有检查”“检查了错误对象”和“检查覆盖不足”，但标签频率不是“加入某验证模块就能修好多少任务”的干预效果。其提前结束标签还排除超时、崩溃，以及明确说明缺口并给出可继续执行交接的情形；不能把所有未完成轨迹都算成主动过早结束。与 MCPMark、Toolathlon 的终态验收及重复运行口径比较见 [[wiki/papers/harness/tools/Terminal-Bench|唯一论文页]]。[[raw/papers/harness/tools/Terminal-Bench.pdf#page=32|S080 · App.C.2 · pp.32–34]]
+
 Agent-as-a-Judge 的DevAI将需求组织成依赖图，独立需求达标、考虑前置条件的达标率、整任务成功分别计分；与人工共识的Alignment Rate又是**评估者**的指标。负例较多时一致率可能偏高，作者因此另用PR曲线。取证准确不等于被评估Agent已完成任务，人工共识也不是绝对真值。[[raw/papers/harness/verification/Agent-as-a-Judge.pdf#page=3|S029 §2.2 · p.3]] [[raw/papers/harness/verification/Agent-as-a-Judge.pdf#page=5|Table 2、§3 · pp.5–6]] [[raw/papers/harness/verification/Agent-as-a-Judge.pdf#page=8|§4.2、Fig.6 · p.8]]
 
 跨轮指令进一步改变评价单位。[[wiki/papers/harness/verification/Self-MAP|S031 MT-Mind2Web/Self-MAP]] 的SSR要求元素与操作同时正确，TSR要求**一轮用户指令内**所有步骤正确；TSR不是整个对话的完成率。它主要贡献离线多轮指令任务和记忆增强规划，不能因被S001归入验证选读就写成独立verifier。静态HTML快照没有实证错误行动改变状态后的恢复；记忆机制见 [[wiki/harness/memory|上下文与记忆]]。[[raw/papers/harness/verification/Self-MAP.pdf#page=6|§5.1 · PDF p.6 / 印刷8800]] [[raw/papers/harness/verification/Self-MAP.pdf#page=9|Limitation · PDF p.9 / 印刷8803]]
 
 **编排中的验证责任（S017–S021 已完成摄入，应用未测）：**MetaGPT 的执行测试反馈、Magentic-One 的“任务完成”自判，以及 MAST 对最终目标检查不足的观察，分别涉及测试、控制和诊断。验证动作存在不代表覆盖用户要求；MAST 也发现成功轨迹可含验证缺陷。具体角色与状态交接见 [[wiki/harness/orchestration#失败发生在设计、交接，还是验收|编排诊断]]，不能把模型共识或无运行异常直接当作完成证据。[[raw/papers/harness/orchestration/MetaGPT.pdf#page=6|S017 §3.3 · p.6]] [[raw/papers/harness/orchestration/Magentic-One.pdf#page=7|S018 §4.1 · p.7]] [[raw/papers/harness/orchestration/Multi-Agent-Failures.pdf#page=8|S021 §4 FC3 · p.8]] [[raw/papers/harness/orchestration/Multi-Agent-Failures.pdf#page=36|Appendix J.1 · p.36]]
+
+### 终态、额外改动与过程合规须分别验收
+
+[[wiki/applications/terminal-bench-comparison|五篇前作对 Terminal-Bench 的反证审视]] 补充了具体对照：[[wiki/papers/harness/tools/SWE-bench|SWE-bench]] 的 F2P＋P2P 检查修复与已有功能，[[wiki/papers/harness/tools/AppWorld|AppWorld]] 以 required／allowed 数据库 diff 限制额外改动；[[wiki/papers/harness/tools/OSWorld|OSWorld]] 则明确承认真实计算机环境中尚难完整检测副作用。**本库综合：**开放环境扩大行动空间，也扩大验收负担；程序执行真实不保证专业验收完备。[[raw/papers/harness/tools/SWE-bench.pdf#page=21|S082 · App.A.4 · p.21]] [[raw/papers/harness/tools/AppWorld.pdf#page=6|S084 · §3.2 · p.6]] [[raw/papers/harness/tools/OSWorld.pdf#page=49|S085 · App.E · p.49]]
+
+[[wiki/papers/harness/tools/tau-bench|τ-bench]] 更直接承认：数据库和必要回答均正确，仍可能未经用户确认就操作。因此，终态正确、过程授权和重复稳定是不同测量；它的 `pass^k` 要求同题 k 次全成功，AppWorld 的 SGC 要求同场景变体全通过，也不能互换。[[wiki/papers/harness/tools/SWE-Lancer|SWE-Lancer]] 的工程师审题、方案标签复核与真实补丁的独立验收同样须分层，不能把 Manager 的99%一致率转给 IC verifier。[[raw/papers/harness/tools/tau-bench.pdf#page=5|S086 · §3 · p.5]] [[raw/papers/harness/tools/AppWorld.pdf#page=6|S084 · §3.2 · p.6]] [[raw/papers/harness/tools/SWE-Lancer.pdf#page=4|S083 · §2 · p.4]]
 
 ### 选择误差与纠错净收益要分别测量
 
@@ -123,9 +144,14 @@ AgentPRM增加步骤间价值差约束，但**奖励模型训练粒度、搜索�
 
 **本库推断与剩余材料缺口：**保持旧通过项不是无条件目标，先要确认需求与测试的语义是否仍有效。SpecRover没有在本次核读正文中报告同一任务每轮修订的稳定需求满足向量、非目标项1→0转移，或按改动影响范围重验证的固定预算对照；这不等于领域无人研究。初次补丁漏修一处、最终任务失败、测试覆盖不足，也都不能单独证明修订破坏了原本正确的功能。后续若核查该窄问题，需要稳定判据下的产物前后对与独立验证。[[raw/papers/harness/verification/SpecRover.pdf#page=2|S070 §II、Fig.1 · pp.2–3]] [[raw/papers/harness/verification/SpecRover.pdf#page=7|§V · pp.7–10]]
 
+### 验收任务与验收系统修改是两层判断
+
+[[wiki/papers/optimization/self-evolution/RRSI|S081 RRSI]] 将三类判断分开：任务 verifier 用测试、rubric 或模拟器评价产物；评测前的 critic 读候选 harness diff，筛查基准特化逻辑；外层 selector 再以历史最佳成绩底线、噪声容忍和成本／新颖度条件决定修改能否保留。**本库辨析：**任务通过不等于修改可迁移，critic 通过也不证明泛化；RRSI 的迁移依据来自冻结最终 harness 后的 held-out/OOD 评价。其消融按提案侧和选择侧整组进行，尚不能单独证明 critic 或某个门槛的功效。[[raw/papers/optimization/self-evolution/RRSI.pdf#page=3|S081 · §2–3 · pp.3–6]] [[raw/papers/optimization/self-evolution/RRSI.pdf#page=9|Table 2 · p.9]] [[raw/papers/optimization/self-evolution/RRSI.pdf#page=22|附录 D.3 · p.22]]
+
 ## 论文入口与交叉方向
 
 - [[wiki/papers/harness/tools/MCPMark|S016 · MCPMark]]：交叉关联；主归属为`harness/tools`。
+- [[wiki/papers/harness/tools/Terminal-Bench|S080 · Terminal-Bench]]：终态测试、验收质量与事后诊断；主归属为`harness/tools`。
 - [[wiki/papers/harness/orchestration/MetaGPT|S017 · MetaGPT]]：交叉关联；主归属为`harness/orchestration`。
 - [[wiki/papers/harness/orchestration/Magentic-One|S018 · Magentic-One]]：交叉关联；主归属为`harness/orchestration`。
 - [[wiki/papers/harness/orchestration/GPTSwarm|S019 · GPTSwarm]]：交叉关联；主归属为`harness/orchestration`。
@@ -143,5 +169,6 @@ AgentPRM增加步骤间价值差约束，但**奖励模型训练粒度、搜索�
 - [[wiki/papers/harness/verification/Self-MAP|S031 · Self-MAP]]：主归属。
 - [[wiki/papers/optimization/data-environments/SWE-Gym|S038 · SWE-Gym]]：交叉关联；主归属为`optimization/data-environments`。
 - [[wiki/papers/harness/verification/SpecRover|S070 · SpecRover]]：主归属。
+- [[wiki/papers/optimization/self-evolution/RRSI|S081 · RRSI]]：任务验证、diff 筛查与候选准入的区别；主归属为 `optimization/self-evolution`。
 
 [[wiki/harness/Overview|返回模块地图]] · [[maintenance/research/R001|本轮选读理由与维护记录]]。

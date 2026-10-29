@@ -1,7 +1,7 @@
 ---
 type: topic
 created: 2026-10-25
-updated: 2026-10-26
+updated: 2026-10-28
 sources:
   - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
   - "[[raw/papers/harness/workflows/ReAct.pdf]]"
@@ -12,6 +12,7 @@ sources:
   - "[[raw/papers/optimization/reinforcement-learning/C3.pdf]]"
   - "[[raw/papers/optimization/finetuning/Agent-R.pdf]]"
   - "[[raw/papers/optimization/data-environments/WebDreamer.pdf]]"
+  - "[[raw/papers/optimization/self-evolution/RRSI.pdf]]"
 ---
 
 # 循环与工作流
@@ -105,6 +106,10 @@ Arbor 还引入另一种风险边界：事实结果和归纳后的 insight 应�
 
 **后续比较条件：**固定反馈权限、可回退性和总资源口径后，再区分候选覆盖、状态评价、反思与输出选择各自的贡献。ReAct 的平均/最佳提示表现、ReWOO 的 Accuracy/EM、ToT 的系统输出/oracle 最佳状态、LATS 的属性平均分/严格成功率已在各论文页分开；当前不据这些异质分数决定研究方向。
 
+### 任务内调整与跨轮修改工作流
+
+[[wiki/papers/optimization/self-evolution/RRSI|S081 RRSI]] 把工作流本身作为外层搜索的可修改对象：固定模型运行当前 harness，读取轨迹后提出 diff，再用 evolve 集成绩、成本与准入规则决定下一版。**本库辨析：**在单次轨迹里读到报错后换动作，属于既有流程中的反馈适应；把控制流等修改保存并在后续任务运行，属于持久的 harness 演化。后者须额外检查反复复用评价集的过拟合，不能由当前任务成功推出跨任务受益。RRSI 对未参与搜索的套件进行迁移评价，但未证明任意流程的持续改进；方法与比较见 [[wiki/optimization/self-evolution|自我演化]]。[[raw/papers/optimization/self-evolution/RRSI.pdf#page=3|S081 · §2–3 · pp.3–6]] [[raw/papers/optimization/self-evolution/RRSI.pdf#page=8|§4.2、Fig.3 · p.8]]
+
 ## 论文入口与交叉方向
 
 - [[wiki/papers/harness/workflows/ReAct|S002 · ReAct]]：主归属。
@@ -112,5 +117,6 @@ Arbor 还引入另一种风险边界：事实结果和归纳后的 insight 应�
 - [[wiki/papers/harness/workflows/Arbor|S004 · Arbor]]：主归属。
 - [[wiki/papers/harness/workflows/Tree-of-Thoughts|S005 · Tree-of-Thoughts]]：主归属。
 - [[wiki/papers/harness/workflows/LATS|S006 · LATS]]：主归属。
+- [[wiki/papers/optimization/self-evolution/RRSI|S081 · RRSI]]：交叉关联；主归属为 `optimization/self-evolution`。
 
 [[wiki/harness/Overview|返回模块地图]] · [[maintenance/research/R001|本轮选读理由与维护记录]]。

@@ -1,9 +1,15 @@
 ---
 type: topic
 created: 2026-10-19
-updated: 2026-10-28
+updated: 2026-10-29
 sources:
   - "[[raw/surveys/Towards Long-Horizon Agents.pdf]]"
+  - "[[raw/papers/harness/tools/Terminal-Bench.pdf]]"
+  - "[[raw/papers/harness/tools/SWE-bench.pdf]]"
+  - "[[raw/papers/harness/tools/SWE-Lancer.pdf]]"
+  - "[[raw/papers/harness/tools/AppWorld.pdf]]"
+  - "[[raw/papers/harness/tools/OSWorld.pdf]]"
+  - "[[raw/papers/harness/tools/tau-bench.pdf]]"
 ---
 
 # Application：应用与评测
@@ -32,9 +38,21 @@ sources:
 
 综述还根据外部评测数据讨论时间跨度增长，但指出测试集覆盖、上界估计和协议差异限制解释；增长趋势本身无法区分模型与 harness 各自贡献。本库暂不收录其模型排行或倍增数字，也未独立读取相关外部评测来源。[[raw/surveys/Towards Long-Horizon Agents.pdf#page=12|S001 · §2.3 · Fig.4 · p.12]]
 
+### Terminal-Bench 补充的测量边界
+
+[[wiki/papers/harness/tools/Terminal-Bench|S080 Terminal-Bench]] 把困难终端任务做成容器、指令、隐藏测试与人工参考解，检查最终环境是否满足目标；任务覆盖不局限于软件修复。其质量审查要求指令与测试双向一致、参考解可通过、作弊捷径被排除，但这是经人工和工具审查的目标，不是所有 verifier 均完备的证明。[[raw/papers/harness/tools/Terminal-Bench.pdf#page=2|S080 · §§2.1–2.3 · pp.2–5]]
+
+**本库据此补充：**读评测需要分别核查“题目与验收是否可信”和“Agent 在这个验收下完成得怎样”。Terminal-Bench 的主图为每个模型选择最好 scaffold，测得的是组合表现；人类耗时为作者估计，跨模型平均轮数也不是长程能力的单一量尺。与 MCPMark、Toolathlon 的接口和重复指标比较见 [[wiki/papers/harness/tools/Terminal-Bench#与本库已有评测放在一起看|三篇评测对照]]，不跨任务集比较总分。[[raw/papers/harness/tools/Terminal-Bench.pdf#page=3|Fig.1 · p.3]] [[raw/papers/harness/tools/Terminal-Bench.pdf#page=5|§2.4 · p.5]] [[raw/papers/harness/tools/Terminal-Bench.pdf#page=52|App.G · pp.52–53]]
+
+**测量价值与外推要分开。** 本库判断，这类困难任务集适合比较和诊断选定条件下的系统；要估计真实工作表现，还需核对任务代表性及专业验收要求。专家参与出题、作者估计人类难度、自动诊断与人工标签一致，分别支持不同判断；详见 [[wiki/papers/harness/tools/Terminal-Bench#与人类评价的一致性，验证了哪一层|S080 的分层证据]]，不能将诊断器的一致率当作任务验收正确率。[[raw/papers/harness/tools/Terminal-Bench.pdf#page=3|§§2.2–2.4 · pp.3–5]] [[raw/papers/harness/tools/Terminal-Bench.pdf#page=9|§§4.4–4.5 · pp.9–10]]
+
+### 回到前作检验“更真实、更可靠”
+
+**新增比较入口：[[wiki/applications/terminal-bench-comparison|读过前作后，Terminal-Bench 还进步在哪里？]]** 2026-10-29 已核读 [[wiki/papers/harness/tools/SWE-bench|SWE-bench]]、[[wiki/papers/harness/tools/SWE-Lancer|SWE-Lancer]]、[[wiki/papers/harness/tools/AppWorld|AppWorld]]、[[wiki/papers/harness/tools/OSWorld|OSWorld]]、[[wiki/papers/harness/tools/tau-bench|τ-bench]]。本库据此将“真实”拆为任务来源、执行环境、验收标准与样本代表性：OSWorld／SWE-Lancer 已有真实执行，AppWorld 的合成环境支持严格状态检查，不能将真实 shell 直接排成质量更高。Terminal-Bench 的多种专业终端任务与审查流程仍有增量，但经济价值和可靠部署外推需另证。[[raw/papers/harness/tools/OSWorld.pdf#page=3|S085 · §§2–3 · pp.3–6]] [[raw/papers/harness/tools/SWE-Lancer.pdf#page=5|S083 · §3.1 · p.5]] [[raw/papers/harness/tools/AppWorld.pdf#page=6|S084 · §3.2 · p.6]] [[raw/papers/harness/tools/Terminal-Bench.pdf#page=11|S080 · §6 · p.11]]
+
 ## 当前不做的推断
 
-本轮对SWE-agent／Agentless、WebThinker、UI-TARS、VideoSeek、Toolathlon做机制核查，其余综述条目仍不视为直接证据。不能依据分数排列领域难度，也不能从某组件提升推出该侧是主要瓶颈。[[wiki/applications/success-mechanisms|正式综合]]逐项区分论文事实、跨案例推断与尚不能判断；完整过程见 [[组会/2026-10-28-Application/README|本轮组会记录]]。
+此前 Application 六篇阅读对SWE-agent／Agentless、WebThinker、UI-TARS、VideoSeek、Toolathlon做机制核查，其他综述条目仍须按各自实际读取状态判断，不因被提及就升级证据。不能依据分数排列领域难度，也不能从某组件提升推出该侧是主要瓶颈。[[wiki/applications/success-mechanisms|机制综合]]逐项区分论文事实、跨案例推断与尚不能判断；完整过程见 [[组会/2026-10-28-Application/README|Application组会记录]]。
 
 相关机制见 [[wiki/harness/Overview|Harness]] 与 [[wiki/optimization/Overview|Optimization]]；评测真实性和迁移问题见 [[wiki/frontier/Overview|Frontier]]。
 
